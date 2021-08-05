@@ -51,7 +51,7 @@ export default {
   },
 
   target: 'static',
-  mode: 'spa',
+  ssr: false,
   router: {
     base: '/topbud/'
   },
