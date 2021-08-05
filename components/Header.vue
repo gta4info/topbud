@@ -152,7 +152,7 @@
       padding-bottom: 0;
       z-index: 2;
       height: 85px;
-      background: rgba(#000, .5);
+      background: #000;
       position: fixed;
       top: 0;
       left: 0;
@@ -184,6 +184,10 @@
           font-weight: 900;
           color: #cbe1be;
           cursor: pointer;
+
+          a {
+            color: #cbe1be;
+          }
         }
       }
     }

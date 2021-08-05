@@ -37,27 +37,44 @@
         <div class="category__categories">
           <h4>Flower</h4>
           <div class="category__items">
-            <div class="category__item">
-              <h5 class="category__item-title">Indica</h5>
-              <div class="category__item-text">If you are in need of relaxation, this is the way to go. Weed from indica plants will soothe you and help you sleep. Some strains are an effective treatment for anxiety and pain.</div>
-              <nuxt-link to="/">View Indica Products</nuxt-link>
-            </div>
-            <div class="category__item">
-              <h5 class="category__item-title">Sativa</h5>
-              <div class="category__item-text">Are you looking for an energy boost? Marijuana from sativa plants will invigorate you, give you the energy you need to complete a task, and boost your creativit</div>
-              <nuxt-link to="/">View Sativa Products</nuxt-link>
-            </div>
-            <div class="category__item">
-              <h5 class="category__item-title">Hybrid</h5>
-              <div class="category__item-text">Many people want the best of both the indica and sativa worlds. Maybe you want pain relief without the sedation, or maybe you want to take a slight edge off your energy without taking it away. Hybrid plants are bred to be indica-dominant, sativa-dominant, or equally balanced between the two.</div>
-              <nuxt-link to="/">View Hybrid Products</nuxt-link>
-            </div>
-            <div class="category__item">
-              <h5 class="category__item-title">Pre-Rolls</h5>
-              <div class="category__item-text">
-                If you can’t be bothered to do the grinding, rolling and sealing of your own marijuana joint, you can get prerolls that have already been rolled for you.</div>
-              <nuxt-link to="/">View Pre-Rolls Products</nuxt-link>
-            </div>
+            <v-expansion-panels v-model="panel1" multiple>
+              <v-expansion-panel class="category__item">
+                <v-expansion-panel-header>
+                  <h5 class="category__item-title" :class="{'active': panel1.includes(0)}">Indica</h5>
+                </v-expansion-panel-header>
+                <v-expansion-panel-content>
+                  <div class="category__item-text">If you are in need of relaxation, this is the way to go. Weed from indica plants will soothe you and help you sleep. Some strains are an effective treatment for anxiety and pain.</div>
+                  <nuxt-link to="/">View Indica Products</nuxt-link>
+                </v-expansion-panel-content>
+              </v-expansion-panel>
+              <v-expansion-panel class="category__item">
+                <v-expansion-panel-header>
+                  <h5 class="category__item-title" :class="{'active': panel1.includes(1)}">Sativa</h5>
+                </v-expansion-panel-header>
+                <v-expansion-panel-content>
+                  <div class="category__item-text">Are you looking for an energy boost? Marijuana from sativa plants will invigorate you, give you the energy you need to complete a task, and boost your creativit</div>
+                  <nuxt-link to="/">View Sativa Products</nuxt-link>
+                </v-expansion-panel-content>
+              </v-expansion-panel>
+              <v-expansion-panel class="category__item">
+                <v-expansion-panel-header>
+                  <h5 class="category__item-title" :class="{'active': panel1.includes(2)}">Hybrid</h5>
+                </v-expansion-panel-header>
+                <v-expansion-panel-content>
+                  <div class="category__item-text">Many people want the best of both the indica and sativa worlds. Maybe you want pain relief without the sedation, or maybe you want to take a slight edge off your energy without taking it away. Hybrid plants are bred to be indica-dominant, sativa-dominant, or equally balanced between the two.</div>
+                  <nuxt-link to="/">View Hybrid Products</nuxt-link>
+                </v-expansion-panel-content>
+              </v-expansion-panel>
+              <v-expansion-panel class="category__item">
+                <v-expansion-panel-header>
+                  <h5 class="category__item-title" :class="{'active': panel1.includes(3)}">Pre-Rolls</h5>
+                </v-expansion-panel-header>
+                <v-expansion-panel-content>
+                  <div class="category__item-text">If you can’t be bothered to do the grinding, rolling and sealing of your own marijuana joint, you can get prerolls that have already been rolled for you.</div>
+                  <nuxt-link to="/">View Pre-Rolls Products</nuxt-link>
+                </v-expansion-panel-content>
+              </v-expansion-panel>
+            </v-expansion-panels>
             <nuxt-link to="/category/flower" v-ripple>View Our Products</nuxt-link>
           </div>
         </div>
@@ -69,41 +86,71 @@
         <div class="category__categories">
           <h4>Edibles</h4>
           <div class="category__items">
-            <div class="category__item">
-              <h5 class="category__item-title">Beverages</h5>
-              <div class="category__item-text">Tasty beverages that are infused with THC Distillate include a variety of hot teas, an iced tea mix, and cocoa.</div>
-              <nuxt-link to="/">View Beverages Products</nuxt-link>
-            </div>
-            <div class="category__item">
-              <h5 class="category__item-title">Candy</h5>
-              <div class="category__item-text">Who doesn’t love a good piece of candy? Our selection of sweet treats containing marijuana include lollipops, caramel cups, and a variety of chocolate truffles.</div>
-              <nuxt-link to="/">View Candy Products</nuxt-link>
-            </div>
-            <div class="category__item">
-              <h5 class="category__item-title">Chips & Snacks</h5>
-              <div class="category__item-text">If you prefer savoury to sweet, why not try our tortilla chips that come in a variety of flavours? Eat them on their own or add your favourite nacho toppings.</div>
-              <nuxt-link to="/">View Chips & Snacks Products</nuxt-link>
-            </div>
-            <div class="category__item">
-              <h5 class="category__item-title">Chocolate</h5>
-              <div class="category__item-text">You can’t go wrong with good quality chocolate, and we offer a selection of chocolate bars, peanut butter cups, and of course, chocolate brownies.</div>
-              <nuxt-link to="/">View Chocolate Products</nuxt-link>
-            </div>
-            <div class="category__item">
-              <h5 class="category__item-title">Cookies</h5>
-              <div class="category__item-text">We offer peanut butter cookies chocolate cookies, lemon drop cookies, and more. If you’re looking for Christmas-themed cookies, try our candy cane cookies or “Santa’s Oreos”</div>
-              <nuxt-link to="/">View Cookies Products</nuxt-link>
-            </div>
-            <div class="category__item">
-              <h5 class="category__item-title">Gummies</h5>
-              <div class="category__item-text">Looking for something sweet but not a chocolate fan? Try our selection of gummies that come in different flavours and THC content.</div>
-              <nuxt-link to="/">View Gummies Products</nuxt-link>
-            </div>
-            <div class="category__item">
-              <h5 class="category__item-title">Tinctures & Oils</h5>
-              <div class="category__item-text">If you are looking for a way to switch from smoking weed to consuming it in a smokeless manner, our tinctures are a great way to start. You can infuse them to your baked goods or simply add a few drops to your favourite beverage.</div>
-              <nuxt-link to="/">View Tinctures & Oils Products</nuxt-link>
-            </div>
+            <v-expansion-panels v-model="panel2" multiple>
+              <v-expansion-panel class="category__item">
+                <v-expansion-panel-header>
+                  <h5 class="category__item-title" :class="{'active': panel2.includes(0)}">Beverages</h5>
+                </v-expansion-panel-header>
+                <v-expansion-panel-content>
+                  <div class="category__item-text">Tasty beverages that are infused with THC Distillate include a variety of hot teas, an iced tea mix, and cocoa.</div>
+                  <nuxt-link to="/">View Beverages Products</nuxt-link>
+                </v-expansion-panel-content>
+              </v-expansion-panel>
+              <v-expansion-panel class="category__item">
+                <v-expansion-panel-header>
+                  <h5 class="category__item-title" :class="{'active': panel2.includes(1)}">Candy</h5>
+                </v-expansion-panel-header>
+                <v-expansion-panel-content>
+                  <div class="category__item-text">Who doesn’t love a good piece of candy? Our selection of sweet treats containing marijuana include lollipops, caramel cups, and a variety of chocolate truffles.</div>
+                  <nuxt-link to="/">View Candy Products</nuxt-link>
+                </v-expansion-panel-content>
+              </v-expansion-panel>
+              <v-expansion-panel class="category__item">
+                <v-expansion-panel-header>
+                  <h5 class="category__item-title" :class="{'active': panel2.includes(2)}">Chips & Snacks</h5>
+                </v-expansion-panel-header>
+                <v-expansion-panel-content>
+                  <div class="category__item-text">If you prefer savoury to sweet, why not try our tortilla chips that come in a variety of flavours? Eat them on their own or add your favourite nacho toppings.</div>
+                  <nuxt-link to="/">View Chips & Snacks Products</nuxt-link>
+                </v-expansion-panel-content>
+              </v-expansion-panel>
+              <v-expansion-panel class="category__item">
+                <v-expansion-panel-header>
+                  <h5 class="category__item-title" :class="{'active': panel2.includes(3)}">Chocolate</h5>
+                </v-expansion-panel-header>
+                <v-expansion-panel-content>
+                  <div class="category__item-text">You can’t go wrong with good quality chocolate, and we offer a selection of chocolate bars, peanut butter cups, and of course, chocolate brownies.</div>
+                  <nuxt-link to="/">View Chocolate Products</nuxt-link>
+                </v-expansion-panel-content>
+              </v-expansion-panel>
+              <v-expansion-panel class="category__item">
+                <v-expansion-panel-header>
+                  <h5 class="category__item-title" :class="{'active': panel2.includes(4)}">Cookies</h5>
+                </v-expansion-panel-header>
+                <v-expansion-panel-content>
+                  <div class="category__item-text">We offer peanut butter cookies chocolate cookies, lemon drop cookies, and more. If you’re looking for Christmas-themed cookies, try our candy cane cookies or “Santa’s Oreos”</div>
+                  <nuxt-link to="/">View Cookies Products</nuxt-link>
+                </v-expansion-panel-content>
+              </v-expansion-panel>
+              <v-expansion-panel class="category__item">
+                <v-expansion-panel-header>
+                  <h5 class="category__item-title" :class="{'active': panel2.includes(5)}">Gummies</h5>
+                </v-expansion-panel-header>
+                <v-expansion-panel-content>
+                  <div class="category__item-text">Looking for something sweet but not a chocolate fan? Try our selection of gummies that come in different flavours and THC content.</div>
+                  <nuxt-link to="/">View Gummies Products</nuxt-link>
+                </v-expansion-panel-content>
+              </v-expansion-panel>
+              <v-expansion-panel class="category__item">
+                <v-expansion-panel-header>
+                  <h5 class="category__item-title" :class="{'active': panel2.includes(6)}">Tinctures & Oils</h5>
+                </v-expansion-panel-header>
+                <v-expansion-panel-content>
+                  <div class="category__item-text">If you are looking for a way to switch from smoking weed to consuming it in a smokeless manner, our tinctures are a great way to start. You can infuse them to your baked goods or simply add a few drops to your favourite beverage.</div>
+                  <nuxt-link to="/">View Tinctures & Oils Products</nuxt-link>
+                </v-expansion-panel-content>
+              </v-expansion-panel>
+            </v-expansion-panels>
             <nuxt-link to="/category/edibles" v-ripple>View Our Products</nuxt-link>
           </div>
         </div>
@@ -127,36 +174,62 @@
         <div class="category__categories">
           <h4>Concentrates</h4>
           <div class="category__items">
-            <div class="category__item">
-              <h5 class="category__item-title">Capsules</h5>
-              <div class="category__item-text">Easily get the effects you are looking for without the need to smoke or vape. Cannabis capsules come in a variety of strengths and strains.</div>
-              <nuxt-link to="/">View Capsules Products</nuxt-link>
-            </div>
-            <div class="category__item">
-              <h5 class="category__item-title">Diamonds</h5>
-              <div class="category__item-text">Diamonds is a THC concentrate in its purest form. With their gem-like appearance, they are up to four times stronger than your run-of-the-mill weed. They can only be consumed via a method that uses a heat source, such as smoking.</div>
-              <nuxt-link to="/">View Diamonds Products</nuxt-link>
-            </div>
-            <div class="category__item">
-              <h5 class="category__item-title">Distillate & Oils</h5>
-              <div class="category__item-text">This is a concentrated form of weed that isolates THC or CBD, depending on what effects you are looking for. These products are designed to give you the benefits you need in just one or two drops.</div>
-              <nuxt-link to="/">View Distillate & Oils Products</nuxt-link>
-            </div>
-            <div class="category__item">
-              <h5 class="category__item-title">Hash</h5>
-              <div class="category__item-text">When you separate trichomes from the plant matter and turn it into a brick, you end up with hash. It is a concentrated form of weed that is usually smoked in a pipe or bong.</div>
-              <nuxt-link to="/">View Hash Products</nuxt-link>
-            </div>
-            <div class="category__item">
-              <h5 class="category__item-title">Sauce</h5>
-              <div class="category__item-text">If you like intense flavours, try a marijuana sauce – an extract with a thick, sticky consistency that is consumed by dabbing.</div>
-              <nuxt-link to="/">View Sauce Products</nuxt-link>
-            </div>
-            <div class="category__item">
-              <h5 class="category__item-title">Shatter</h5>
-              <div class="category__item-text">This extract has a translucent, glass-like appearance, and as its name suggests, it can shatter like glass on impact. It can be consumed by vaping, but it is usually dabbed.</div>
-              <nuxt-link to="/">View Shatter Products</nuxt-link>
-            </div>
+            <v-expansion-panels v-model="panel3" multiple>
+              <v-expansion-panel class="category__item">
+                <v-expansion-panel-header>
+                  <h5 class="category__item-title" :class="{'active': panel3.includes(0)}">Capsules</h5>
+                </v-expansion-panel-header>
+                <v-expansion-panel-content>
+                  <div class="category__item-text">Easily get the effects you are looking for without the need to smoke or vape. Cannabis capsules come in a variety of strengths and strains.</div>
+                  <nuxt-link to="/">View Capsules Products</nuxt-link>
+                </v-expansion-panel-content>
+              </v-expansion-panel>
+              <v-expansion-panel class="category__item">
+                <v-expansion-panel-header>
+                  <h5 class="category__item-title" :class="{'active': panel3.includes(1)}">Diamonds</h5>
+                </v-expansion-panel-header>
+                <v-expansion-panel-content>
+                  <div class="category__item-text">Diamonds is a THC concentrate in its purest form. With their gem-like appearance, they are up to four times stronger than your run-of-the-mill weed. They can only be consumed via a method that uses a heat source, such as smoking.</div>
+                  <nuxt-link to="/">View Diamonds Products</nuxt-link>
+                </v-expansion-panel-content>
+              </v-expansion-panel>
+              <v-expansion-panel class="category__item">
+                <v-expansion-panel-header>
+                  <h5 class="category__item-title" :class="{'active': panel3.includes(2)}">Distillate & Oils</h5>
+                </v-expansion-panel-header>
+                <v-expansion-panel-content>
+                  <div class="category__item-text">This is a concentrated form of weed that isolates THC or CBD, depending on what effects you are looking for. These products are designed to give you the benefits you need in just one or two drops.</div>
+                  <nuxt-link to="/">View Distillate & Oils Products</nuxt-link>
+                </v-expansion-panel-content>
+              </v-expansion-panel>
+              <v-expansion-panel class="category__item">
+                <v-expansion-panel-header>
+                  <h5 class="category__item-title" :class="{'active': panel3.includes(3)}">Hash</h5>
+                </v-expansion-panel-header>
+                <v-expansion-panel-content>
+                  <div class="category__item-text">When you separate trichomes from the plant matter and turn it into a brick, you end up with hash. It is a concentrated form of weed that is usually smoked in a pipe or bong.</div>
+                  <nuxt-link to="/">View Hash Products</nuxt-link>
+                </v-expansion-panel-content>
+              </v-expansion-panel>
+              <v-expansion-panel class="category__item">
+                <v-expansion-panel-header>
+                  <h5 class="category__item-title" :class="{'active': panel3.includes(4)}">Sauce</h5>
+                </v-expansion-panel-header>
+                <v-expansion-panel-content>
+                  <div class="category__item-text">If you like intense flavours, try a marijuana sauce – an extract with a thick, sticky consistency that is consumed by dabbing.</div>
+                  <nuxt-link to="/">View Sauce Products</nuxt-link>
+                </v-expansion-panel-content>
+              </v-expansion-panel>
+              <v-expansion-panel class="category__item">
+                <v-expansion-panel-header>
+                  <h5 class="category__item-title" :class="{'active': panel3.includes(5)}">Shatter</h5>
+                </v-expansion-panel-header>
+                <v-expansion-panel-content>
+                  <div class="category__item-text">This extract has a translucent, glass-like appearance, and as its name suggests, it can shatter like glass on impact. It can be consumed by vaping, but it is usually dabbed.</div>
+                  <nuxt-link to="/">View Shatter Products</nuxt-link>
+                </v-expansion-panel-content>
+              </v-expansion-panel>
+            </v-expansion-panels>
             <nuxt-link to="/category/concentrates" v-ripple>View Our Products</nuxt-link>
           </div>
         </div>
@@ -168,21 +241,35 @@
         <div class="category__categories">
           <h4>Vapes</h4>
           <div class="category__items">
-            <div class="category__item">
-              <h5 class="category__item-title">Cartridges</h5>
-              <div class="category__item-text">Tasty beverages that are infused with THC Distillate include a variety of hot teas, an iced tea mix, and cocoa.</div>
-              <nuxt-link to="/">View Cartridges Products</nuxt-link>
-            </div>
-            <div class="category__item">
-              <h5 class="category__item-title">Disposables</h5>
-              <div class="category__item-text">Who doesn’t love a good piece of candy? Our selection of sweet treats containing marijuana include lollipops, caramel cups, and a variety of chocolate truffles.</div>
-              <nuxt-link to="/">View Disposables Products</nuxt-link>
-            </div>
-            <div class="category__item">
-              <h5 class="category__item-title">Batteries</h5>
-              <div class="category__item-text">If you prefer savoury to sweet, why not try our tortilla chips that come in a variety of flavours? Eat them on their own or add your favourite nacho toppings.</div>
-              <nuxt-link to="/">View Batteries Products</nuxt-link>
-            </div>
+            <v-expansion-panels v-model="panel4" multiple>
+              <v-expansion-panel class="category__item">
+                <v-expansion-panel-header>
+                  <h5 class="category__item-title" :class="{'active': panel4.includes(0)}">Cartridges</h5>
+                </v-expansion-panel-header>
+                <v-expansion-panel-content>
+                  <div class="category__item-text">Tasty beverages that are infused with THC Distillate include a variety of hot teas, an iced tea mix, and cocoa.</div>
+                  <nuxt-link to="/">View Cartridges Products</nuxt-link>
+                </v-expansion-panel-content>
+              </v-expansion-panel>
+              <v-expansion-panel class="category__item">
+                <v-expansion-panel-header>
+                  <h5 class="category__item-title" :class="{'active': panel4.includes(1)}">Disposables</h5>
+                </v-expansion-panel-header>
+                <v-expansion-panel-content>
+                  <div class="category__item-text">Who doesn’t love a good piece of candy? Our selection of sweet treats containing marijuana include lollipops, caramel cups, and a variety of chocolate truffles.</div>
+                  <nuxt-link to="/">View Disposables Products</nuxt-link>
+                </v-expansion-panel-content>
+              </v-expansion-panel>
+              <v-expansion-panel class="category__item">
+                <v-expansion-panel-header>
+                  <h5 class="category__item-title" :class="{'active': panel4.includes(2)}">Batteries</h5>
+                </v-expansion-panel-header>
+                <v-expansion-panel-content>
+                  <div class="category__item-text">If you prefer savoury to sweet, why not try our tortilla chips that come in a variety of flavours? Eat them on their own or add your favourite nacho toppings.</div>
+                  <nuxt-link to="/">View Batteries Products</nuxt-link>
+                </v-expansion-panel-content>
+              </v-expansion-panel>
+            </v-expansion-panels>
             <nuxt-link to="/category/vapes" v-ripple>View Our Products</nuxt-link>
           </div>
         </div>
@@ -263,7 +350,14 @@
 </template>
 
 <script>
-export default {}
+export default {
+  data: () => ({
+    panel1: [0],
+    panel2: [0],
+    panel3: [0],
+    panel4: [0],
+  })
+}
 </script>
 
 <style lang="scss" scoped>
@@ -356,10 +450,13 @@ export default {}
         align-items: center;
         justify-content: center;
         border: 1px solid #cbe1be;
+        color: #cbe1be !important;
         animation: scale 3s infinite;
+        transition: .3s;
 
         &:hover {
-          transform: scale(1.25);
+          background: #cbe1be;
+          color: #000 !important;
         }
       }
     }
@@ -488,13 +585,22 @@ export default {}
         padding: 0 20px;
         border: 2px solid #63B03A;
         align-self: flex-start;
+        margin-top: 20px;
       }
     }
 
     &__item {
 
+      .v-expansion-panel-header {
+        padding: 0;
+      }
+
+      &:before {
+        box-shadow: none;
+      }
+
       &:not(:last-child) {
-        margin-bottom: 30px;
+        margin-bottom: 10px;
       }
 
       &-title {

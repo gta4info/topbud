@@ -1,31 +1,21 @@
 export const state = () => ({
   cart: [
     {
-      category: {
-        slug: 'flower',
-        title: 'Flower',
-      },
-      slug: 'la_kush_king_aaaaa',
-      title: 'LA Kush King (AAAAA)',
-      weight: '1 oz (28g)',
-      old_price: '240',
-      price: '220',
       image: '1.webp',
-      id: 1,
+      title: 'Budda Gas Mask (AAAA+)',
+      weight: '1 oz (28g)',
+      price: 200,
+      quantity: 1,
+      id: 1
     },
     {
-      category: {
-        slug: 'edibles',
-        title: 'Edibled',
-      },
-      slug: 'tahoe_og_kush_aaaa',
-      title: 'Tahoe OG Kush (AAAA)',
-      weight: '1 oz (28g)',
-      old_price: '200',
-      price: '180',
       image: '2.webp',
-      id: 2,
-    },
+      title: 'Sour Tangie',
+      weight: '1 oz (28g)',
+      price: 130,
+      quantity: 1,
+      id: 2
+    }
   ],
 });
 
@@ -42,5 +32,15 @@ export const actions = {
 export const mutations = {
   PUSH_PRODUCT_TO_CART(state, data) {
     state.cart.push(data);
+  },
+  CHANGE_AMOUNT_OF_PRODUCT_IN_CART(state, data) {
+    if(data.quantity < 1) {
+      return;
+    }
+    state.cart.find(item => item.id === data.id).quantity = data.quantity;
+  },
+  DELETE_PRODUCT_IN_CART(state, id) {
+    let index = state.cart.indexOf(state.cart.find(item => item.id === id))
+    state.cart.splice(index, 1);
   }
 }

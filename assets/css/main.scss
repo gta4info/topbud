@@ -18,7 +18,7 @@ ul {
   padding: 0 !important;
 }
 
-.v-application a {
+a {
   text-decoration: none;
   color: #000;
 
@@ -29,4 +29,20 @@ ul {
 
 .v-main {
   margin-top: 85px;
+}
+
+.category__item {
+  * {
+    box-shadow: none;
+  }
+  .v-expansion-panel-header__icon {
+    display: none !important;
+  }
+  .v-expansion-panel-content__wrap {
+    padding: 0;
+  }
+}
+
+.v-expansion-panel:not(:first-child)::after {
+  border-color: transparent !important;
 }

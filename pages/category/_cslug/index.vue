@@ -135,6 +135,10 @@ export default {
             line-height: 1;
           }
         }
+
+        a {
+          color: #000;
+        }
       }
     }
   }

@@ -158,7 +158,7 @@ export default {
     selectedOption: 1,
     selectedAmount: 1,
     minAmount: 1,
-    maxAmount: 8,
+    maxAmount: 9999,
     options: [
       {
         value: 1,
@@ -333,6 +333,10 @@ export default {
             line-height: 1;
           }
         }
+
+        a {
+          color: #000;
+        }
       }
     }
   }
@@ -430,6 +434,7 @@ export default {
     display: flex;
     flex-direction: column;
     align-items: center;
+    color: #000;
 
     &__header {
       position: relative;

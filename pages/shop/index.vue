@@ -2,7 +2,7 @@
   <div>
     <TopBar />
     <Search />
-    <Carousel />
+<!--    <Carousel />-->
 
     <div class="categories">
       <v-container>
