@@ -25,8 +25,8 @@
             <ul>
               <li class="footer__nav-title">About us</li>
               <li><nuxt-link to="/">Home page</nuxt-link></li>
-              <li><nuxt-link to="/faq">FAQs</nuxt-link></li>
-              <li><nuxt-link to="/contact">Contact us</nuxt-link></li>
+              <li><nuxt-link to="/">FAQs</nuxt-link></li>
+              <li><nuxt-link to="/">Contact us</nuxt-link></li>
             </ul>
           </nav>
         </v-col>

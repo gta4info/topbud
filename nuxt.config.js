@@ -50,5 +50,9 @@ export default {
     defaultAssets: {icons: 'mdi'}
   },
 
-  target: 'static'
+  target: 'static',
+  mode: 'spa',
+  router: {
+    base: '/topbud/'
+  },
 }
