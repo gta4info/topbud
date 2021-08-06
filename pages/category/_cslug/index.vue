@@ -1,6 +1,6 @@
 <template>
   <div>
-    <TopBar />
+<!--    <TopBar />-->
     <v-container>
       <nav class="breadcrumbs">
         <ul>

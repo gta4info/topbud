@@ -1,7 +1,7 @@
 <template>
   <div>
-    <TopBar />
-    <Search />
+<!--    <TopBar />-->
+<!--    <Search />-->
 <!--    <Carousel />-->
 
     <div class="categories">
@@ -83,6 +83,6 @@ export default {
 
 <style lang="scss" scoped>
   .categories {
-    margin-bottom: 60px;
+    margin: 60px 0 ;
   }
 </style>

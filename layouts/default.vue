@@ -13,6 +13,9 @@
 export default {
   components: {
     'MiniCart': () => import('@/components/shop/MiniCart')
+  },
+  created () {
+    this.$store.dispatch('shop/getWeights');
   }
 }
 </script>

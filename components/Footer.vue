@@ -89,7 +89,7 @@ export default {
 
       &-title {
         text-transform: uppercase;
-        font-size: 22px;
+        font-size: 15px;
         font-weight: 900;
         color: #CBE1BE;
       }
@@ -101,7 +101,7 @@ export default {
           }
           a {
             color: #DEDEDE;
-            font-size: 18px;
+            font-size: 14px;
           }
         }
       }

@@ -131,11 +131,41 @@
           ],
         },
         {
-          title: 'Accessories'
+          active: false,
+          category: 'Other',
+          items: [
+            {
+              title: 'Carteidges',
+            },
+            {
+              title: 'Disposables',
+            },
+            {
+              title: 'Vape batteries',
+            },
+          ],
         },
         {
-          title: 'Topicals & tinctures'
-        }
+          active: false,
+          category: 'Info',
+          items: [
+            {
+              title: 'Carteidges',
+            },
+            {
+              title: 'Disposables',
+            },
+            {
+              title: 'Vape batteries',
+            },
+          ],
+        },
+        // {
+        //   title: 'Accessories'
+        // },
+        // {
+        //   title: 'Topicals & tinctures'
+        // }
       ]
     })
   }
@@ -180,7 +210,7 @@
         li {
           margin-right: 20px;
           text-transform: uppercase;
-          font-size: 12px;
+          font-size: 15px;
           font-weight: 900;
           color: #cbe1be;
           cursor: pointer;
@@ -195,10 +225,10 @@
     &__dropdown {
       margin-top: 20px;
       background: #000;
-      padding: 10px;
+      padding: 10px 20px;
       color: #fff !important;
       text-transform: uppercase;
-      font-size: 12px;
+      font-size: 15px;
       font-weight: 900;
 
       a {

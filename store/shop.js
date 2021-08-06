@@ -1,22 +1,8 @@
+
+
 export const state = () => ({
-  cart: [
-    {
-      image: '1.webp',
-      title: 'Budda Gas Mask (AAAA+)',
-      weight: '1 oz (28g)',
-      price: 200,
-      quantity: 1,
-      id: 1
-    },
-    {
-      image: '2.webp',
-      title: 'Sour Tangie',
-      weight: '1 oz (28g)',
-      price: 130,
-      quantity: 1,
-      id: 2
-    }
-  ],
+  cart: [],
+  weights: []
 });
 
 export const getters = {
@@ -24,12 +10,20 @@ export const getters = {
 }
 
 export const actions = {
+  async getWeights({commit}) {
+    const weights = await this.$axios.get('/weights');
+    console.log(weights);
+    commit('SET_WEIGHTS', weights)
+  },
   addToCart({commit}, data) {
     commit('PUSH_PRODUCT_TO_CART', data);
   }
 }
 
 export const mutations = {
+  SET_WEIGHTS(state, data) {
+    state.weights = data;
+  },
   PUSH_PRODUCT_TO_CART(state, data) {
     state.cart.push(data);
   },
