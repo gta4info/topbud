@@ -48,7 +48,7 @@
           </ul>
         </nav>
 
-        <Search />
+<!--        <Search />-->
 
         <div class="header__buttons">
           <nuxt-link to="/category/deals" v-ripple>OZ DEALS</nuxt-link>
