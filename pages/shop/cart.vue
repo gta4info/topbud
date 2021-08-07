@@ -228,46 +228,6 @@ export default {
   }
 }
 
-.breadcrumbs {
-  display: flex;
-  justify-content: center;
-  margin: 10px 0 50px;
-
-  ul {
-    display: flex;
-
-    li {
-      font-size: 16px;
-      display: flex;
-      align-items: center;
-      letter-spacing: 0.5px;
-
-      &:last-child {
-        color: #7FAD39;
-      }
-
-      &:not(:last-child) {
-        padding-right: 15px;
-        margin-right: 10px;
-        position: relative;
-
-        &:before {
-          content: '›';
-          position: absolute;
-          right: 0;
-          font-size: 22px;
-          height: 100%;
-          line-height: 1;
-        }
-      }
-
-      a {
-        color: #000;
-      }
-    }
-  }
-}
-
 .empty {
   width: 100%;
   display: flex;

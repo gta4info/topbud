@@ -1,88 +1,51 @@
 <template>
-  <div>
-<!--    <TopBar />-->
-<!--    <Search />-->
-<!--    <Carousel />-->
-
-    <div class="categories">
-      <v-container>
-        <v-row>
-          <v-col md="3" sm="12" v-for="(category, i) in categories" :key="i">
-            <CategoryCard :category="category"/>
-          </v-col>
-        </v-row>
-      </v-container>
+  <div class="page">
+    <div class="loading" v-if="!categories.length">
+      <v-progress-circular
+        indeterminate
+        color="#699551"
+        size="30"
+      />
     </div>
+    <template v-else>
+      <v-container>
+        <nav class="breadcrumbs">
+          <ul>
+            <li><nuxt-link to="/">Home</nuxt-link></li>
+            <li>Shop</li>
+          </ul>
+        </nav>
+      </v-container>
+      <div class="categories">
+        <v-container>
+          <v-row>
+            <v-col md="3" sm="12" v-for="category in categories" :key="category.id">
+              <CategoryCard :category="category"/>
+            </v-col>
+          </v-row>
+        </v-container>
+      </div>
+    </template>
   </div>
 </template>
 
 <script>
+import { mapGetters } from 'vuex'
+
 export default {
   components: {
-    'TopBar': () => import('@/components/shop/TopBar'),
-    'Search': () => import('@/components/shop/Search'),
-    'Carousel': () => import('@/components/shop/Carousel'),
     'CategoryCard': () => import('@/components/shop/CategoryCard'),
   },
-  data: () => ({
-    categories: [
-      {
-        slug: 'deals',
-        image: 'deals.png',
-        title: 'Hot deals'
-      },
-      {
-        slug: 'new',
-        image: 'new.png',
-        title: 'New'
-      },
-      {
-        slug: 'flower',
-        image: 'flower.webp',
-        title: 'Flower'
-      },
-      {
-        slug: 'edibles',
-        image: 'edibles.webp',
-        title: 'Edibles'
-      },
-      {
-        slug: 'shatters',
-        image: 'shatters.webp',
-        title: 'Shatters'
-      },
-      {
-        slug: 'deals',
-        image: 'deals.png',
-        title: 'Hot deals'
-      },
-      {
-        slug: 'new',
-        image: 'new.png',
-        title: 'New'
-      },
-      {
-        slug: 'flower',
-        image: 'flower.webp',
-        title: 'Flower'
-      },
-      {
-        slug: 'edibles',
-        image: 'edibles.webp',
-        title: 'Edibles'
-      },
-      {
-        slug: 'shatters',
-        image: 'shatters.webp',
-        title: 'Shatters'
-      },
-    ]
-  })
+  computed: {
+    ...mapGetters({
+      categories: 'shop/categories'
+    })
+  }
 }
 </script>
 
 <style lang="scss" scoped>
   .categories {
-    margin: 60px 0 ;
+    margin: 60px 0;
   }
 </style>

@@ -1,13 +1,17 @@
 <template>
   <v-container>
     <v-form class="search" @submit.prevent="submit">
-      <v-text-field
-        v-model="query"
-        label="What do you need?"
-        required
-        solo
-      />
-      <v-btn @click="submit" depressed>Search</v-btn>
+      <div class="search__input" :class="{'show': show}">
+        <v-text-field
+          v-model="query"
+          label="What do you need?"
+          required
+          solo
+        />
+      </div>
+      <v-btn @click="submit" depressed>
+        <v-icon>mdi-magnify</v-icon>
+      </v-btn>
     </v-form>
   </v-container>
 </template>
@@ -15,7 +19,8 @@
 <script>
 export default {
   data: () => ({
-    query: ''
+    query: '',
+    show: false
   }),
   methods: {
     submit() {
@@ -29,6 +34,19 @@ export default {
   .search {
     display: flex;
     margin-top: 10px;
+    position: relative;
+    max-width: 300px;
+    overflow: hidden;
+    margin-left: auto;
+    margin-right: 30px;
+
+    &__input {
+      margin-right: -350px;
+
+      &.show {
+        margin-right: 0;
+      }
+    }
 
     .v-text-field {
       border-radius: 0;
@@ -41,10 +59,12 @@ export default {
 
     .v-btn {
       height: 48px !important;
+      width: 48px !important;
       background: #7FAD39 !important;
       color: #fff;
       border-radius: 0;
-      padding: 0 30px !important;
+      position: absolute;
+      right: 0;
     }
   }
 </style>

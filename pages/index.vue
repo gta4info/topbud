@@ -270,7 +270,7 @@
                 </v-expansion-panel-content>
               </v-expansion-panel>
             </v-expansion-panels>
-            <nuxt-link to="/category/vapes" v-ripple>View Our Products</nuxt-link>
+            <nuxt-link to="/category/vape-pens" v-ripple>View Our Products</nuxt-link>
           </div>
         </div>
         <img class="category__image" src="@/static/images/Buy-CO2-Oil-Cartridg.webp" alt="Vapes"/>

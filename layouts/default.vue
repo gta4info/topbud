@@ -14,8 +14,9 @@ export default {
   components: {
     'MiniCart': () => import('@/components/shop/MiniCart')
   },
-  created () {
-    this.$store.dispatch('shop/getWeights');
+  async mounted () {
+    await this.$store.dispatch('shop/getWeights');
+    await this.$store.dispatch('shop/getCategories');
   }
 }
 </script>

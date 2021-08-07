@@ -41,7 +41,7 @@ export default {
 
   // Axios module configuration: https://go.nuxtjs.dev/config-axios
   axios: {
-    baseURL: 'http://31.186.250.216:8000/v1/front'
+    baseURL: 'http://31.186.250.216:56789/v1/front'
   },
 
   // Build Configuration: https://go.nuxtjs.dev/config-build
@@ -52,9 +52,15 @@ export default {
     defaultAssets: {icons: 'mdi'}
   },
 
-  // target: 'static',
-  // ssr: false,
-  // router: {
-  //   base: '/topbud/'
-  // },
+  target: 'static',
+  ssr: false,
+  router: {
+    base: '/topbud/'
+  },
+
+  loadingIndicator: {
+    name: 'circle',
+    color: '#3B8070',
+    background: 'white'
+  }
 }

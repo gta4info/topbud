@@ -1,9 +1,9 @@
 <template>
-  <nuxt-link :to="{name: 'category-cslug-pslug', params: {cslug: product.category.slug, pslug: product.slug}}" class="card">
+  <nuxt-link :to="{name: 'category-cslug-sslug-pslug', params: {cslug: $route.params.cslug, sslug: $route.params.sslug ? $route.params.sslug : 'product', pslug: product.slug}}" class="card">
     <div class="card__header">
-      <img :src="require(`@/assets/images/${product.image}`)" :alt="product.title">
+      <img :src="product.img" :alt="product.name">
     </div>
-    <div class="card__title">{{product.title}}</div>
+    <div class="card__title">{{product.name}}</div>
   </nuxt-link>
 </template>
 
@@ -25,6 +25,31 @@ export default {
     flex-direction: column;
     align-items: center;
     color: #000;
+    border: 1px solid #E9E9E9;
+    border-radius: 8px;
+    padding: 15px;
+    overflow: hidden;
+    position: relative;
+
+    &:before {
+      content: '';
+      position: absolute;
+      top: 0;
+      right: 0;
+      bottom: 0;
+      left: 0;
+      z-index: 1;
+      background: linear-gradient(180deg, transparent 0%, transparent 40%, #fff 100%);
+    }
+
+    &:hover {
+      .card__header {
+        transform: scale(1.2);
+      }
+      .card__title {
+        bottom: 25px;
+      }
+    }
 
     &__header {
       position: relative;
@@ -33,24 +58,8 @@ export default {
       justify-content: center;
       height: 225px;
       width: 100%;
-
-      &:before {
-        content: '';
-        position: absolute;
-        top: 0;
-        left: 0;
-        right: 0;
-        bottom: 0;
-        background: rgba(#000, .2);
-        opacity: 0;
-        transition: .3s;
-      }
-
-      &:hover {
-        &:before {
-          opacity: 1;
-        }
-      }
+      transition: .3s;
+      margin-bottom: 40px;
 
       img {
         max-width: 100%;
@@ -62,6 +71,12 @@ export default {
       font-weight: 900;
       font-size: 16px;
       margin-top: 15px;
+      transition: .3s;
+      z-index: 1;
+      bottom: 15px;
+      position: absolute;
+      width: calc(100% - 30px);
+      text-align: center;
     }
   }
 </style>

@@ -1,31 +1,54 @@
 <template>
-  <v-container class="header-wrap" fluid>
+  <v-container class="header-wrap" fluid :class="{'show': categories.length}">
     <v-container>
       <header class="header">
         <nuxt-link to="/" class="header__logo">
           <img src="@/static/images/logo.png" alt="TOPBUD">
         </nuxt-link>
-
         <nav class="header__nav">
           <ul>
-            <li v-for="(group, i) in nav" :key="i">
+            <!--Categories with sub categories-->
+            <li v-for="category in computedCategories.filter(item => item.subs && item.subs.length)" :key="category.slug">
               <!--Dropdown-->
-              <v-menu v-if="group.category" v-model="group.active" offset-y open-on-hover content-class="header__dropdown" close-delay="150">
+              <v-menu v-if="category.subs" v-model="category.active" offset-y open-on-hover content-class="header__dropdown" close-delay="150">
                 <template v-slot:activator="{on}">
-                  <span v-on="on" class="header__dropdown-activator" :class="{'active': group.active}">{{group.category}}</span>
+                  <span v-on="on" class="header__dropdown-activator" :class="{'active': category.active}">{{category.name}}</span>
                 </template>
                 <div
-                  v-for="(item, i) in group.items"
-                  :key="i"
+                  v-for="item in category.subs"
+                  :key="item.slug"
                 >
-                  <nuxt-link :to="`/category/${item.title}`" active-class="active">{{item.title}}</nuxt-link>
+                  <nuxt-link :to="`/category/${category.slug}/${item.slug}`" active-class="active">{{item.name}}</nuxt-link>
                 </div>
               </v-menu>
-              <!--Single-->
-              <nuxt-link :to="`/category/${group.title}`" active-class="active">{{group.title}}</nuxt-link>
+            </li>
+            <!--Categories without sub categories-->
+            <li>
+              <!--Dropdown-->
+              <v-menu v-model="othersState" offset-y open-on-hover content-class="header__dropdown" close-delay="150">
+                <template v-slot:activator="{on}">
+                  <span v-on="on" class="header__dropdown-activator" :class="{'active': othersState}">Other</span>
+                </template>
+                <div v-for="category in otherCategories" :key="category.slug">
+                  <nuxt-link :to="{name: 'category-cslug', params: {cslug: category.slug}}" active-class="active">{{category.name}}</nuxt-link>
+                </div>
+              </v-menu>
+            </li>
+            <!--Info menu-->
+            <li>
+              <v-menu v-model="infoState" offset-y open-on-hover content-class="header__dropdown" close-delay="150">
+                <template v-slot:activator="{on}">
+                  <span v-on="on" class="header__dropdown-activator" :class="{'active': infoState}">Info</span>
+                </template>
+                <div v-for="link in info" :key="link.link">
+                  <nuxt-link :to="`/${link.link}`" active-class="active">{{link.title}}</nuxt-link>
+                </div>
+              </v-menu>
             </li>
           </ul>
         </nav>
+
+<!--        <Search />-->
 
         <div class="header__buttons">
           <nuxt-link to="/category/deals" v-ripple>OZ DEALS</nuxt-link>
@@ -37,137 +60,51 @@
 </template>
 
 <script>
+  import { mapGetters } from 'vuex'
+
   export default {
+    components: {
+      'Search': () => import('@/components/shop/Search')
+    },
     data: () => ({
-      nav: [
+      othersState: false,
+      infoState: false,
+      info: [
         {
-          active: false,
-          category: 'Flower',
-          items: [
-            {
-              title: 'Indica',
-            },
-            {
-              title: 'Indica dominant hybrid',
-            },
-            {
-              title: 'Sativa'
-            },
-            {
-              title: 'Dominant hybrid'
-            },
-            {
-              title: 'Hybrid',
-            },
-            {
-              title: 'Pre-rolls',
-            }
-          ],
+          title: 'About US',
+          link: 'about'
         },
         {
-          active: false,
-          category: 'Edibles',
-          items: [
-            {
-              title: 'Beverages',
-            },
-            {
-              title: 'Candy',
-            },
-            {
-              title: 'Chips and snacks',
-            },
-            {
-              title: 'Chocolate',
-            },
-            {
-              title: 'Cookies',
-            },
-            {
-              title: 'Gummies',
-            },
-            {
-              title: 'Tintures and oils',
-            }
-          ],
+          title: 'Delivery Information',
+          link: 'delivery'
         },
         {
-          active: false,
-          category: 'Concentrate',
-          items: [
-            {
-              title: 'Capsules and tablets',
-            },
-            {
-              title: 'Diamonds',
-            },
-            {
-              title: 'Distlillate and oils',
-            },
-            {
-              title: 'Hash',
-            },
-            {
-              title: 'Sause',
-            },
-            {
-              title: 'Shatter',
-            }
-          ],
+          title: 'Contacts',
+          link: 'contacts'
         },
         {
-          active: false,
-          category: 'Vapes',
-          items: [
-            {
-              title: 'Carteidges',
-            },
-            {
-              title: 'Disposables',
-            },
-            {
-              title: 'Vape batteries',
-            },
-          ],
+          title: 'Blog',
+          link: 'blog'
         },
-        {
-          active: false,
-          category: 'Other',
-          items: [
-            {
-              title: 'Carteidges',
-            },
-            {
-              title: 'Disposables',
-            },
-            {
-              title: 'Vape batteries',
-            },
-          ],
-        },
-        {
-          active: false,
-          category: 'Info',
-          items: [
-            {
-              title: 'Carteidges',
-            },
-            {
-              title: 'Disposables',
-            },
-            {
-              title: 'Vape batteries',
-            },
-          ],
-        },
-        // {
-        //   title: 'Accessories'
-        // },
-        // {
-        //   title: 'Topicals & tinctures'
-        // }
       ]
-    })
+    }),
+    computed: {
+      ...mapGetters({
+        categories: 'shop/categories'
+      }),
+      computedCategories() {
+        return this.categories.map(item => {
+          item.active = false;
+          return item;
+        })
+      },
+      otherCategories() {
+        return this.computedCategories.filter(item => item.subs && !item.subs.length).map(item => {
+          item.active = false;
+          return item;
+        })
+      }
+    }
   }
 </script>
 
@@ -182,11 +119,17 @@
       padding-bottom: 0;
       z-index: 2;
       height: 85px;
-      background: #000;
+      background: #111111;
       position: fixed;
       top: 0;
       left: 0;
       right: 0;
+      opacity: 0;
+      transition: opacity .5s;
+
+      &.show {
+        opacity: 1;
+      }
 
       .container {
         padding: 0;

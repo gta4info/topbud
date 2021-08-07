@@ -1,10 +1,15 @@
 <template>
-  <nuxt-link :to="{name: 'category-cslug', params: {cslug: category.slug}}" class="card">
-    <div class="card__header">
-      <img :src="category.img" :alt="category.name">
-    </div>
-    <div class="card__title">{{category.name}}</div>
-  </nuxt-link>
+  <div>
+    <nuxt-link
+      :to="{name: 'category-cslug-sslug', params: {cslug: category.slug, sslug: sub.slug}}"
+      class="card"
+    >
+      <div class="card__header">
+        <img :src="sub.img" :alt="sub.name">
+      </div>
+      <div class="card__title">{{sub.name}}</div>
+    </nuxt-link>
+  </div>
 </template>
 
 <script>
@@ -12,6 +17,10 @@ export default {
   name: 'CategoryCard',
   props: {
     category: {
+      type: Object,
+      required: true
+    },
+    sub: {
       type: Object,
       required: true
     }
