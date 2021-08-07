@@ -58,6 +58,11 @@ export default {
     base: '/topbud/'
   },
 
+  server: {
+    host: '0.0.0.0',
+    port: '8800'
+  },
+
   loadingIndicator: {
     name: 'circle',
     color: '#3B8070',

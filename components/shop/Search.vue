@@ -9,7 +9,7 @@
           solo
         />
       </div>
-      <v-btn @click="submit" depressed>
+      <v-btn @click="submit"  depressed>
         <v-icon>mdi-magnify</v-icon>
       </v-btn>
     </v-form>
@@ -39,12 +39,16 @@ export default {
     overflow: hidden;
     margin-left: auto;
     margin-right: 30px;
+    height: 100%;
 
     &__input {
-      margin-right: -350px;
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      right: -350px;
 
       &.show {
-        margin-right: 0;
+        right: 0;
       }
     }
 
