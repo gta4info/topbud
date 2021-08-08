@@ -80,6 +80,9 @@ export default {
   },
   methods: {
     checkout() {
+      if(!this.name || !this.phone || !this.address) {
+        return alert('Fields are not filled!')
+      }
       this.sending = true;
       let order = [];
 
