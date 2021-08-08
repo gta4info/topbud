@@ -93,5 +93,17 @@ export default {
 <style lang="scss" scoped>
   .products {
     margin-bottom: 60px;
+
+    @media(max-width: 768px) {
+      margin-top: 0;
+
+      .container {
+
+        .row {
+          display: flex;
+          flex-direction: column;
+        }
+      }
+    }
   }
 </style>

@@ -1,61 +1,59 @@
 <template>
   <v-container class="header-wrap" fluid :class="{'show': categories.length}">
-    <v-container>
-      <header class="header">
-        <nuxt-link to="/" class="header__logo">
-          <img src="@/static/images/logo.png" alt="TOPBUD">
-        </nuxt-link>
-        <nav class="header__nav">
-          <ul>
-            <!--Categories with sub categories-->
-            <li v-for="category in computedCategories.filter(item => item.subs && item.subs.length)" :key="category.slug">
-              <!--Dropdown-->
-              <v-menu v-if="category.subs" v-model="category.active" offset-y open-on-hover content-class="header__dropdown" close-delay="150">
-                <template v-slot:activator="{on}">
-                  <span v-on="on" class="header__dropdown-activator" :class="{'active': category.active}">{{category.name}}</span>
-                </template>
-                <div
-                  v-for="item in category.subs"
-                  :key="item.slug"
-                >
-                  <nuxt-link :to="`/category/${category.slug}/${item.slug}`" active-class="active">{{item.name}}</nuxt-link>
-                </div>
-              </v-menu>
-            </li>
-            <!--Categories without sub categories-->
-            <li>
-              <!--Dropdown-->
-              <v-menu v-model="othersState" offset-y open-on-hover content-class="header__dropdown" close-delay="150">
-                <template v-slot:activator="{on}">
-                  <span v-on="on" class="header__dropdown-activator" :class="{'active': othersState}">Other</span>
-                </template>
-                <div v-for="category in otherCategories" :key="category.slug">
-                  <nuxt-link :to="{name: 'category-cslug', params: {cslug: category.slug}}" active-class="active">{{category.name}}</nuxt-link>
-                </div>
-              </v-menu>
-            </li>
-            <!--Info menu-->
-            <li>
-              <v-menu v-model="infoState" offset-y open-on-hover content-class="header__dropdown" close-delay="150">
-                <template v-slot:activator="{on}">
-                  <span v-on="on" class="header__dropdown-activator" :class="{'active': infoState}">Info</span>
-                </template>
-                <div v-for="link in info" :key="link.link">
-                  <nuxt-link :to="`/${link.link}`" active-class="active">{{link.title}}</nuxt-link>
-                </div>
-              </v-menu>
-            </li>
-          </ul>
-        </nav>
+    <header class="header">
+      <nuxt-link to="/" class="header__logo">
+        <img src="@/static/images/logo.png" alt="TOPBUD">
+      </nuxt-link>
+      <nav class="header__nav">
+        <ul>
+          <!--Categories with sub categories-->
+          <li v-for="category in computedCategories.filter(item => item.subs && item.subs.length)" :key="category.slug">
+            <!--Dropdown-->
+            <v-menu v-if="category.subs" v-model="category.active" offset-y open-on-hover content-class="header__dropdown" close-delay="150">
+              <template v-slot:activator="{on}">
+                <span v-on="on" class="header__dropdown-activator" :class="{'active': category.active}">{{category.name}}</span>
+              </template>
+              <div
+                v-for="item in category.subs"
+                :key="item.slug"
+              >
+                <nuxt-link :to="`/category/${category.slug}/${item.slug}`" active-class="active">{{item.name}}</nuxt-link>
+              </div>
+            </v-menu>
+          </li>
+          <!--Categories without sub categories-->
+          <li>
+            <!--Dropdown-->
+            <v-menu v-model="othersState" offset-y open-on-hover content-class="header__dropdown" close-delay="150">
+              <template v-slot:activator="{on}">
+                <span v-on="on" class="header__dropdown-activator" :class="{'active': othersState}">Other</span>
+              </template>
+              <div v-for="category in otherCategories" :key="category.slug">
+                <nuxt-link :to="{name: 'category-cslug', params: {cslug: category.slug}}" active-class="active">{{category.name}}</nuxt-link>
+              </div>
+            </v-menu>
+          </li>
+          <!--Info menu-->
+          <li>
+            <v-menu v-model="infoState" offset-y open-on-hover content-class="header__dropdown" close-delay="150">
+              <template v-slot:activator="{on}">
+                <span v-on="on" class="header__dropdown-activator" :class="{'active': infoState}">Info</span>
+              </template>
+              <div v-for="link in info" :key="link.link">
+                <nuxt-link :to="`/${link.link}`" active-class="active">{{link.title}}</nuxt-link>
+              </div>
+            </v-menu>
+          </li>
+        </ul>
+      </nav>
 
-<!--        <Search />-->
+      <Search />
 
-        <div class="header__buttons">
-          <nuxt-link to="/category/deals" v-ripple>OZ DEALS</nuxt-link>
-          <a href="tel:4932-2231-3433" v-ripple>4932-2231-3433</a>
-        </div>
-      </header>
-    </v-container>
+      <div class="header__buttons">
+        <nuxt-link to="/category/deals" v-ripple>OZ DEALS</nuxt-link>
+        <a href="tel:4932-2231-3433" v-ripple>4932-2231-3433</a>
+      </div>
+    </header>
   </v-container>
 </template>
 
@@ -104,6 +102,34 @@
           return item;
         })
       }
+    },
+    watch: {
+      infoState() {
+        if(this.infoState) {
+          this.othersState = false;
+          this.categories.map(item => {
+            item.active = false;
+            return item;
+          })
+          this.computedCategories.filter(item => item.subs && !item.subs.length).map(item => {
+            item.active = false;
+            return item;
+          })
+        }
+      },
+      othersState() {
+        if(this.othersState) {
+          this.infoState = false;
+          this.categories.map(item => {
+            item.active = false;
+            return item;
+          })
+          this.computedCategories.filter(item => item.subs && !item.subs.length).map(item => {
+            item.active = false;
+            return item;
+          })
+        }
+      },
     }
   }
 </script>
@@ -130,11 +156,6 @@
       &.show {
         opacity: 1;
       }
-
-      .container {
-        padding: 0;
-        height: 100%;
-      }
     }
 
     &__logo {
@@ -157,6 +178,10 @@
           font-weight: 900;
           color: #cbe1be;
           cursor: pointer;
+
+          @media(max-width: 1400px) {
+            font-size: 12px;
+          }
 
           a {
             color: #cbe1be;
@@ -212,7 +237,6 @@
 
     &__buttons {
       display: flex;
-      margin-left: auto;
 
       a {
         color: #ffffff;

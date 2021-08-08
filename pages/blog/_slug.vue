@@ -29,7 +29,7 @@
             </div>
           </v-col>
           <v-col cols="12">
-            <div v-html="content.blog"></div>
+            <div v-html="content.blog" class="blog__html"></div>
           </v-col>
         </v-row>
       </v-container>
@@ -70,6 +70,15 @@ export default {
 
     img {
       margin-bottom: 40px;
+    }
+
+    &__html {
+      div {
+        @media(max-width: 768px) {
+          max-width: 100% !important;
+          margin-left: 0;
+        }
+      }
     }
   }
 }

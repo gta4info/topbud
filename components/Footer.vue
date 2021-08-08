@@ -79,9 +79,10 @@ export default {
     }
 
     &__socials {
+      display: flex;
 
       a:not(:last-child) {
-        margin-right: 5px;
+        margin-right: 8px;
       }
     }
 

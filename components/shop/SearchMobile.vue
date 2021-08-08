@@ -1,17 +1,13 @@
 <template>
   <v-form class="search" @submit.prevent="submit">
-    <div class="search__container" @mouseenter="show = true">
-      <div class="search__input" :class="{'show': show}">
-        <input
-          v-model="query"
-          placeholder="What do you need?"
-          required
-        />
-      </div>
-      <v-btn icon @click="submit" depressed>
-        <v-icon>mdi-magnify</v-icon>
-      </v-btn>
-    </div>
+    <input
+      v-model="query"
+      placeholder="What do you need?"
+      required
+    />
+    <v-btn icon @click="submit" depressed>
+      <v-icon>mdi-magnify</v-icon>
+    </v-btn>
   </v-form>
 </template>
 
@@ -38,12 +34,14 @@ export default {
   .search {
     display: flex;
     position: relative;
-    width: 200px;
+    width: 100%;
     height: 48px;
     overflow: hidden;
     margin-left: auto;
-    margin-right: 30px;
     padding-right: 24px;
+    margin-top: 30px;
+    margin-bottom: 30px;
+    flex-shrink: 0;
 
     &:after {
       content: '';
@@ -66,26 +64,14 @@ export default {
       background: #111111;
     }
 
-    &__input {
-      position: absolute;
-      top: 0;
-      bottom: 0;
-      right: -350px;
-      transition: .5s;
-
-      input {
-        width: 100%;
-        height: 100%;
-        background: #ffffff;
-        border: 1px solid #dedede;
-        outline: 0;
-        padding: 0 12px;
-        border-radius: 20px 0 0 20px;
-      }
-
-      &.show {
-        right: 0;
-      }
+    input {
+      width: 100%;
+      height: 100%;
+      background: #ffffff;
+      border: 1px solid #dedede;
+      outline: 0;
+      padding: 0 12px;
+      border-radius: 20px 0 0 20px;
     }
 
     .v-btn {

@@ -54,9 +54,6 @@ export default {
 
   target: 'static',
   ssr: false,
-  router: {
-    base: '/topbud/'
-  },
 
   server: {
     host: '0.0.0.0',

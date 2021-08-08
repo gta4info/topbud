@@ -77,13 +77,14 @@ export default {
       align-items: center;
       justify-content: center;
 
+      @media(max-width: 768px) {
+        margin-bottom: 30px;
+        margin-right: 0;
+      }
+
       img {
         max-width: 300px;
         max-height: 250px;
-
-        @media(max-width: 600px) {
-          margin-bottom: 30px;
-        }
       }
     }
 
@@ -91,7 +92,7 @@ export default {
       display: flex;
       flex-direction: column;
 
-      @media(max-width: 600px) {
+      @media(max-width: 768px) {
         align-items: center;
       }
 
@@ -99,6 +100,9 @@ export default {
         font-weight: 900;
         line-height: 1.4;
         margin-bottom: 20px;
+        @media(max-width: 768px) {
+          text-align: center;
+        }
       }
 
       p {

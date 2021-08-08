@@ -414,6 +414,10 @@ export default {
       padding-bottom: 100px;
       width: 50%;
       z-index: 1;
+
+      @media(max-width: 768px) {
+        width: 100%;
+      }
     }
 
     &__title, p, &__bottom {
@@ -426,16 +430,29 @@ export default {
       font-weight: 900;
       letter-spacing: 1px;
       margin-bottom: 80px;
+
+      @media(max-width: 768px) {
+        z-index: 1;
+      }
     }
 
     p {
       font-size: 14px;
       line-height: 1.5;
       margin-bottom: 80px;
+
+      @media(max-width: 768px) {
+        z-index: 1;
+      }
     }
 
     &__bottom {
       display: flex;
+
+      @media(max-width: 768px) {
+        justify-content: center;
+        z-index: 1;
+      }
 
       span {
         font-size: 20px;
@@ -480,6 +497,11 @@ export default {
     margin-top: 10px;
     width: 90%;
 
+    @media(max-width: 768px) {
+      width: 100%;
+      flex-direction: column;
+    }
+
     &-wrapper {
       display: flex;
       justify-content: center;
@@ -490,6 +512,13 @@ export default {
       z-index: 1;
       align-self: flex-start;
       height: 485px;
+
+      @media(max-width: 768px) {
+        height: 385px;
+        img {
+          width: 100%;
+        }
+      }
     }
 
     &__right {
@@ -537,11 +566,20 @@ export default {
       font-size: 50px;
       font-weight: 900;
       margin-bottom: 10px;
+
+      @media(max-width: 768px) {
+        font-size: 30px;
+        text-align: center;
+      }
     }
 
     p {
       text-align: center;
       width: 80%;
+
+      @media(max-width: 768px) {
+        width: 100%;
+      }
     }
   }
 
@@ -549,14 +587,26 @@ export default {
     display: flex;
     margin-bottom: 20px;
 
+    @media(max-width: 768px) {
+      flex-direction: column-reverse;
+    }
+
     &.image-first {
       flex-direction: row-reverse;
+
+      @media(max-width: 768px) {
+        flex-direction: column-reverse;
+      }
     }
 
     &__categories {
       display: flex;
       flex-direction: column;
       margin-right: 60px;
+
+      @media(max-width: 768px) {
+        margin-right: 0;
+      }
     }
 
     h4 {
@@ -567,6 +617,12 @@ export default {
       line-height: 1;
       align-self: flex-start;
       margin-bottom: 40px;
+
+      @media(max-width: 768px) {
+        font-size: 36px;
+        padding-right: 10px;
+        align-self: center;
+      }
     }
 
     &__items {
@@ -574,6 +630,11 @@ export default {
       flex-direction: column;
       width: 365px;
       margin-left: 60px;
+
+      @media(max-width: 768px) {
+        margin-left: 0;
+        width: 100%;
+      }
 
       & > a {
         color: #63B03A;
@@ -586,6 +647,10 @@ export default {
         border: 2px solid #63B03A;
         align-self: flex-start;
         margin-top: 20px;
+
+        @media(max-width: 768px) {
+          align-self: center;
+        }
       }
     }
 
@@ -647,6 +712,11 @@ export default {
       align-self: flex-start;
       margin-left: auto;
       margin-right: auto;
+
+      @media(max-width: 768px) {
+        margin-bottom: 40px;
+        max-width: 100%;
+      }
     }
   }
 
@@ -660,11 +730,19 @@ export default {
       font-weight: 900;
       margin-bottom: 35px;
       margin-top: 50px;
+
+      @media(max-width: 768px) {
+        font-size: 36px;
+      }
     }
 
     p {
       text-align: center;
       width: 50%;
+
+      @media(max-width: 768px) {
+        width: 100%;
+      }
     }
   }
 
@@ -675,6 +753,10 @@ export default {
     margin-left: auto;
     margin-right: auto;
     position: relative;
+
+    @media(max-width: 768px) {
+      width: 100%;
+    }
 
     &__line {
       position: absolute;
@@ -688,6 +770,10 @@ export default {
       right: 0;
       margin-left: auto;
       margin-right: auto;
+
+      @media(max-width: 768px) {
+        display: none;
+      }
 
       &:before {
         content: '';
@@ -725,6 +811,10 @@ export default {
       align-items: center;
       width: 374px;
 
+      @media(max-width: 768px) {
+        width: 100%;
+      }
+
       &:nth-child(2n + 1) {
         margin-right: auto;
       }
@@ -753,6 +843,10 @@ export default {
   .signup {
     display: flex;
     flex-direction: column;
+
+    @media(max-width: 768px) {
+      display: none;
+    }
 
     &__title {
       font-size: 38px;

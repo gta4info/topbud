@@ -51,24 +51,24 @@
             </div>
             <div class="product__purchase-wrapper">
               <v-btn class="product__purchase" @click="addToCart" depressed>Add to cart (${{calculateSum}})</v-btn>
-              <v-btn icon @click="addToWishList">
-                <v-icon>mdi-heart-outline</v-icon>
-              </v-btn>
+<!--              <v-btn icon @click="addToWishList">-->
+<!--                <v-icon>mdi-heart-outline</v-icon>-->
+<!--              </v-btn>-->
             </div>
-            <div class="product__emotions">
-              <button @click="sendEmotion('relaxed')">
-                <v-icon size="46" color="#2173B3">mdi-emoticon-wink-outline</v-icon>
-                Relaxed
-              </button>
-              <button @click="sendEmotion('happy')">
-                <v-icon size="46" color="#F5AB24">mdi-emoticon-happy-outline</v-icon>
-                Happy
-              </button>
-              <button @click="sendEmotion('euphoric')">
-                <v-icon size="46" color="#F69058">mdi-emoticon-cool-outline</v-icon>
-                Euphoric
-              </button>
-            </div>
+<!--            <div class="product__emotions">-->
+<!--              <button @click="sendEmotion('relaxed')">-->
+<!--                <v-icon size="46" color="#2173B3">mdi-emoticon-wink-outline</v-icon>-->
+<!--                Relaxed-->
+<!--              </button>-->
+<!--              <button @click="sendEmotion('happy')">-->
+<!--                <v-icon size="46" color="#F5AB24">mdi-emoticon-happy-outline</v-icon>-->
+<!--                Happy-->
+<!--              </button>-->
+<!--              <button @click="sendEmotion('euphoric')">-->
+<!--                <v-icon size="46" color="#F69058">mdi-emoticon-cool-outline</v-icon>-->
+<!--                Euphoric-->
+<!--              </button>-->
+<!--            </div>-->
           </div>
         </div>
         <div class="information">
@@ -86,13 +86,13 @@
 
           <div class="information__content">
             <div :class="{'active': selectedTab === 'Product information'}" v-html="product.description"></div>
-            <div :class="{'active': selectedTab === 'Reviews'}">
-              Reviews
-            </div>
+<!--            <div :class="{'active': selectedTab === 'Reviews'}">-->
+<!--              Reviews-->
+<!--            </div>-->
           </div>
         </div>
 
-        <div class="related">
+        <div class="related" v-if="false">
           <h4 class="related__title">Related products</h4>
           <v-container>
             <v-row v-if="related.length">
@@ -135,7 +135,7 @@ export default {
     sub: {},
     product: [],
     related: [],
-    tabs: ['Product information', 'Reviews'],
+    tabs: ['Product information'],
     selectedTab: 'Product information',
     selectedEmotion: null,
     selectedWeight: null,
@@ -223,18 +223,32 @@ export default {
     margin-right: auto;
     margin-bottom: 60px;
 
+    @media(max-width: 768px) {
+      flex-direction: column;
+    }
+
     &__left {
       margin-right: 60px;
+      @media(max-width: 768px) {
+        margin-right: 0;
+      }
 
       img {
         max-width: 300px;
         height: auto;
+        @media(max-width: 768px) {
+          margin-bottom: 30px;
+        }
       }
     }
 
     &__right {
       display: flex;
       flex-direction: column;
+
+      @media(max-width: 768px) {
+        align-items: center;
+      }
 
       h1 {
         margin-bottom: 40px;
@@ -255,6 +269,9 @@ export default {
       align-self: flex-start;
       border-radius: 4px;
       width: 170px;
+      @media(max-width: 768px) {
+        align-self: center;
+      }
 
       div {
         flex-grow: 1;
@@ -275,7 +292,6 @@ export default {
       height: 50px !important;
       background: #7FAD39 !important;
       color: #fff;
-      margin-right: 15px;
 
       &-wrapper {
         margin-top: 30px;
@@ -317,7 +333,7 @@ export default {
       display: flex;
       align-items: center;
 
-      &:first-child {
+      //&:first-child {
         &:before {
           content: '';
           position: absolute;
@@ -325,19 +341,27 @@ export default {
           height: 1px;
           width: 400px;
           background: #cecece;
-        }
-      }
 
-      &:last-child {
-        &:before {
+          @media(max-width: 768px) {
+            display: none;
+          }
+        }
+      //}
+
+      //&:last-child {
+        &:after {
           content: '';
           position: absolute;
           left: calc(100% + 20px);
           height: 1px;
           width: 400px;
           background: #cecece;
+
+          @media(max-width: 768px) {
+            display: none;
+          }
         }
-      }
+      //}
 
       &:not(:last-child) {
         margin-right: 40px;

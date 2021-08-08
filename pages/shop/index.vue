@@ -19,7 +19,7 @@
       <div class="categories">
         <v-container>
           <v-row>
-            <v-col md="3" sm="12" v-for="category in categories" :key="category.id">
+            <v-col sm="12" md="3" v-for="category in categories" :key="category.id">
               <CategoryCard :category="category"/>
             </v-col>
           </v-row>
@@ -47,5 +47,17 @@ export default {
 <style lang="scss" scoped>
   .categories {
     margin: 60px 0;
+
+    @media(max-width: 768px) {
+      margin-top: 0;
+
+      .container {
+
+        .row {
+          display: flex;
+          flex-direction: column;
+        }
+      }
+    }
   }
 </style>

@@ -65,6 +65,11 @@ a {
   ul {
     display: flex;
 
+    @media(max-width: 768px) {
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+
     li {
       font-size: 16px;
       display: flex;
@@ -102,5 +107,15 @@ section.content {
 
   table {
     width: 100%;
+  }
+}
+
+.blog__html {
+  @media(max-width: 768px) {
+    * {
+      width: 100% !important;
+      margin-left: 0 !important;
+      margin-right: 0 !important;
+    }
   }
 }
