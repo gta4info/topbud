@@ -70,6 +70,7 @@ export default {
       position: absolute;
       top: 0;
       bottom: 0;
+      width: 100%;
       right: -350px;
       transition: .5s;
 
