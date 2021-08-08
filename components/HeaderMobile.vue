@@ -54,7 +54,7 @@
         <SearchMobile/>
 
         <div class="header__buttons">
-          <nuxt-link to="/category/deals" v-ripple @click="dialog = false">OZ DEALS</nuxt-link>
+          <nuxt-link to="/shop/deals" v-ripple @click="dialog = false">OZ DEALS</nuxt-link>
           <a href="tel:4932-2231-3433" v-ripple @click="dialog = false">4932-2231-3433</a>
         </div>
       </div>

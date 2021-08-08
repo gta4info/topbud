@@ -22,11 +22,21 @@
       <div class="products">
         <v-container>
           <v-row v-if="products.length">
-            <v-col md="3" sm="12" v-for="(product, i) in products" :key="i">
-              <ProductCard :product="product"/>
+            <v-col md="2" sm="12">
+              <Filters :min="min" :max="max" :range="range"/>
+            </v-col>
+            <v-col md="10" sm="12">
+              <v-container>
+                <v-row v-if="filteredProducts.length">
+                  <v-col md="3" sm="12" v-for="(product, i) in filteredProducts" :key="i">
+                    <ProductCard :product="product"/>
+                  </v-col>
+                </v-row>
+                <p class="text-center" v-else>No products with selected filters was found</p>
+              </v-container>
             </v-col>
           </v-row>
-          <p class="text-center" v-else>No products found in this category</p>
+          <p class="text-center" v-else>No products was found in this category</p>
         </v-container>
       </div>
     </template>
@@ -39,6 +49,7 @@ import { mapGetters } from 'vuex'
 export default {
   components: {
     'ProductCard': () => import('@/components/shop/ProductCard'),
+    'Filters': () => import('@/components/shop/Filters'),
   },
   data() {
     return {
@@ -46,6 +57,10 @@ export default {
       category: {},
       sub: {},
       loading: true,
+      min: 0,
+      max: 0,
+      range: [0, 0],
+      filteredProducts: []
     }
   },
   computed: {
@@ -58,9 +73,33 @@ export default {
       if(this.categories.length) {
         this.getProducts();
       }
+    },
+    range() {
+      this.filterProducts();
     }
   },
   methods: {
+    filterProducts() {
+      let arr = [];
+      this.products.map(item => {
+        item.prices.map(price => {
+          if(price.deal_price) {
+            if(price.deal_price >= this.range[0] && price.deal_price <= this.range[1]) {
+              item.selected_weight = price.weight_id
+              arr.push(item)
+            }
+          } else {
+            if(price.price >= this.range[0] && price.price <= this.range[1]) {
+              item.selected_weight = price.weight_id
+              arr.push(item)
+            }
+          }
+        })
+      });
+
+      arr = arr.filter(item => item.prices.length > 0);
+      this.filteredProducts = arr;
+    },
     getProducts() {
       this.loading = true;
       let category = this.categories.find(item => item.slug === this.$route.params.cslug);
@@ -103,6 +142,33 @@ export default {
             arr.push(res.data[key]);
           });
           this.products = arr;
+
+          let min = arr[0].prices[0].price, max = arr[0].prices[0].price;
+          arr.map(item => {
+            item.prices.map(price => {
+              if(price.deal_price) {
+                if(min > price.deal_price) {
+                  min = price.deal_price;
+                }
+                if(max < price.deal_price) {
+                  max = price.deal_price;
+                }
+              } else {
+                if(min > price.price) {
+                  min = price.price;
+                }
+                if(max < price.price) {
+                  max = price.price;
+                }
+              }
+            })
+          })
+
+          this.min = min;
+          this.max = max;
+          this.range = [min, max];
+
+          this.filteredProducts = arr;
           this.loading = false;
         })
     }
@@ -111,6 +177,10 @@ export default {
     if(this.categories.length) {
       this.getProducts();
     }
+
+    this.$root.$on('change-filter-range', data => {
+      this.range = data;
+    })
   }
 }
 </script>

@@ -181,7 +181,7 @@ export default {
         this.selectedAmount = this.minAmount;
       }
     },
-    async addToCart() {
+    addToCart() {
       let cart = [];
       if(this.$cookies.get('cart')) {
         cart = this.$cookies.get('cart');
@@ -204,8 +204,6 @@ export default {
       this.$cookies.set('cart', cart);
 
       this.$store.commit('shop/SET_CART_LENGTH');
-
-      alert('Product was added to cart!');
     },
     addToWishList() {
       alert('Added to wishlist!')
