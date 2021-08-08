@@ -8,12 +8,17 @@
       }}"
       class="card__header"
     >
-      <img :src="product.img" :alt="product.name">
+      <div class="card__header-deal" v-if="product.deal"><span>Deal</span></div>
+      <div class="card__header-badges">
+        <div class="card__header-badge cbd" v-if="product.cbd">CBD: {{product.cbd}}</div>
+        <div class="card__header-badge thc" v-if="product.thc">THC: {{product.thc}}</div>
+      </div>
+      <div class="img">
+        <img :src="product.img" :alt="product.name">
+      </div>
       <div class="card__title">{{product.name}}</div>
     </nuxt-link>
     <div class="card__bottom">
-      {{selectedWeight}}
-      {{product.prices}}
       <v-menu v-model="menu" content-class="card__weights" offset-y close-on-content-click>
         <template v-slot:activator="{on}">
           <div v-on="on" class="card__weights-input" :class="{active: menu}">
@@ -98,7 +103,7 @@ export default {
 
       this.$store.commit('shop/SET_CART_LENGTH');
     },
-  }
+  },
 }
 </script>
 
@@ -122,12 +127,19 @@ export default {
       height: 186px;
       width: 100%;
       transition: .3s;
-      overflow: hidden;
       color: #000;
 
+      .img {
+        overflow: hidden;
+        height: 100%;
+        width: 100%;
+      }
+
       &:hover {
-        img {
-          transform: scale(1.2);
+        .img {
+          img {
+            transform: scale(1.2);
+          }
         }
         .card__title {
           bottom: 25px;
@@ -143,6 +155,90 @@ export default {
         left: 0;
         z-index: 1;
         background: linear-gradient(180deg, transparent 0%, transparent 40%, #fff 100%);
+      }
+
+      &-deal {
+        position: absolute;
+        right: -3px;
+        top: -3px;
+        z-index: 1;
+        overflow: hidden;
+        width: 93px;
+        height: 93px;
+        text-align: right;
+
+        span {
+          background: linear-gradient(#f70505 0%, #8f0808 100%);
+          font-size: 1.1rem;
+          color: #fff;
+          text-transform: uppercase;
+          text-align: center;
+          font-weight: bold;
+          line-height: 32px;
+          transform: rotate(45deg);
+          min-width: 125px;
+          width: 100%;
+          letter-spacing: 5px;
+          display: block;
+          position: absolute;
+          top: 17px;
+
+          &:before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 100%;
+            z-index: -1;
+            border-left: 3px solid #8f0808;
+            border-right: 3px solid transparent;
+            border-bottom: 3px solid transparent;
+            border-top: 3px solid #8f0808;
+          }
+
+          &:after {
+            content: '';
+            position: absolute;
+            right: 0;
+            top: 100%;
+            z-index: -1;
+            border-right: 3px solid #8f0808;
+            border-left: 3px solid transparent;
+            border-bottom: 3px solid transparent;
+            border-top: 3px solid #8f0808;
+          }
+        }
+      }
+
+      &-badges {
+        display: flex;
+        flex-direction: column;
+        position: absolute;
+        top: 18px;
+        left: -5px;
+      }
+
+      &-badge {
+        clip-path: polygon(100% 0%, calc(100% - 0.75rem) 50%, 100% 100%, 0 100%, 0% 50%, 0 0);
+        color: #fff;
+        font-family: 'Nunito', sans-serif;
+        font-weight: 700;
+        font-size: 12px;
+        letter-spacing: 0.03rem;
+        padding: 0.3rem 1rem 0.3rem 0.3rem;
+        text-shadow: 1px 1px 2px rgb(150 150 150 / 50%);
+        white-space: nowrap;
+        z-index: 1;
+
+        &:not(:last-child) {
+          margin-bottom: 10px;
+        }
+
+        &.thc {
+          background: hsl(24, 100%, 50%);
+        }
+        &.cbd {
+          background: hsl(101, 93%, 28%);
+        }
       }
 
       img {

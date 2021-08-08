@@ -117,12 +117,16 @@ export default {
           let product = {};
           if(price.deal_price) {
             if(price.deal_price >= this.range[0] && price.deal_price <= this.range[1]) {
-              item.selected_weight = price.weight_id
+              if(!item.selected_weight) {
+                item.selected_weight = price.weight_id
+              }
               product = item;
             }
           } else {
             if(price.price >= this.range[0] && price.price <= this.range[1]) {
-              item.selected_weight = price.weight_id
+              if(!item.selected_weight) {
+                item.selected_weight = price.weight_id
+              }
               product = item;
             }
           }
