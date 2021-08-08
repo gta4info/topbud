@@ -23,10 +23,11 @@
         <v-col md="3" sm="12">
           <nav class="footer__nav">
             <ul>
-              <li class="footer__nav-title">About us</li>
-              <li><nuxt-link to="/">Home page</nuxt-link></li>
-              <li><nuxt-link to="/">FAQs</nuxt-link></li>
-              <li><nuxt-link to="/">Contact us</nuxt-link></li>
+              <li class="footer__nav-title">Info</li>
+              <li><nuxt-link to="/about">About us</nuxt-link></li>
+              <li><nuxt-link to="/delivery">Delivery</nuxt-link></li>
+              <li><nuxt-link to="/contacts">Contact us</nuxt-link></li>
+              <li><nuxt-link to="/blog">Blog</nuxt-link></li>
             </ul>
           </nav>
         </v-col>
@@ -36,8 +37,8 @@
               <li class="footer__nav-title">Catalog</li>
               <li><nuxt-link to="/category/flower">Flower</nuxt-link></li>
               <li><nuxt-link to="/category/edibles">Edibles</nuxt-link></li>
-              <li><nuxt-link to="/category/concentrates">Concentrate</nuxt-link></li>
-              <li><nuxt-link to="/category/vapes">Vapes</nuxt-link></li>
+              <li><nuxt-link to="/category/shatters">Shatters</nuxt-link></li>
+              <li><nuxt-link to="/category/vape-pens">Vape pens</nuxt-link></li>
             </ul>
           </nav>
         </v-col>

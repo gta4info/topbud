@@ -1,19 +1,20 @@
 <template>
   <nuxt-link to="/shop/cart" class="cart">
     <v-icon size="40">mdi-cart</v-icon>
-    <div class="badge" v-if="cart.length">
-      {{ cart.length }}
+    <div class="badge" v-if="cartLength > 0">
+      {{ cartLength }}
     </div>
   </nuxt-link>
 </template>
 
 <script>
+
 import { mapGetters } from 'vuex'
 
 export default {
   computed: {
     ...mapGetters({
-      cart: 'shop/cart'
+      cartLength: 'shop/cartLength'
     })
   }
 }

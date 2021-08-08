@@ -182,11 +182,30 @@ export default {
       }
     },
     async addToCart() {
-      await this.$store.dispatch('shop/addToCart', {
-        title: this.$route.params.pslug
-      })
+      let cart = [];
+      if(this.$cookies.get('cart')) {
+        cart = this.$cookies.get('cart');
+      }
 
-      alert('Added to cart!');
+      let obj = {
+        product_id: this.product.prices.find(item => item.weight_id === this.selectedWeight).id,
+        weight: this.selectedWeight,
+        amount: this.selectedAmount,
+      };
+
+      let sameProductExists = cart.find(item => item.product_id === obj.product_id && item.weight === obj.weight);
+
+      if(!sameProductExists) {
+        cart.push(obj);
+      } else {
+        sameProductExists.amount = this.selectedAmount;
+      }
+
+      this.$cookies.set('cart', cart);
+
+      this.$store.commit('shop/SET_CART_LENGTH');
+
+      alert('Product was added to cart!');
     },
     addToWishList() {
       alert('Added to wishlist!')

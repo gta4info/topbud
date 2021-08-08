@@ -29,6 +29,7 @@ export default {
     }
   },
   created() {
+    this.$store.commit('shop/SET_CART_LENGTH');
     this.windowWidth = window.outerWidth;
     window.addEventListener("resize", this.setWindowWidth);
   },
