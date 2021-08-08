@@ -28,7 +28,7 @@ export default {
   },
   methods: {
     submit() {
-      alert(this.query)
+      this.$router.push({name: 'shop-search', query: {q: this.query}})
     }
   }
 }

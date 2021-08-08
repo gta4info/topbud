@@ -1,5 +1,9 @@
 <template>
-  <nuxt-link :to="{name: 'category-cslug-sslug-pslug', params: {cslug: $route.params.cslug, sslug: $route.params.sslug ? $route.params.sslug : 'product', pslug: product.slug}}" class="card">
+  <nuxt-link :to="{name: 'category-cslug-sslug-pslug', params: {
+    cslug: $route.params.cslug ? $route.params.cslug : product.search.cslug,
+    sslug: $route.params.sslug ? $route.params.sslug : (product.search ? (product.search.sslug ? product.search.sslug : 'product') :'product'),
+    pslug: product.slug
+  }}" class="card">
     <div class="card__header">
       <img :src="product.img" :alt="product.name">
     </div>
