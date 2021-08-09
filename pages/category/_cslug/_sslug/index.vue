@@ -21,22 +21,28 @@
 
       <div class="products">
         <v-container>
-          <v-row v-if="products.length">
+          <v-row>
             <v-col md="2" sm="12">
               <Filters :min="min" :max="max" :range="range"/>
             </v-col>
             <v-col md="10" sm="12">
               <v-container>
-                <v-row v-if="filteredProducts.length">
-                  <v-col md="3" sm="12" v-for="(product, i) in filteredProducts" :key="i">
-                    <ProductCard :product="product"/>
+                <div class="loading" v-if="loadingFiltered">
+                  <v-progress-circular
+                    indeterminate
+                    color="#699551"
+                    size="30"
+                  />
+                </div>
+                <v-row v-else-if="products.length">
+                  <v-col md="3" sm="12" v-for="product in products" :key="product.slug">
+                    <ProductCard :product="product" :key="product.slug"/>
                   </v-col>
                 </v-row>
                 <p class="text-center" v-else>No products with selected filters was found</p>
               </v-container>
             </v-col>
           </v-row>
-          <p class="text-center" v-else>No products was found in this category</p>
         </v-container>
       </div>
     </template>
@@ -57,10 +63,10 @@ export default {
       category: {},
       sub: {},
       loading: true,
+      loadingFiltered: false,
       min: 0,
       max: 0,
-      range: [0, 0],
-      filteredProducts: []
+      range: [0, 0]
     }
   },
   computed: {
@@ -75,81 +81,36 @@ export default {
       }
     },
     range() {
-      this.filterProducts();
+      console.log(123)
+      if (this.range[1] > 0) {
+        this.getFilteredProducts()
+      }
     }
   },
   methods: {
-    filterProducts() {
-      let arr = [];
-      this.products.map(item => {
-        item.prices.map(price => {
-          if(price.deal_price) {
-            if(price.deal_price >= this.range[0] && price.deal_price <= this.range[1]) {
-              if(!item.selected_weight) {
-                item.selected_weight = price.weight_id
-              }
-              arr.push(item)
-            }
-          } else {
-            if(price.price >= this.range[0] && price.price <= this.range[1]) {
-              if(!item.selected_weight) {
-                item.selected_weight = price.weight_id
-              }
-              arr.push(item)
-            }
-          }
-        })
-      });
-
-      arr = arr.filter(item => item.prices.length > 0);
-      this.filteredProducts = arr;
-    },
-    getProducts() {
+    getProducts () {
       this.loading = true;
+
       let category = this.categories.find(item => item.slug === this.$route.params.cslug);
       let sub = category.subs.find(item => item.slug === this.$route.params.sslug);
       this.category = category;
       this.sub = sub;
-      if(!category) {
-        this.categories.map(item => {
-          item.subs.map(subItem => {
-            if(subItem.slug === this.$route.params.cslug) {
-              sub = {
-                id: subItem.id,
-                name: subItem.name,
-                slug: subItem.slug
-              }
-              category = {
-                id: item.id,
-                name: item.name,
-                slug: item.slug
-              }
-            }
-          });
-        })
-      }
-      this.category = category;
-      this.sub = sub;
-      let params = '';
-      if(category.id) {
-        params += `cid=${category.id}`;
-      }
-      if(sub.id) {
-        params += `&sid=${sub.id}`;
-      }
+
       this.$axios
-        .get(`/products?${params}`)
+        .get(`/products?cid=${category.id}&sid=${sub.id}`)
         .then(res => {
           let arr = [];
-          Object.keys(res.data).map(key => {
-            res.data[key].img = `http://31.186.250.216:8000/${res.data[key].img}`;
-            arr.push(res.data[key]);
-          });
-          this.products = arr;
+          let min = 0, max = 0;
 
-          let min = arr[0].prices[0].price, max = arr[0].prices[0].price;
-          arr.map(item => {
-            item.prices.map(price => {
+          Object.keys(res.data.products).map(key => {
+            res.data.products[key].search = {
+              cslug: this.category.slug,
+              sslug: this.sub.slug,
+            }
+            res.data.products[key].img = `http://31.186.250.216:8000/${res.data.products[key].img}`
+            arr.push(res.data.products[key])
+
+            res.data.products[key].prices.map(price => {
               if(price.deal_price) {
                 if(min > price.deal_price) {
                   min = price.deal_price;
@@ -170,10 +131,40 @@ export default {
 
           this.min = min;
           this.max = max;
-          this.range = [min, max];
+          this.range = [min,max];
 
-          this.filteredProducts = arr;
-          this.loading = false;
+          this.products = arr
+
+          this.loading = false
+        })
+    },
+    getFilteredProducts () {
+      if (this.loadingFiltered) return;
+
+      let data = {
+        min: this.range[0],
+        max: this.range[1]
+      }
+
+      this.loadingFiltered = true
+      this.$axios
+        .post(`/products?cid=${this.category.id}&sid=${this.sub.id}`, data)
+        .then(res => {
+          let arr = []
+          Object.keys(res.data.products).map(key => {
+            res.data.products[key].search = {
+              cslug: this.category.slug,
+              sslug: this.sub.slug,
+            }
+            res.data.products[key].img = `http://31.186.250.216:8000/${res.data.products[key].img}`
+            arr.push(res.data.products[key])
+          })
+
+          this.products = arr
+
+          console.log(arr)
+
+          this.loadingFiltered = false
         })
     }
   },
