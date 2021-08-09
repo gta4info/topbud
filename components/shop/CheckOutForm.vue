@@ -27,16 +27,19 @@
           </div>
           <div class="checkout__group">
             <span>Address</span>
-            <v-autocomplete
-              v-model="addressModel"
-              :search-input.sync="addressQuery"
-              :items="results"
-              solo
-              dense
-              hide-details
-              label="example: 20, Main str, Ontario"
-              return-object
-            />
+            <div class="address">
+              <v-text-field
+                v-model="addressQuery"
+                solo
+                dense
+                hide-details
+                label="example: 20, Main str, Ontario"
+              />
+
+              <div class="results" v-if="results.length">
+                <div v-for="(result, i) in results" :key="i" @click="addressQuery = result.text"><span>{{result.text}}</span></div>
+              </div>
+            </div>
           </div>
         </div>
         <div class="checkout__success" v-if="orderId">
@@ -67,7 +70,6 @@ export default {
     payment: 'cash',
     phone: '',
     name: '',
-    addressModel: null,
     addressQuery: null,
     orderId: null,
     payments: [
@@ -92,7 +94,7 @@ export default {
         if(!this.awaitingSearch) {
           setTimeout(() => {
             this.getAddresses();
-          }, 1000)
+          }, 300)
         }
         this.awaitingSearch = true;
       }
@@ -110,7 +112,7 @@ export default {
       this.loadingResults = true;
       this.results = [];
       this.$axios
-        .get(`https://api.mapbox.com/geocoding/v5/mapbox.places/${this.addressQuery}.json?access_token=${this.mapboxToken}&language=en-US&types=country,region,postcode,district,place,address&countries=ca&proximity=51.540317,-86.773074`)
+        .get(`https://api.mapbox.com/geocoding/v5/mapbox.places/${this.addressQuery}.json?access_token=${this.mapboxToken}&language=en-US&types=country,region,postcode,district,place,address&country=ca&limit=4&autocomplete=true`)
         .then(res => {
           let results = [];
           res.data.features.map(item => {
@@ -127,7 +129,7 @@ export default {
         })
     },
     checkout() {
-      if(!this.name || !this.phone || !this.addressModel) {
+      if(!this.name || !this.phone || !this.addressQuery) {
         return alert('Fields are not filled!')
       }
       this.sending = true;
@@ -145,7 +147,7 @@ export default {
       let data = {
         name: this.name,
         phone: this.phone,
-        address: this.address,
+        address: this.addressQuery,
         order: order
       };
 
@@ -165,9 +167,6 @@ export default {
         })
         .finally(() => this.sending = false);
     }
-  },
-  mounted () {
-
   }
 }
 </script>
@@ -216,6 +215,36 @@ export default {
         span {
           font-weight: 900;
           color: #28A745;
+        }
+      }
+    }
+  }
+
+  .address {
+    position: relative;
+
+    .results {
+      border: 1px solid #DEE2E6;
+      border-radius: 4px;
+      overflow: hidden;
+      height: 122px;
+
+      div {
+        cursor: pointer;
+        height: 30px;
+        padding: 0 12px;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+
+        span {
+          height: 100%;
+          display: flex;
+          align-items: center;
+          font-size: 14px;
+          width: 100%;
+          overflow: hidden;
+          white-space: nowrap;
         }
       }
     }

@@ -80,9 +80,9 @@ export default {
   },
   watch: {
     rangeData() {
-      // setTimeout(() => {
+      setTimeout(() => {
         this.$root.$emit('change-filter-range', this.rangeData)
-      // }, 500)
+      }, 1000)
     },
     categoriesData: {
       handler() {

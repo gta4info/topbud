@@ -23,8 +23,8 @@
         <template v-slot:activator="{on}">
           <div v-on="on" class="card__weights-input" :class="{active: menu}">
             <template>
-              <span class="card__weights-input--weight">{{ weights[product.prices.find(item => item.weight_id === selectedWeight).weight_id] }}</span>
-              <div>
+              <span class="card__weights-input--weight">{{ weights[selectedWeight] }}</span>
+              <div v-if="product.prices.find(item => item.weight_id === selectedWeight)">
                 <span class="card__weights-input--oldPrice" v-if="product.prices.find(item => item.weight_id === selectedWeight).deal_price">${{ product.prices.find(item => item.weight_id === selectedWeight).price }}</span>
                 <span class="card__weights-input--price">${{ product.prices.find(item => item.weight_id === selectedWeight).deal_price ? product.prices.find(item => item.weight_id === selectedWeight).deal_price : product.prices.find(item => item.weight_id === selectedWeight).price }}</span>
               </div>
@@ -33,7 +33,7 @@
         </template>
         <div class="card__weights-list">
           <div
-            v-for="price in product.prices.filter(p => p.ignored === false)"
+            v-for="price in product.prices"
             @click="selectedWeight = price.weight_id"
             :class="{active: selectedWeight === price.weight_id}"
           >
@@ -74,7 +74,7 @@ export default {
   data() {
     return {
       selectedQuantity: 1,
-      selectedWeight: this.product.selected_weight,
+      selectedWeight: this.product.prices[0].weight_id,
       menu: false
     }
   },
