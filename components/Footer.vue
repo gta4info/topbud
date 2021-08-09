@@ -52,19 +52,33 @@
           </nav>
         </v-col>
       </v-row>
+      <v-row class="footer__links-wrapper">
+        <v-col :md="links.length-1" sm="12" v-for="(group, i) in links" :key="i" class="footer__links">
+          <ul>
+            <li class="footer__links-item" v-for="link in group"><nuxt-link :to="link.link">{{link.title}}</nuxt-link></li>
+          </ul>
+        </v-col>
+      </v-row>
     </v-container>
   </footer>
 </template>
 
 <script>
-export default {
+import { mapGetters } from 'vuex'
 
+export default {
+  name: "Footer",
+  computed: {
+    ...mapGetters({
+      links: 'footerLinks'
+    })
+  }
 }
 </script>
 
 <style lang="scss" scoped>
   .footer {
-    background: #111111;
+    background: #262626;
     padding: 30px 0;
 
     &__logo {
@@ -104,6 +118,30 @@ export default {
           a {
             color: #DEDEDE;
             font-size: 14px;
+          }
+        }
+      }
+    }
+
+    &__links {
+      display: flex;
+      flex-direction: column;
+
+      &-wrapper {
+        margin-top: 30px;
+      }
+
+      &-item {
+        &:not(:last-child) {
+          margin-bottom: 10px;
+        }
+        a {
+          font-size: 13px;
+          color: #fff;
+          transition: .3s;
+
+          &:hover {
+            color: #CBE1BE;
           }
         }
       }

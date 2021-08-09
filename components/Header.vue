@@ -140,7 +140,7 @@
       padding-bottom: 0;
       z-index: 2;
       height: 85px;
-      background: #111111;
+      background: #262626;
       position: fixed;
       top: 0;
       left: 0;
