@@ -34,9 +34,11 @@
                 dense
                 hide-details
                 label="example: 20, Main str, Ontario"
+                prepend-inner-icon="mdi-magnify"
+                @mouseenter="showResults = true"
               />
 
-              <div class="results" v-if="results.length">
+              <div class="results" v-if="results.length && showResults" @mouseleave="showResults = false">
                 <div v-for="(result, i) in results" :key="i" @click="addressQuery = result.text"><span>{{result.text}}</span></div>
               </div>
             </div>
@@ -87,6 +89,7 @@ export default {
     results: [],
     loadingResults: false,
     awaitingSearch: false,
+    showResults: false
   }),
   watch: {
     addressQuery() {
@@ -122,6 +125,7 @@ export default {
             })
           })
           this.results = results;
+          this.showResults = true;
         })
         .finally(() => {
           this.loadingResults = false;
@@ -228,6 +232,11 @@ export default {
       border-radius: 4px;
       overflow: hidden;
       height: 122px;
+      position: absolute;
+      top: -122px;
+      background: #fff;
+      left: 0;
+      right: 0;
 
       div {
         cursor: pointer;
