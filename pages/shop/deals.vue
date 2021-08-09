@@ -27,8 +27,8 @@
             <v-col md="10" sm="12">
               <v-container>
                 <v-row v-if="filteredProducts.length">
-                  <v-col md="3" sm="12" v-for="(product, i) in filteredProducts" :key="i">
-                    <ProductCard :product="product"/>
+                  <v-col md="3" sm="12" v-for="product in filteredProducts" :key="product.slug">
+                    <ProductCard :product="product" :key="product.slug"/>
                   </v-col>
                 </v-row>
                 <p class="text-center" v-else>No products with selected filters was found</p>
@@ -110,41 +110,51 @@ export default {
         this.categoriesFilter.push(data);
       })
     },
-    async filterProducts() {
+    filterProducts() {
       let arr = [];
-      await this.products.map(item => {
-        item.prices.map(price => {
+      this.products.map(item => {
+        item.prices.filter(price => {
           let product = {};
           if(price.deal_price) {
             if(price.deal_price >= this.range[0] && price.deal_price <= this.range[1]) {
-              if(!item.selected_weight) {
-                item.selected_weight = price.weight_id
-              }
+              // if(!item.selected_weight) {
+              //   item.selected_weight = price.weight_id
+              // }
               product = item;
+              price.ignored = false;
+            } else {
+              price.ignored = true;
             }
           } else {
             if(price.price >= this.range[0] && price.price <= this.range[1]) {
-              if(!item.selected_weight) {
-                item.selected_weight = price.weight_id
-              }
+              // if(!item.selected_weight) {
+              //   item.selected_weight = price.weight_id
+              // }
               product = item;
+              price.ignored = false;
+            } else {
+              price.ignored = true;
             }
           }
+        })
 
-          if(Object.keys(product).length) {
-            this.categoriesFilter.map(cat => {
-              if(cat.id === item.category_id && cat.selected) {
-                if(item.subcategory_id) {
-                  if(cat.subs.find(sub => sub.selected && sub.id === item.subcategory_id)) {
+        if(Object.keys(item).length) {
+          this.categoriesFilter.map(cat => {
+            if(cat.id === item.category_id && cat.selected) {
+              if(item.subcategory_id) {
+                if(cat.subs.find(sub => sub.selected && sub.id === item.subcategory_id)) {
+                  if(!arr.find(ar => ar.slug === item.slug)) {
                     arr.push(item);
                   }
-                } else {
+                }
+              } else {
+                if(!arr.find(ar => ar.slug === item.slug)) {
                   arr.push(item);
                 }
               }
-            })
-          }
-        })
+            }
+          })
+        }
       });
 
       this.filteredProducts = arr;
@@ -208,8 +218,6 @@ export default {
             res.data.products[key].img = `http://31.186.250.216:8000/${res.data.products[key].img}`;
             arr.push(res.data.products[key]);
           });
-
-          console.log(cats)
 
           this.categoriesFilter = cats;
 

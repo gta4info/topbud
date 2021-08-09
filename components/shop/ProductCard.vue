@@ -22,7 +22,7 @@
       <v-menu v-model="menu" content-class="card__weights" offset-y close-on-content-click>
         <template v-slot:activator="{on}">
           <div v-on="on" class="card__weights-input" :class="{active: menu}">
-            <template v-if="product.prices.find(item => item.weight_id === selectedWeight)">
+            <template>
               <span class="card__weights-input--weight">{{ weights[product.prices.find(item => item.weight_id === selectedWeight).weight_id] }}</span>
               <div>
                 <span class="card__weights-input--oldPrice" v-if="product.prices.find(item => item.weight_id === selectedWeight).deal_price">${{ product.prices.find(item => item.weight_id === selectedWeight).price }}</span>
@@ -33,7 +33,7 @@
         </template>
         <div class="card__weights-list">
           <div
-            v-for="price in product.prices"
+            v-for="price in product.prices.filter(p => p.ignored === false)"
             @click="selectedWeight = price.weight_id"
             :class="{active: selectedWeight === price.weight_id}"
           >
@@ -69,7 +69,7 @@ export default {
   computed: {
     ...mapGetters({
       weights: 'shop/weights'
-    })
+    }),
   },
   data() {
     return {
@@ -356,7 +356,7 @@ export default {
           cursor: pointer;
 
           &.active {
-            background: #5897FB;
+            background: #ccc;
             color: #fff;
           }
         }

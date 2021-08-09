@@ -27,7 +27,16 @@
           </div>
           <div class="checkout__group">
             <span>Address</span>
-            <v-text-field v-model="address" label="example: 20, Main str, Ontario" solo hide-details height="40" dense/>
+            <v-autocomplete
+              v-model="addressModel"
+              :search-input.sync="addressQuery"
+              :items="results"
+              solo
+              dense
+              hide-details
+              label="example: 20, Main str, Ontario"
+              return-object
+            />
           </div>
         </div>
         <div class="checkout__success" v-if="orderId">
@@ -58,7 +67,8 @@ export default {
     payment: 'cash',
     phone: '',
     name: '',
-    address: '',
+    addressModel: null,
+    addressQuery: null,
     orderId: null,
     payments: [
       {
@@ -70,8 +80,24 @@ export default {
         text: 'Transfer'
       },
     ],
-    sending: false
+    sending: false,
+    mapboxToken: 'pk.eyJ1Ijoia3JlbmV2a24iLCJhIjoiY2tyOWMwaHU5M3I2djJybnhrdTVkbGRkMyJ9.9ev37MmJWFhSuQ_emwsBEg',
+    results: [],
+    loadingResults: false,
+    awaitingSearch: false,
   }),
+  watch: {
+    addressQuery() {
+      if(this.addressQuery && this.addressQuery.length > 3) {
+        if(!this.awaitingSearch) {
+          setTimeout(() => {
+            this.getAddresses();
+          }, 1000)
+        }
+        this.awaitingSearch = true;
+      }
+    }
+  },
   computed: {
     ...mapGetters({
       cart: 'shop/cart',
@@ -79,8 +105,29 @@ export default {
     })
   },
   methods: {
+    getAddresses() {
+      if(this.loadingResults) return;
+      this.loadingResults = true;
+      this.results = [];
+      this.$axios
+        .get(`https://api.mapbox.com/geocoding/v5/mapbox.places/${this.addressQuery}.json?access_token=${this.mapboxToken}&language=en-US&types=country,region,postcode,district,place,address&countries=ca&proximity=51.540317,-86.773074`)
+        .then(res => {
+          let results = [];
+          res.data.features.map(item => {
+            results.push({
+              value: item['place_name_en-US'],
+              text: item['place_name_en-US']
+            })
+          })
+          this.results = results;
+        })
+        .finally(() => {
+          this.loadingResults = false;
+          this.awaitingSearch = false;
+        })
+    },
     checkout() {
-      if(!this.name || !this.phone || !this.address) {
+      if(!this.name || !this.phone || !this.addressModel) {
         return alert('Fields are not filled!')
       }
       this.sending = true;
