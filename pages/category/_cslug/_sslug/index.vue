@@ -27,14 +27,15 @@
             </v-col>
             <v-col md="10" sm="12">
               <v-container>
-                <div class="loading" v-if="loadingFiltered">
-                  <v-progress-circular
-                    indeterminate
-                    color="#699551"
-                    size="30"
-                  />
-                </div>
-                <v-row v-else-if="products.length">
+<!--                <div class="loading" v-if="loadingFiltered">-->
+<!--                  <v-progress-circular-->
+<!--                    indeterminate-->
+<!--                    color="#699551"-->
+<!--                    size="30"-->
+<!--                  />-->
+<!--                </div>-->
+<!--                <v-row v-else-if="products.length">-->
+                <v-row v-if="products.length">
                   <v-col md="3" sm="12" v-for="product in products" :key="product.slug">
                     <ProductCard :product="product" :key="product.slug"/>
                   </v-col>
@@ -81,7 +82,6 @@ export default {
       }
     },
     range() {
-      console.log(123)
       if (this.range[1] > 0) {
         this.getFilteredProducts()
       }
@@ -129,6 +129,10 @@ export default {
             })
           })
 
+          if(min === 0) {
+            min = arr[0].prices[0].price
+          }
+
           this.min = min;
           this.max = max;
           this.range = [min,max];
@@ -161,8 +165,6 @@ export default {
           })
 
           this.products = arr
-
-          console.log(arr)
 
           this.loadingFiltered = false
         })

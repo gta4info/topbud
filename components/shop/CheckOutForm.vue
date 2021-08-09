@@ -35,11 +35,11 @@
                 hide-details
                 label="example: 20, Main str, Ontario"
                 prepend-inner-icon="mdi-magnify"
-                @mouseenter="showResults = true"
+                @focus="showResults = true"
               />
 
-              <div class="results" v-if="results.length && showResults" @mouseleave="showResults = false">
-                <div v-for="(result, i) in results" :key="i" @click="addressQuery = result.text"><span>{{result.text}}</span></div>
+              <div class="results" :class="{active: results.length && showResults}" @mouseleave="hideResults">
+                <div v-for="(result, i) in results" :key="i" @click="addressQuery = result.text; showResults = false"><span>{{result.text}}</span></div>
               </div>
             </div>
           </div>
@@ -110,6 +110,9 @@ export default {
     })
   },
   methods: {
+    hideResults() {
+      setTimeout(() => {this.showResults = false}, 300)
+    },
     getAddresses() {
       if(this.loadingResults) return;
       this.loadingResults = true;
@@ -167,7 +170,6 @@ export default {
         })
         .catch(err => {
           alert('Something goes wrong...');
-          console.log(err.response.data.message)
         })
         .finally(() => this.sending = false);
     }
@@ -237,6 +239,12 @@ export default {
       background: #fff;
       left: 0;
       right: 0;
+      opacity: 0;
+      transition: .3s;
+
+      &.active {
+        opacity: 1;
+      }
 
       div {
         cursor: pointer;

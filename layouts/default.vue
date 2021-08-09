@@ -31,10 +31,14 @@ export default {
   created() {
     this.$store.commit('shop/SET_CART_LENGTH');
     this.windowWidth = window.outerWidth;
-    window.addEventListener("resize", this.setWindowWidth);
+    if (window !== undefined) {
+      window.addEventListener("resize", this.setWindowWidth);
+    }
   },
   destroyed() {
-    window.removeEventListener("resize", this.setWindowWidth);
+    if (window !== undefined) {
+      window.removeEventListener("resize", this.setWindowWidth);
+    }
   },
 }
 </script>
