@@ -102,6 +102,8 @@ export default {
       this.$cookies.set('cart', cart);
 
       this.$store.commit('shop/SET_CART_LENGTH');
+
+      this.$root.$emit('show-product-added-to-cart-dialog');
     },
   },
 }

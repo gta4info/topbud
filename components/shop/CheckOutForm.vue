@@ -241,9 +241,11 @@ export default {
       right: 0;
       opacity: 0;
       transition: .3s;
+      z-index: -1;
 
       &.active {
         opacity: 1;
+        z-index: 1;
       }
 
       div {

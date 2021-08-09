@@ -7,6 +7,7 @@
     </v-main>
     <Footer />
     <MiniCart />
+    <ProductAddedToCart :dialog="dialogProductAdded" />
   </v-app>
 </template>
 
@@ -14,15 +15,13 @@
 export default {
   data: () => ({
     windowWidth: null,
+    dialogProductAdded: false
   }),
   components: {
     'MiniCart': () => import('@/components/shop/MiniCart'),
     'HeaderMobile': () => import('@/components/HeaderMobile'),
+    'ProductAddedToCart': () => import('@/components/shop/ProductAddedToCart'),
   },
-  // async mounted () {
-  //   await this.$store.dispatch('shop/getWeights');
-  //   await this.$store.dispatch('shop/getCategories');
-  // },
   methods: {
     setWindowWidth() {
       this.windowWidth = window.outerWidth;
@@ -34,6 +33,9 @@ export default {
       this.windowWidth = window.outerWidth;
       window.addEventListener("resize", this.setWindowWidth);
     }
+
+    this.$root.$on('close-product-added-to-cart-dialog', () => this.dialogProductAdded = false)
+    this.$root.$on('show-product-added-to-cart-dialog', () => this.dialogProductAdded = true)
   },
   destroyed() {
     if (process.browser) {
