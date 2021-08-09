@@ -111,7 +111,7 @@ export default {
   },
   methods: {
     hideResults() {
-      setTimeout(() => {this.showResults = false}, 300)
+      setTimeout(() => {this.showResults = false}, 100)
     },
     getAddresses() {
       if(this.loadingResults) return;
