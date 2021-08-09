@@ -41,22 +41,16 @@
 <script>
 export default {
   name: 'about',
-  data: () => ({
-    loading: true,
-    blog: []
-  }),
-  created () {
-    this.$axios
-      .get('/blog')
-      .then(res => {
-        let arr = [];
-        Object.keys(res.data).map(key => {
-          res.data[key].img = `http://31.186.250.216:8000/${res.data[key].img}`;
-          arr.push(res.data[key]);
-        })
-        this.blog = arr;
-        this.loading = false;
-      })
+  async asyncData({$axios}) {
+    let loading = true;
+    const blog = await $axios.$get('blog');
+
+    Object.keys(blog).map(key => {
+      blog[key].img = `http://31.186.250.216:8000/${blog[key].img}`;
+    })
+
+    loading = false;
+    return { blog, loading };
   }
 }
 </script>

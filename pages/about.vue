@@ -34,18 +34,12 @@
 <script>
 export default {
   name: 'about',
-  data: () => ({
-    loading: true,
-    content: null
-  }),
-  created () {
-    this.$axios
-      .get('/static/about')
-      .then(res => {
-        this.content = res.data;
-        this.loading = false;
-      })
-  }
+  async asyncData({$axios}) {
+    let loading = true;
+    const content = await $axios.$get('static/about');
+    loading = false;
+    return { content, loading };
+  },
 }
 </script>
 

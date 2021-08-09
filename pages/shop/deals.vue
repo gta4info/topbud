@@ -26,21 +26,12 @@
             </v-col>
             <v-col md="10" sm="12">
               <v-container>
-                <div class="loading" v-if="loadingFiltered">
-                  <v-progress-circular
-                    indeterminate
-                    color="#699551"
-                    size="30"
-                  />
-                </div>
-                <template v-else>
-                  <v-row v-if="products.length">
-                    <v-col md="3" sm="12" v-for="product in products" :key="product.slug">
-                      <ProductCard :product="product" :key="product.slug"/>
-                    </v-col>
-                  </v-row>
-                  <p class="text-center" v-else>No products with selected filters was found</p>
-                </template>
+                <v-row v-if="products.length">
+                  <v-col md="3" sm="12" v-for="product in products" :key="product.slug">
+                    <ProductCard :product="product" :key="product.slug"/>
+                  </v-col>
+                </v-row>
+                <p class="text-center" v-else>No products with selected filters was found</p>
               </v-container>
             </v-col>
           </v-row>
@@ -58,16 +49,99 @@ export default {
     'ProductCard': () => import('@/components/shop/ProductCard'),
     'Filters': () => import('@/components/shop/Filters'),
   },
+  async asyncData({$axios, params, store}) {
+    const data = await $axios.$get('/deals');
+    let products = [];
+    let cats = [];
+
+    Object.keys(data.products).map(key => {
+      let subs = [];
+
+      let category = store.state.shop.categories.find(item => item.id === data.products[key].category_id);
+      let sub = data.products[key].subcategory_id ? category.subs.find(item => item.id === data.products[key].subcategory_id) : null;
+
+      if(category.subs && category.subs.length) {
+        category.subs.map(sub => {
+          if(subs.length) {
+            if(!subs.find(i => i.id === sub.id)) {
+              subs.push({
+                id: sub.id,
+                name: sub.name,
+                selected: true,
+              })
+            }
+          } else {
+            subs.push({
+              id: sub.id,
+              name: sub.name,
+              selected: true,
+            })
+          }
+        })
+      }
+
+      if(cats.length) {
+        if(!cats.find(cat => cat.id === category.id)) {
+          cats.push({
+            id: category.id,
+            name: category.name,
+            selected: true,
+            subs: subs
+          });
+        }
+      } else {
+        cats.push({
+          id: category.id,
+          name: category.name,
+          selected: true,
+          subs: subs,
+          showSubs: true
+        });
+      }
+
+      data.products[key].search = {
+        cslug: category.slug,
+        sslug: sub ? sub.slug : null,
+      }
+      data.products[key].img = `http://31.186.250.216:8000/${data.products[key].img}`;
+      products.push(data.products[key]);
+    });
+
+    let categoriesFilter = cats;
+
+    let min = products[0].prices[0].price, max = products[0].prices[0].price;
+    products.map(item => {
+      item.prices.map(price => {
+        if(price.deal_price) {
+          if(min > price.deal_price) {
+            min = price.deal_price;
+          }
+          if(max < price.deal_price) {
+            max = price.deal_price;
+          }
+        } else {
+          if(min > price.price) {
+            min = price.price;
+          }
+          if(max < price.price) {
+            max = price.price;
+          }
+        }
+      })
+    })
+
+    min = Math.ceil(min - 1);
+    max = Math.ceil(max + 1);
+
+    let range = [min, max];
+
+    let loading = false;
+
+    return {products, categoriesFilter, min, max, range, loading}
+  },
   data() {
     return {
-      products: [],
-      category: {},
-      sub: {},
-      loading: false,
       loadingFiltered: false,
-      min: 0,
-      max: 0,
-      range: [0, 0],
       categoriesFilter: []
     }
   },
@@ -77,145 +151,17 @@ export default {
     }),
   },
   watch: {
-    categories() {
-      if(this.categories.length) {
-        this.getProducts();
-        this.setCategoriesFilter();
-      }
-    },
     range() {
-      if(this.range[1] > 0) {
-        this.getFilteredProducts();
-      }
+      this.getFilteredProducts();
     },
     categoriesFilter: {
       handler() {
-        if(this.range[1] > 0) {
-          this.getFilteredProducts();
-        }
+        this.getFilteredProducts();
       },
       deep: true
     }
   },
   methods: {
-    setCategoriesFilter() {
-      this.categories.map(item => {
-        let subs = [];
-        let data = {
-          id: item.id,
-          name: item.name,
-          selected: true,
-          showSubs: false
-        };
-
-        if(item.subs.length) {
-          item.subs.map(sub => {
-            subs.push({
-              id: sub.id,
-              name: sub.name,
-              selected: true,
-            })
-          })
-          data.subs = subs
-        }
-
-        this.categoriesFilter.push(data);
-      })
-    },
-    getProducts() {
-      this.loading = true;
-      this.$axios
-        .get('/deals')
-        .then(res => {
-          let arr = [];
-          let cats = [];
-          Object.keys(res.data.products).map(key => {
-            let subs = [];
-
-            let category = this.categories.find(item => item.id === res.data.products[key].category_id);
-            let sub = res.data.products[key].subcategory_id ? category.subs.find(item => item.id === res.data.products[key].subcategory_id) : null;
-
-            if(category.subs && category.subs.length) {
-              category.subs.map(sub => {
-                if(subs.length) {
-                  if(!subs.find(i => i.id === sub.id)) {
-                    subs.push({
-                      id: sub.id,
-                      name: sub.name,
-                      selected: true,
-                    })
-                  }
-                } else {
-                  subs.push({
-                    id: sub.id,
-                    name: sub.name,
-                    selected: true,
-                  })
-                }
-              })
-            }
-
-            if(cats.length) {
-              if(!cats.find(cat => cat.id === category.id)) {
-                cats.push({
-                  id: category.id,
-                  name: category.name,
-                  selected: true,
-                  subs: subs
-                });
-              }
-            } else {
-              cats.push({
-                id: category.id,
-                name: category.name,
-                selected: true,
-                subs: subs,
-                showSubs: true
-              });
-            }
-
-            res.data.products[key].search = {
-              cslug: category.slug,
-              sslug: sub ? sub.slug : null,
-            }
-            res.data.products[key].img = `http://31.186.250.216:8000/${res.data.products[key].img}`;
-            arr.push(res.data.products[key]);
-          });
-
-          this.categoriesFilter = cats;
-
-          this.products = arr;
-
-          let min = arr[0].prices[0].price, max = arr[0].prices[0].price;
-          arr.map(item => {
-            item.prices.map(price => {
-              if(price.deal_price) {
-                if(min > price.deal_price) {
-                  min = price.deal_price;
-                }
-                if(max < price.deal_price) {
-                  max = price.deal_price;
-                }
-              } else {
-                if(min > price.price) {
-                  min = price.price;
-                }
-                if(max < price.price) {
-                  max = price.price;
-                }
-              }
-            })
-          })
-
-          this.min = min;
-          this.max = max;
-          this.range = [min, max];
-
-          this.products = arr;
-
-          this.loading = false;
-        })
-    },
     getFilteredProducts() {
       if(this.loadingFiltered) return;
       let cats = [];
@@ -309,11 +255,6 @@ export default {
     }
   },
   created () {
-    if(this.categories.length) {
-      this.getProducts();
-      this.setCategoriesFilter();
-    }
-
     this.$root.$on('change-filter-range', data => {
       this.range = data;
     })

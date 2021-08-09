@@ -35,14 +35,7 @@
             </v-col>
             <v-col md="10" sm="12">
               <v-container>
-                <div class="loading" v-if="loadingFiltered">
-                  <v-progress-circular
-                    indeterminate
-                    color="#699551"
-                    size="30"
-                  />
-                </div>
-                <v-row v-else-if="products.length">
+                <v-row v-if="products.length">
                   <v-col md="3" sm="12" v-for="product in products" :key="product.slug">
                     <ProductCard :product="product" :key="product.slug"/>
                   </v-col>
@@ -67,15 +60,59 @@ export default {
     'ProductCard': () => import('@/components/shop/ProductCard'),
     'Filters': () => import('@/components/shop/Filters'),
   },
+  async asyncData({$axios, params, store}) {
+    let category = store.state.shop.categories.find(item => item.slug === params.cslug);
+
+    const data = await $axios.$get(`/products?cid=${category.id}`);
+
+    let products = [];
+    let min = 0, max = 0;
+
+    Object.keys(data.products).map(key => {
+      let category = store.state.shop.categories.find(item => item.slug === params.cslug);
+      let sub = data.products[key].subcategory_id ? category.subs.find(item => item.id === data.products[key].subcategory_id) : null
+
+      data.products[key].search = {
+        cslug: category.slug,
+        sslug: sub ? sub.slug : null,
+      }
+      data.products[key].img = `http://31.186.250.216:8000/${data.products[key].img}`
+      products.push(data.products[key])
+
+      data.products[key].prices.map(price => {
+        if (price.deal_price) {
+          if (min > price.deal_price) {
+            min = price.deal_price;
+          }
+          if (max < price.deal_price) {
+            max = price.deal_price;
+          }
+        } else {
+          if (min > price.price) {
+            min = price.price;
+          }
+          if (max < price.price) {
+            max = price.price;
+          }
+        }
+      })
+    })
+
+    if (min === 0) {
+      min = products[0].prices[0].price
+    }
+
+    min = Math.ceil(min - 1);
+    max = Math.ceil(max + 1);
+
+    let range = [min, max];
+
+    let loading = false;
+
+    return {products, category, min, max, range, loading}
+  },
   data: () => ({
-    products: [],
-    category: {},
-    loading: false,
-    loadingFiltered: false,
-    min: 0,
-    max: 0,
-    range: [0, 0],
-    filteredProducts: []
+    loadingFiltered: false
   }),
   computed: {
     ...mapGetters({
@@ -83,16 +120,8 @@ export default {
     }),
   },
   watch: {
-    categories () {
-      this.category = this.categories.find(item => item.slug === this.$route.params.cslug)
-      if (!this.category.subs.length) {
-        this.getProducts()
-      }
-    },
     range () {
-      if (this.range[1] > 0) {
-        this.getFilteredProducts()
-      }
+      this.getFilteredProducts()
     },
   },
   methods: {
@@ -179,13 +208,6 @@ export default {
     }
   },
   created () {
-    if (this.categories.length) {
-      this.category = this.categories.find(item => item.slug === this.$route.params.cslug)
-      if (Object.keys(this.category).length && !this.category.subs.length) {
-        this.getProducts()
-      }
-    }
-
     this.$root.$on('change-filter-range', data => {
       this.range = data
     })

@@ -9,7 +9,7 @@
           <!--Categories with sub categories-->
           <li v-for="category in computedCategories.filter(item => item.subs && item.subs.length)" :key="category.slug">
             <!--Dropdown-->
-            <v-menu v-if="category.subs" v-model="category.active" offset-y open-on-hover content-class="header__dropdown" close-delay="150">
+            <v-menu v-if="category.subs" offset-y open-on-hover content-class="header__dropdown" close-delay="150">
               <template v-slot:activator="{on}">
                 <span v-on="on" class="header__dropdown-activator" :class="{'active': category.active}">{{category.name}}</span>
               </template>
@@ -24,7 +24,7 @@
           <!--Categories without sub categories-->
           <li>
             <!--Dropdown-->
-            <v-menu v-model="othersState" offset-y open-on-hover content-class="header__dropdown" close-delay="150">
+            <v-menu offset-y open-on-hover content-class="header__dropdown" close-delay="150">
               <template v-slot:activator="{on}">
                 <span v-on="on" class="header__dropdown-activator" :class="{'active': othersState}">Other</span>
               </template>
@@ -35,7 +35,7 @@
           </li>
           <!--Info menu-->
           <li>
-            <v-menu v-model="infoState" offset-y open-on-hover content-class="header__dropdown" close-delay="150">
+            <v-menu offset-y open-on-hover content-class="header__dropdown" close-delay="150">
               <template v-slot:activator="{on}">
                 <span v-on="on" class="header__dropdown-activator" :class="{'active': infoState}">Info</span>
               </template>
@@ -65,6 +65,7 @@
       'Search': () => import('@/components/shop/Search')
     },
     data: () => ({
+      states: [],
       othersState: false,
       infoState: false,
       info: [
@@ -91,16 +92,10 @@
         categories: 'shop/categories'
       }),
       computedCategories() {
-        return this.categories.map(item => {
-          item.active = false;
-          return item;
-        })
+        return this.categories
       },
       otherCategories() {
-        return this.computedCategories.filter(item => item.subs && !item.subs.length).map(item => {
-          item.active = false;
-          return item;
-        })
+        return this.computedCategories.filter(item => item.subs && !item.subs.length)
       }
     },
     watch: {

@@ -22,7 +22,7 @@
           class="filter__category"
           :class="{subs: category.subs && category.subs.length}"
           v-for="category in categoriesData"
-          :key="category.id"
+          :key="category.slug"
         >
           <div class="filter__category-title">
             <div>

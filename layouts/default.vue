@@ -19,10 +19,10 @@ export default {
     'MiniCart': () => import('@/components/shop/MiniCart'),
     'HeaderMobile': () => import('@/components/HeaderMobile'),
   },
-  async mounted () {
-    await this.$store.dispatch('shop/getWeights');
-    await this.$store.dispatch('shop/getCategories');
-  },
+  // async mounted () {
+  //   await this.$store.dispatch('shop/getWeights');
+  //   await this.$store.dispatch('shop/getCategories');
+  // },
   methods: {
     setWindowWidth() {
       this.windowWidth = window.outerWidth;
@@ -30,13 +30,13 @@ export default {
   },
   created() {
     this.$store.commit('shop/SET_CART_LENGTH');
-    this.windowWidth = window.outerWidth;
-    if (window !== undefined) {
+    if (process.browser) {
+      this.windowWidth = window.outerWidth;
       window.addEventListener("resize", this.setWindowWidth);
     }
   },
   destroyed() {
-    if (window !== undefined) {
+    if (process.browser) {
       window.removeEventListener("resize", this.setWindowWidth);
     }
   },

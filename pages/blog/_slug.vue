@@ -14,7 +14,7 @@
             <li><nuxt-link to="/">Home</nuxt-link></li>
             <li><nuxt-link to="/shop">Shop</nuxt-link></li>
             <li><nuxt-link to="/blog">Blog</nuxt-link></li>
-            <li>{{ content.name }}</li>
+            <li>{{ blog.name }}</li>
           </ul>
         </nav>
       </v-container>
@@ -24,12 +24,12 @@
         <v-row>
           <v-col cols="12">
             <div class="blog__top">
-              <h1>{{ content.name }}</h1>
-              <img :src="content.img" :alt="content.name">
+              <h1>{{ blog.name }}</h1>
+              <img :src="blog.img" :alt="blog.name">
             </div>
           </v-col>
           <v-col cols="12">
-            <div v-html="content.blog" class="blog__html"></div>
+            <div v-html="blog.blog" class="blog__html"></div>
           </v-col>
         </v-row>
       </v-container>
@@ -39,20 +39,16 @@
 
 <script>
 export default {
-  name: 'about',
-  data: () => ({
-    loading: true,
-    content: {},
-  }),
-  created () {
-    this.$axios
-      .get(`/blog?slug=${this.$route.params.slug}`)
-      .then(res => {
-        let data = res.data[Object.keys(res.data)[0]];
-        data.img = `http://31.186.250.216:8000/${data.img}`;
-        this.content = data;
-        this.loading = false;
-      })
+  name: 'blog_slug',
+  async asyncData({$axios, params}) {
+    let loading = true;
+    const data = await $axios.$get(`/blog?slug=${params.slug}`);
+
+    let blog = data[Object.keys(data)[0]];
+    blog.img = `http://31.186.250.216:8000/${blog.img}`;
+
+    loading = false;
+    return { blog, loading };
   }
 }
 </script>

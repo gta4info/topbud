@@ -54,17 +54,8 @@ export default {
     defaultAssets: {icons: 'mdi'}
   },
 
-  target: 'static',
-  ssr: false,
-
   server: {
     host: '0.0.0.0',
     port: '8800'
   },
-
-  loadingIndicator: {
-    name: 'circle',
-    color: '#3B8070',
-    background: 'white'
-  }
 }

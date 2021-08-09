@@ -27,14 +27,6 @@
             </v-col>
             <v-col md="10" sm="12">
               <v-container>
-<!--                <div class="loading" v-if="loadingFiltered">-->
-<!--                  <v-progress-circular-->
-<!--                    indeterminate-->
-<!--                    color="#699551"-->
-<!--                    size="30"-->
-<!--                  />-->
-<!--                </div>-->
-<!--                <v-row v-else-if="products.length">-->
                 <v-row v-if="products.length">
                   <v-col md="3" sm="12" v-for="product in products" :key="product.slug">
                     <ProductCard :product="product" :key="product.slug"/>
@@ -58,16 +50,58 @@ export default {
     'ProductCard': () => import('@/components/shop/ProductCard'),
     'Filters': () => import('@/components/shop/Filters'),
   },
+  async asyncData({$axios, params, store}) {
+    let category = store.state.shop.categories.find(item => item.slug === params.cslug);
+    let sub = category.subs.find(item => item.slug === params.sslug);
+
+    const data = await $axios.$get(`/products?cid=${category.id}&sid=${sub.id}`);
+
+    let products = [];
+    let min = 0, max = 0;
+
+    Object.keys(data.products).map(key => {
+      data.products[key].search = {
+        cslug: category.slug,
+        sslug: sub.slug,
+      }
+      data.products[key].img = `http://31.186.250.216:8000/${data.products[key].img}`
+      products.push(data.products[key])
+
+      data.products[key].prices.map(price => {
+        if (price.deal_price) {
+          if (min > price.deal_price) {
+            min = price.deal_price;
+          }
+          if (max < price.deal_price) {
+            max = price.deal_price;
+          }
+        } else {
+          if (min > price.price) {
+            min = price.price;
+          }
+          if (max < price.price) {
+            max = price.price;
+          }
+        }
+      })
+    })
+
+    if (min === 0) {
+      min = products[0].prices[0].price
+    }
+
+    min = Math.ceil(min - 1);
+    max = Math.ceil(max + 1);
+
+    let range = [min, max];
+
+    let loading = false;
+
+    return {products, category, sub, min, max, range, loading}
+  },
   data() {
     return {
-      products: [],
-      category: {},
-      sub: {},
-      loading: true,
-      loadingFiltered: false,
-      min: 0,
-      max: 0,
-      range: [0, 0]
+      loadingFiltered: false
     }
   },
   computed: {
@@ -76,72 +110,11 @@ export default {
     })
   },
   watch: {
-    categories() {
-      if(this.categories.length) {
-        this.getProducts();
-      }
-    },
     range() {
-      if (this.range[1] > 0) {
-        this.getFilteredProducts()
-      }
+      this.getFilteredProducts();
     }
   },
   methods: {
-    getProducts () {
-      this.loading = true;
-
-      let category = this.categories.find(item => item.slug === this.$route.params.cslug);
-      let sub = category.subs.find(item => item.slug === this.$route.params.sslug);
-      this.category = category;
-      this.sub = sub;
-
-      this.$axios
-        .get(`/products?cid=${category.id}&sid=${sub.id}`)
-        .then(res => {
-          let arr = [];
-          let min = 0, max = 0;
-
-          Object.keys(res.data.products).map(key => {
-            res.data.products[key].search = {
-              cslug: this.category.slug,
-              sslug: this.sub.slug,
-            }
-            res.data.products[key].img = `http://31.186.250.216:8000/${res.data.products[key].img}`
-            arr.push(res.data.products[key])
-
-            res.data.products[key].prices.map(price => {
-              if(price.deal_price) {
-                if(min > price.deal_price) {
-                  min = price.deal_price;
-                }
-                if(max < price.deal_price) {
-                  max = price.deal_price;
-                }
-              } else {
-                if(min > price.price) {
-                  min = price.price;
-                }
-                if(max < price.price) {
-                  max = price.price;
-                }
-              }
-            })
-          })
-
-          if(min === 0) {
-            min = arr[0].prices[0].price
-          }
-
-          this.min = min;
-          this.max = max;
-          this.range = [min,max];
-
-          this.products = arr
-
-          this.loading = false
-        })
-    },
     getFilteredProducts () {
       if (this.loadingFiltered) return;
 
@@ -171,10 +144,6 @@ export default {
     }
   },
   created () {
-    if(this.categories.length) {
-      this.getProducts();
-    }
-
     this.$root.$on('change-filter-range', data => {
       this.range = data;
     })

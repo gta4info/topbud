@@ -129,11 +129,24 @@ export default {
   components: {
     'TopBar': () => import('@/components/shop/TopBar')
   },
+  async asyncData({$axios, params, store}) {
+    let category = store.state.shop.categories.find(item => item.slug === params.cslug);
+    let sub = category.subs.length ? category.subs.find(item => item.slug === params.sslug) : null;
+
+    let url = `/product/${params.pslug}?cid=${category.id}`;
+    if(params.sslug !== 'product') {
+      url += `&sid=${sub.id}`;
+    }
+
+    const product = await $axios.$get(url);
+
+    product.img = `http://31.186.250.216:8000/${product.img}`;
+    let selectedWeight = product.prices[0].weight_id;
+    let loading = false;
+
+    return { selectedWeight, product, loading, category, sub }
+  },
   data: () => ({
-    loading: true,
-    category: {},
-    sub: {},
-    product: [],
     related: [],
     tabs: ['Product information'],
     selectedTab: 'Product information',
@@ -147,32 +160,8 @@ export default {
     selectedAmount() {
       this.checkSelectedAmount();
     },
-    categories() {
-      if(this.categories.length) {
-        this.getProduct();
-      }
-    }
   },
   methods: {
-    getProduct() {
-      this.loading = true;
-      let category = this.categories.find(item => item.slug === this.$route.params.cslug);
-      let sub = category.subs.length ? category.subs.find(item => item.slug === this.$route.params.sslug) : null;
-      this.category = category;
-      this.sub = sub;
-      let url = `/product/${this.$route.params.pslug}?cid=${category.id}`;
-      if(this.$route.params.sslug !== 'product') {
-        url += `&sid=${sub.id}`;
-      }
-      this.$axios
-        .get(url)
-        .then(res => {
-          res.data.img = `http://31.186.250.216:8000/${res.data.img}`;
-          this.selectedWeight = res.data.prices[0].weight_id;
-          this.product = res.data;
-          this.loading = false;
-        })
-    },
     checkSelectedAmount() {
       if(this.selectedAmount > this.maxAmount) {
         this.selectedAmount = this.maxAmount;
@@ -223,11 +212,6 @@ export default {
       return optionPrice * this.selectedAmount;
     }
   },
-  created () {
-    if(this.categories.length) {
-      this.getProduct();
-    }
-  }
 }
 </script>
 
