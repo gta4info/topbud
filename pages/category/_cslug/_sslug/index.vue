@@ -87,7 +87,7 @@ export default {
     })
 
     if (min === 0) {
-      min = products[0].prices[0].price
+      min = products.length ? products[0].prices[0].price : 0
     }
 
     min = Math.ceil(min - 1);
