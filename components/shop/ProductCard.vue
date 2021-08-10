@@ -127,6 +127,7 @@ export default {
     border: 1px solid #E9E9E9;
     border-radius: 8px;
     position: relative;
+    height: 100%;
 
     &__header {
       position: relative;
@@ -144,9 +145,13 @@ export default {
         height: 100%;
         width: 100%;
         border-radius: 8px 8px 0 0;
+        display: flex;
+        align-items: center;
+        justify-content: center;
 
         img {
           max-width: 100%;
+          max-height: 100%;
           transition: .3s;
         }
       }
@@ -258,6 +263,9 @@ export default {
     &__bottom {
       padding: 0 15px 15px;
       width: 100%;
+      height: 100%;
+      display: flex;
+      flex-direction: column;
 
       &-line {
         display: flex;
@@ -305,6 +313,7 @@ export default {
         border-radius: 4px;
         cursor: pointer;
         position: relative;
+        margin-top: auto;
 
         &:before {
           content: '⯆';
