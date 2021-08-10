@@ -44,9 +44,10 @@
                 label="example: 20, Main str, Ontario"
                 prepend-inner-icon="mdi-magnify"
                 @focus="showResults = true"
+                @input="resultPicked = false"
               />
               <div class="results" :class="{active: results.length && showResults}">
-                <div v-for="(result, i) in results" :key="i" @click="addressQuery = result.text; showResults = false"><span>{{result.text}}</span></div>
+                <div v-for="(result, i) in results" :key="i" @click="onResultSelected(result.text)"><span>{{result.text}}</span></div>
               </div>
             </div>
           </div>
@@ -96,11 +97,12 @@ export default {
     results: [],
     loadingResults: false,
     awaitingSearch: false,
-    showResults: false
+    showResults: false,
+    resultPicked: false
   }),
   watch: {
     addressQuery() {
-      if(this.addressQuery.length) {
+      if(this.addressQuery.length && !this.resultPicked) {
         if(!this.awaitingSearch) {
           setTimeout(() => {
             this.getAddresses();
@@ -119,11 +121,16 @@ export default {
     })
   },
   methods: {
+    onResultSelected(result) {
+      this.addressQuery = result;
+      this.showResults = false;
+      this.resultPicked = true;
+    },
     onClickOutside () {
       this.showResults = false
     },
     getAddresses() {
-      if(this.loadingResults) return;
+      if(this.loadingResults || this.resultPicked) return;
       this.loadingResults = true;
       this.$axios
         .get(`https://api.mapbox.com/geocoding/v5/mapbox.places/${this.addressQuery}.json?access_token=${this.mapboxToken}&language=en-US&types=country,region,postcode,district,place,address&country=ca&limit=4&autocomplete=true`)
