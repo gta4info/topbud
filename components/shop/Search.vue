@@ -1,6 +1,6 @@
 <template>
   <v-form class="search" @submit.prevent="submit">
-    <div class="search__container">
+    <div class="search__container" v-click-outside="onClickOutside">
       <div class="search__input" :class="{'show': show}">
         <input
           v-model="query"
@@ -22,6 +22,9 @@ export default {
     show: false
   }),
   methods: {
+    onClickOutside () {
+      this.show = false
+    },
     showOrSubmit() {
       if(!this.query.length) {
         this.show = !this.show;
