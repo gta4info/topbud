@@ -16,9 +16,18 @@
       <div class="img">
         <img :src="product.img" :alt="product.name">
       </div>
-      <div class="card__title">{{product.name}}</div>
     </nuxt-link>
     <div class="card__bottom">
+      <nuxt-link
+        :to="{name: 'category-cslug-sslug-pslug', params: {
+          cslug: $route.params.cslug ? $route.params.cslug : product.search.cslug,
+          sslug: $route.params.sslug ? $route.params.sslug : (product.search ? (product.search.sslug ? product.search.sslug : 'product') :'product'),
+          pslug: product.slug
+        }}"
+        class="card__title"
+      >
+        {{product.name}}
+      </nuxt-link>
       <v-menu v-model="menu" content-class="card__weights" offset-y close-on-content-click>
         <template v-slot:activator="{on}">
           <div v-on="on" class="card__weights-input" :class="{active: menu}">
@@ -128,6 +137,7 @@ export default {
       width: 100%;
       transition: .3s;
       color: #000;
+      border-bottom: 1px solid #E9E9E9;
 
       .img {
         overflow: hidden;
@@ -147,20 +157,6 @@ export default {
             transform: scale(1.2);
           }
         }
-        .card__title {
-          bottom: 25px;
-        }
-      }
-
-      &:before {
-        content: '';
-        position: absolute;
-        top: 0;
-        right: 0;
-        bottom: 0;
-        left: 0;
-        z-index: 1;
-        background: linear-gradient(180deg, transparent 0%, transparent 40%, #fff 100%);
       }
 
       &-deal {
@@ -251,18 +247,16 @@ export default {
     &__title {
       font-weight: 900;
       font-size: 16px;
-      margin-top: 15px;
-      transition: .3s;
-      z-index: 1;
-      bottom: 15px;
-      position: absolute;
-      width: calc(100% - 30px);
+      width: 100%;
       text-align: center;
+      margin: 10px 0;
+      display: flex;
+      justify-content: center;
+      color: #000;
     }
 
     &__bottom {
       padding: 0 15px 15px;
-      margin-top: 20px;
       width: 100%;
 
       &-line {
