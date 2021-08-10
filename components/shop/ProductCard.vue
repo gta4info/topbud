@@ -134,7 +134,7 @@ export default {
       display: flex;
       align-items: center;
       justify-content: center;
-      height: 186px;
+      height: 100%;
       width: 100%;
       transition: .3s;
       color: #000;
