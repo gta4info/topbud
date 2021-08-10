@@ -31,6 +31,10 @@ export default {
     background: #212121 0 0 no-repeat padding-box;
     padding: 100px 50px;
 
+    @media(max-width: 768px) {
+      padding: 50px;
+    }
+
     &__body {
       display: flex;
       flex-direction: column;
@@ -42,11 +46,20 @@ export default {
       color: #fff;
       font-weight: 900;
       margin: 40px 0;
+
+      @media(max-width: 768px) {
+        font-size: 26px;
+        text-align: center;
+      }
     }
 
     &__buttons {
       display: flex;
-      justify-content: space-between;
+
+      @media(max-width: 768px) {
+        flex-direction: column;
+        align-items: center;
+      }
 
       &-item {
         display: flex;
@@ -63,6 +76,11 @@ export default {
           background: #fff;
           color: #000;
           margin-right: 60px;
+
+          @media(max-width: 768px) {
+            margin-right: 0;
+            margin-bottom: 20px;
+          }
 
           &:hover {
             background: #000;
