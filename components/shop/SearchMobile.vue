@@ -24,14 +24,16 @@ export default {
   },
   methods: {
     submit() {
-      this.$router.push({name: 'shop-search', query: {q: this.query}})
-      this.$root.$emit('close-mobile-header');
+      if(this.query.length) {
+        this.$router.push({name: 'shop-search', query: {q: this.query}})
+        this.$root.$emit('close-mobile-header');
+      }
     }
   }
 }
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
   .search {
     display: flex;
     position: relative;
@@ -51,7 +53,7 @@ export default {
       bottom: 0;
       top: 0;
       width: 24px;
-      background: #111111;
+      background: #262626;
     }
 
     &:before {
@@ -62,7 +64,7 @@ export default {
       right: 0;
       width: 24px;
       height: 100%;
-      background: #111111;
+      background: #262626;
     }
 
     input {

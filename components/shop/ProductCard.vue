@@ -59,7 +59,7 @@
 import { mapGetters } from 'vuex'
 
 export default {
-  name: 'CategoryCard',
+  name: 'ProductCard',
   props: {
     product: {
       type: Object,
@@ -117,8 +117,6 @@ export default {
     color: #000;
     border: 1px solid #E9E9E9;
     border-radius: 8px;
-    padding: 15px;
-    overflow: hidden;
     position: relative;
 
     &__header {
@@ -135,6 +133,12 @@ export default {
         overflow: hidden;
         height: 100%;
         width: 100%;
+        border-radius: 8px 8px 0 0;
+
+        img {
+          max-width: 100%;
+          transition: .3s;
+        }
       }
 
       &:hover {
@@ -242,12 +246,6 @@ export default {
           background: hsl(101, 93%, 28%);
         }
       }
-
-      img {
-        max-width: 100%;
-        max-height: 100%;
-        transition: .3s;
-      }
     }
 
     &__title {
@@ -263,6 +261,7 @@ export default {
     }
 
     &__bottom {
+      padding: 0 15px 15px;
       margin-top: 20px;
       width: 100%;
 

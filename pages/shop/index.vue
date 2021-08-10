@@ -46,7 +46,7 @@ export default {
 
 <style lang="scss" scoped>
   .categories {
-    margin: 60px 0;
+    margin-bottom: 60px;
 
     @media(max-width: 768px) {
       margin-top: 0;

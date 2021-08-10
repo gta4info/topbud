@@ -1,6 +1,6 @@
 <template>
   <v-form class="search" @submit.prevent="submit">
-    <div class="search__container" @mouseenter="show = true">
+    <div class="search__container">
       <div class="search__input" :class="{'show': show}">
         <input
           v-model="query"
@@ -8,7 +8,7 @@
           required
         />
       </div>
-      <v-btn icon @click="submit" depressed>
+      <v-btn icon @click="showOrSubmit" depressed>
         <v-icon>mdi-magnify</v-icon>
       </v-btn>
     </div>
@@ -21,12 +21,14 @@ export default {
     query: '',
     show: false
   }),
-  watch: {
-    query() {
-      this.show = !!this.query;
-    }
-  },
   methods: {
+    showOrSubmit() {
+      if(!this.query.length) {
+        this.show = !this.show;
+      } else {
+        this.submit();
+      }
+    },
     submit() {
       this.$router.push({name: 'shop-search', query: {q: this.query}})
     }
@@ -34,15 +36,14 @@ export default {
 }
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
   .search {
     display: flex;
     position: relative;
-    width: 200px;
+    width: 48px;
     height: 48px;
-    overflow: hidden;
-    margin-left: auto;
-    margin-right: 30px;
+    margin-left: 0;
+    margin-right: 10px;
     padding-right: 24px;
 
     &:after {
@@ -52,7 +53,7 @@ export default {
       bottom: 0;
       top: 0;
       width: 24px;
-      background: #111111;
+      background: #262626;
     }
 
     &:before {
@@ -63,15 +64,15 @@ export default {
       right: 0;
       width: 24px;
       height: 100%;
-      background: #111111;
+      background: #262626;
     }
 
     &__input {
       position: absolute;
       top: 0;
       bottom: 0;
-      width: 100%;
-      right: -350px;
+      right: 0;
+      width: 48px;
       transition: .5s;
 
       input {
@@ -81,11 +82,15 @@ export default {
         border: 1px solid #dedede;
         outline: 0;
         padding: 0 12px;
-        border-radius: 20px 0 0 20px;
+        border-radius: 40px 0 0 40px;
       }
 
       &.show {
         right: 0;
+        width: 200px;
+        input {
+          border-radius: 20px 0 0 20px;
+        }
       }
     }
 

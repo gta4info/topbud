@@ -19,13 +19,21 @@
           </div>
           <div class="checkout__group">
             <span>Phone</span>
-            <v-text-field v-model="phone" label="example: 437-778-7966" solo hide-details height="40" dense/>
+            <v-text-field
+              v-model="phone"
+              label="example: 4377787966"
+              solo
+              hide-details
+              height="40"
+              dense
+              type="number"
+            />
           </div>
           <div class="checkout__group">
             <span>Payment</span>
             <v-select v-model="payment" solo :items="payments" height="40" dense hide-details/>
           </div>
-          <div class="checkout__group">
+          <div class="checkout__group" v-click-outside="onClickOutside">
             <span>Address</span>
             <div class="address">
               <v-text-field
@@ -38,8 +46,8 @@
                 @focus="showResults = true"
               />
 
-              <div class="results" :class="{active: results.length && showResults}" @mouseleave="hideResults">
-                <div v-for="(result, i) in results" :key="i" @click="addressQuery = result.text; showResults = false"><span>{{result.text}}</span></div>
+              <div class="results" :class="{active: results.length && showResults}">
+                <div v-for="(result, i) in results" :key="i" @click="addressQuery = result.text"><span>{{result.text}}</span></div>
               </div>
             </div>
           </div>
@@ -93,13 +101,15 @@ export default {
   }),
   watch: {
     addressQuery() {
-      if(this.addressQuery && this.addressQuery.length > 3) {
+      if(this.addressQuery.length) {
         if(!this.awaitingSearch) {
           setTimeout(() => {
             this.getAddresses();
           }, 300)
         }
         this.awaitingSearch = true;
+      } else {
+        this.results = [];
       }
     }
   },
@@ -110,13 +120,12 @@ export default {
     })
   },
   methods: {
-    hideResults() {
-      setTimeout(() => {this.showResults = false}, 100)
+    onClickOutside () {
+      this.showResults = false
     },
     getAddresses() {
       if(this.loadingResults) return;
       this.loadingResults = true;
-      this.results = [];
       this.$axios
         .get(`https://api.mapbox.com/geocoding/v5/mapbox.places/${this.addressQuery}.json?access_token=${this.mapboxToken}&language=en-US&types=country,region,postcode,district,place,address&country=ca&limit=4&autocomplete=true`)
         .then(res => {
@@ -233,9 +242,9 @@ export default {
       border: 1px solid #DEE2E6;
       border-radius: 4px;
       overflow: hidden;
-      height: 122px;
+      max-height: 122px;
       position: absolute;
-      top: -122px;
+      bottom: 38px;
       background: #fff;
       left: 0;
       right: 0;

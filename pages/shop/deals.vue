@@ -22,12 +22,20 @@
         <v-container>
           <v-row>
             <v-col md="2" sm="12" class="py-0 px-0">
-              <Filters :min="min" :max="max" :range="range" :categories="categoriesFilter"/>
+              <Filters :min="min" :max="max" :range="range" :categories="categoriesFilter" :search="search"/>
             </v-col>
             <v-col md="10" sm="12">
               <v-container>
-                <v-row v-if="products.length">
-                  <v-col md="3" sm="12" v-for="product in products" :key="product.slug">
+                <v-row v-if="productsFiltered.length">
+                  <v-col md="3" sm="12">
+                    <DealCard/>
+                  </v-col>
+                  <v-col
+                    md="3"
+                    sm="12"
+                    v-for="product in productsFiltered"
+                    :key="product.slug"
+                  >
                     <ProductCard :product="product" :key="product.slug"/>
                   </v-col>
                 </v-row>
@@ -46,6 +54,7 @@ import { mapGetters } from 'vuex'
 
 export default {
   components: {
+    'DealCard': () => import('@/components/shop/DealCard'),
     'ProductCard': () => import('@/components/shop/ProductCard'),
     'Filters': () => import('@/components/shop/Filters'),
   },
@@ -130,7 +139,7 @@ export default {
       })
     })
 
-    min = Math.ceil(min - 1);
+    min = Math.ceil(min - 1) > 0 ? Math.ceil(min - 1) : 0;
     max = Math.ceil(max + 1);
 
     let range = [min, max];
@@ -139,16 +148,27 @@ export default {
 
     return {products, categoriesFilter, min, max, range, loading}
   },
-  data() {
-    return {
-      loadingFiltered: false,
-      categoriesFilter: []
-    }
-  },
+  data: () => ({
+    loadingFiltered: false,
+    categoriesFilter: [],
+    search: ''
+  }),
   computed: {
     ...mapGetters({
       categories: 'shop/categories'
     }),
+    productsFiltered() {
+      return this.products.filter(item => {
+        let re = new RegExp(this.search, 'ig');
+        if(item.name.match(re)) {
+          return item;
+        } else {
+          if(!this.search) {
+            return item;
+          }
+        }
+      })
+    }
   },
   watch: {
     range() {
@@ -260,6 +280,9 @@ export default {
     })
     this.$root.$on('change-filter-categories', data => {
       this.categoriesFilter = data;
+    })
+    this.$root.$on('change-filter-search-query', data => {
+      this.search = data;
     })
   }
 }

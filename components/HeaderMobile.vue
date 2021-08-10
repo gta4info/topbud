@@ -19,9 +19,9 @@
               <div
                 v-for="item in category.subs"
                 :key="item.slug"
-                @click="dialog = false"
+                class="mobileMenu__nav-item--link"
               >
-                <nuxt-link :to="`/category/${category.slug}/${item.slug}`" active-class="active">{{item.name}}</nuxt-link>
+                <nuxt-link :to="`/category/${category.slug}/${item.slug}`" active-class="active" @click.native="dialog = false">{{item.name}}</nuxt-link>
               </div>
             </v-expansion-panel-content>
           </v-expansion-panel>
@@ -33,9 +33,9 @@
               <div
                 v-for="category in otherCategories"
                 :key="category.slug"
-                @click="dialog = false"
+                class="mobileMenu__nav-item--link"
               >
-                <nuxt-link :to="`/category/${category.slug}`" active-class="active">{{category.name}}</nuxt-link>
+                <nuxt-link :to="`/category/${category.slug}`" active-class="active" @click.native="dialog = false">{{category.name}}</nuxt-link>
               </div>
             </v-expansion-panel-content>
           </v-expansion-panel>
@@ -44,8 +44,8 @@
               <h5 class="mobileMenu__nav-item--title">Info</h5>
             </v-expansion-panel-header>
             <v-expansion-panel-content>
-              <div v-for="link in info" :key="link.link" @click="dialog = false">
-                <nuxt-link :to="`/${link.link}`" active-class="active">{{link.title}}</nuxt-link>
+              <div v-for="link in info" :key="link.link" class="mobileMenu__nav-item--link">
+                <nuxt-link :to="`/${link.link}`" active-class="active" @click.native="dialog = false">{{link.title}}</nuxt-link>
               </div>
             </v-expansion-panel-content>
           </v-expansion-panel>
@@ -54,7 +54,7 @@
         <SearchMobile/>
 
         <div class="header__buttons">
-          <nuxt-link to="/shop/deals" v-ripple @click="dialog = false">OZ DEALS</nuxt-link>
+          <nuxt-link to="/shop/deals" v-ripple @click.native="dialog = false">OZ DEALS</nuxt-link>
           <a href="tel:4932-2231-3433" v-ripple @click="dialog = false">4932-2231-3433</a>
         </div>
       </div>
@@ -175,8 +175,8 @@
       display: flex;
       align-items: center;
       img {
-        width: 65px;
-        height: 65px;
+        height: 80px;
+        width: auto;
       }
     }
 
@@ -235,20 +235,26 @@
       &-item {
         background: #cbe1be !important;
 
-        &--title {
-          color: #000;
-          font-size: 20px;
-        }
+        &--link {
+          height: 40px;
 
-        div {
           &:not(:last-child) {
-            margin-bottom: 15px;
+            border-bottom: 1px solid #262626;
           }
 
           a {
+            width: 100%;
             color: #000;
             font-size: 16px;
+            height: 100%;
+            display: flex;
+            align-items: center;
           }
+        }
+
+        &--title {
+          color: #000;
+          font-size: 20px;
         }
       }
     }

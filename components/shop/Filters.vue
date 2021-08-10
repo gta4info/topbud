@@ -54,6 +54,18 @@
         </div>
       </div>
     </div>
+    <div class="filter__group">
+      <div class="filter__title">Search by name</div>
+      <v-text-field
+        v-model="searchQuery"
+        solo
+        dense
+        hide-details
+        clearable
+        label="Type something"
+        class="filter__name"
+      />
+    </div>
   </div>
 </template>
 
@@ -77,6 +89,10 @@ export default {
       type: Array,
       required: true
     },
+    search: {
+      type: String,
+      required: true
+    }
   },
   watch: {
     rangeData() {
@@ -89,12 +105,16 @@ export default {
         this.$root.$emit('change-filter-categories', this.categoriesData)
       },
       deep: true
+    },
+    searchQuery() {
+      this.$root.$emit('change-filter-search-query', this.searchQuery)
     }
   },
   data() {
     return {
       rangeData: this.range,
-      categoriesData: this.categories ?? []
+      categoriesData: this.categories ?? [],
+      searchQuery: this.search
     }
   }
 }
@@ -213,6 +233,12 @@ export default {
 
         &:not(:last-child) {
           margin-bottom: 5px;
+        }
+      }
+
+      &__name {
+        .v-input__slot {
+          box-shadow: none !important;
         }
       }
     }

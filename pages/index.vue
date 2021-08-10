@@ -325,26 +325,34 @@
         </div>
       </section>
     </v-container>
+<!--    <v-container>-->
+<!--      <section class="signup">-->
+<!--        <div class="signup__title">Sign Up Your Profile Today!</div>-->
+<!--        <div class="signup__text">-->
+<!--          <div>-->
+<!--            <p>If you are ready to start ordering high quality products from our weed delivery service, take a few minutes to create a profile.</p>-->
+<!--            <p>Delivery is FREE for orders over $100, and a modest $10 delivery fee is applied for orders below that. Please note that we can only accept cash payments at this time. Payment should be placed in an envelope and handed to your driver, who will verify the amount upon delivery of your order. Our minimum order amount is based on the area of delivery. You can text us to find out the minimum order requirements based on your area of residence.</p>-->
+<!--            <p>For more information, contact us by phone or via chat, and our friendly, knowledgeable weed experts will be happy to answer all of your questions.</p>-->
+<!--            <nuxt-link to="/">Sign Up Today</nuxt-link>-->
+<!--            <div class="signup__bottom">-->
+<!--              <div v-for="i of 5" :key="i">-->
+<!--                <img :src="require(`@/static/images/${i}.webp`)" alt="Image" v-if="i > 2">-->
+<!--              </div>-->
+<!--            </div>-->
+<!--          </div>-->
+<!--          <div class="signup__text-images">-->
+<!--            <img :src="require(`@/static/images/${i}.webp`)" alt="Image" v-for="i of 2" :key="i">-->
+<!--          </div>-->
+<!--        </div>-->
+<!--      </section>-->
+<!--    </v-container>-->
     <v-container>
-      <section class="signup">
-        <div class="signup__title">Sign Up Your Profile Today!</div>
-        <div class="signup__text">
-          <div>
-            <p>If you are ready to start ordering high quality products from our weed delivery service, take a few minutes to create a profile.</p>
-            <p>Delivery is FREE for orders over $100, and a modest $10 delivery fee is applied for orders below that. Please note that we can only accept cash payments at this time. Payment should be placed in an envelope and handed to your driver, who will verify the amount upon delivery of your order. Our minimum order amount is based on the area of delivery. You can text us to find out the minimum order requirements based on your area of residence.</p>
-            <p>For more information, contact us by phone or via chat, and our friendly, knowledgeable weed experts will be happy to answer all of your questions.</p>
-            <nuxt-link to="/">Sign Up Today</nuxt-link>
-            <div class="signup__bottom">
-              <div v-for="i of 5" :key="i">
-                <img :src="require(`@/static/images/${i}.webp`)" alt="Image" v-if="i > 2">
-              </div>
-            </div>
-          </div>
-          <div class="signup__text-images">
-            <img :src="require(`@/static/images/${i}.webp`)" alt="Image" v-for="i of 2" :key="i">
-          </div>
-        </div>
-      </section>
+      <div class="viewProducts-wrapper">
+        <nuxt-link class="viewProducts" to="/shop">
+          <span>View Our Products</span>
+          <div class="viewProducts__btn">></div>
+        </nuxt-link>
+      </div>
     </v-container>
   </div>
 </template>
@@ -903,6 +911,50 @@ export default {
     &__bottom {
       display: flex;
       justify-content: flex-start;
+    }
+  }
+
+  .viewProducts {
+    display: flex;
+    margin: 60px auto;
+    align-items: center;
+
+    @media(max-width: 768px) {
+      justify-content: center;
+      z-index: 1;
+    }
+
+    &:hover {
+      .viewProducts__btn {
+        background: #cbe1be;
+        color: #000 !important;
+        border-color: #cbe1be;
+      }
+    }
+
+    &-wrapper {
+      width: 100%;
+      display: flex;
+      justify-content: center;
+    }
+
+    span {
+      margin-right: 25px;
+      font-size: 40px;
+      font-weight: 900;
+    }
+
+    &__btn {
+      border-radius: 50%;
+      width: 35px;
+      height: 35px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border: 1px solid #000;
+      color: #000 !important;
+      animation: scale 3s infinite;
+      transition: .3s;
     }
   }
 </style>

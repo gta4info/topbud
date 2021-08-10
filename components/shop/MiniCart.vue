@@ -1,7 +1,7 @@
 <template>
-  <nuxt-link to="/shop/cart" class="cart">
+  <nuxt-link to="/shop/cart" class="cart" v-if="cartLength > 0">
     <v-icon size="40">mdi-cart</v-icon>
-    <div class="badge" v-if="cartLength > 0">
+    <div class="badge">
       {{ cartLength }}
     </div>
   </nuxt-link>
@@ -25,7 +25,7 @@ export default {
     position: fixed;
     bottom: 50px;
     right: 50px;
-    z-index: 50000;
+    z-index: 1;
     background: #eaeaea;
     color: #dbdbdb;
     width: 60px;

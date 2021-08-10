@@ -23,12 +23,12 @@
         <v-container>
           <v-row>
             <v-col md="2" sm="12">
-              <Filters :min="min" :max="max" :range="range"/>
+              <Filters :min="min" :max="max" :range="range" :search="search"/>
             </v-col>
             <v-col md="10" sm="12">
               <v-container>
-                <v-row v-if="products.length">
-                  <v-col md="3" sm="12" v-for="product in products" :key="product.slug">
+                <v-row v-if="productsFiltered.length">
+                  <v-col md="3" sm="12" v-for="product in productsFiltered" :key="product.slug">
                     <ProductCard :product="product" :key="product.slug"/>
                   </v-col>
                 </v-row>
@@ -90,7 +90,7 @@ export default {
       min = products.length ? products[0].prices[0].price : 0
     }
 
-    min = Math.ceil(min - 1);
+    min = Math.ceil(min - 1) > 0 ? Math.ceil(min - 1) : 0;
     max = Math.ceil(max + 1);
 
     let range = [min, max];
@@ -101,13 +101,26 @@ export default {
   },
   data() {
     return {
-      loadingFiltered: false
+      loadingFiltered: false,
+      search: ''
     }
   },
   computed: {
     ...mapGetters({
       categories: 'shop/categories'
-    })
+    }),
+    productsFiltered() {
+      return this.products.filter(item => {
+        let re = new RegExp(this.search, 'ig');
+        if(item.name.match(re)) {
+          return item;
+        } else {
+          if(!this.search) {
+            return item;
+          }
+        }
+      })
+    }
   },
   watch: {
     range() {
@@ -146,6 +159,9 @@ export default {
   created () {
     this.$root.$on('change-filter-range', data => {
       this.range = data;
+    })
+    this.$root.$on('change-filter-search-query', data => {
+      this.search = data;
     })
   }
 }

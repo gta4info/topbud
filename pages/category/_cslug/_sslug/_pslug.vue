@@ -232,6 +232,8 @@ export default {
 
     &__left {
       margin-right: 60px;
+      border: 1px solid #CECECE;
+      border-radius: 8px;
       @media(max-width: 768px) {
         margin-right: 0;
       }
@@ -239,6 +241,7 @@ export default {
       img {
         max-width: 300px;
         height: auto;
+        border-radius: 8px;
         @media(max-width: 768px) {
           margin-bottom: 30px;
         }
