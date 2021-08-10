@@ -150,8 +150,8 @@ export default {
         justify-content: center;
 
         img {
-          max-width: 100%;
-          max-height: 100%;
+          width: 100%;
+          height: auto;
           transition: .3s;
         }
       }
