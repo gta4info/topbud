@@ -45,9 +45,8 @@
                 prepend-inner-icon="mdi-magnify"
                 @focus="showResults = true"
               />
-
               <div class="results" :class="{active: results.length && showResults}">
-                <div v-for="(result, i) in results" :key="i" @click="addressQuery = result.text"><span>{{result.text}}</span></div>
+                <div v-for="(result, i) in results" :key="i" @click="addressQuery = result.text; showResults = false"><span>{{result.text}}</span></div>
               </div>
             </div>
           </div>
