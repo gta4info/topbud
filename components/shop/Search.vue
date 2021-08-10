@@ -23,6 +23,7 @@ export default {
   }),
   methods: {
     onClickOutside () {
+      this.query = '';
       this.show = false
     },
     showOrSubmit() {
