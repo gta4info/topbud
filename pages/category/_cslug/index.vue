@@ -60,8 +60,12 @@ export default {
     'ProductCard': () => import('@/components/shop/ProductCard'),
     'Filters': () => import('@/components/shop/Filters'),
   },
-  async asyncData({$axios, params, store}) {
+  async asyncData({error, $axios, params, store}) {
     let category = store.state.shop.categories.find(item => item.slug === params.cslug);
+
+    if(category == undefined) {
+      return error({ statusCode: 404 })
+    }
 
     const data = await $axios.$get(`/products?cid=${category.id}`);
 

@@ -54,6 +54,10 @@ export default {
     let category = store.state.shop.categories.find(item => item.slug === params.cslug);
     let sub = category.subs.find(item => item.slug === params.sslug);
 
+    if(category == undefined || sub == undefined) {
+      return error({ statusCode: 404 })
+    }
+
     const data = await $axios.$get(`/products?cid=${category.id}&sid=${sub.id}`);
 
     let products = [];

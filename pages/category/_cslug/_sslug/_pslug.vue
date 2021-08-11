@@ -129,8 +129,13 @@ export default {
   components: {
     'TopBar': () => import('@/components/shop/TopBar')
   },
-  async asyncData({$axios, params, store}) {
+  async asyncData({$axios, params, store, error}) {
     let category = store.state.shop.categories.find(item => item.slug === params.cslug);
+
+    if(category == undefined) {
+      return error({ statusCode: 404 })
+    }
+
     let sub = category.subs.length ? category.subs.find(item => item.slug === params.sslug) : null;
 
     let url = `/product/${params.pslug}?cid=${category.id}`;
@@ -139,6 +144,10 @@ export default {
     }
 
     const product = await $axios.$get(url);
+
+    if(!product) {
+      return error({ statusCode: 404 })
+    }
 
     product.img = `http://31.186.250.216:8000/${product.img}`;
     let selectedWeight = product.prices[0].weight_id;
