@@ -91,7 +91,7 @@
                 <span>${{calculateCartTotal}}</span>
               </div>
 
-              <CheckOutForm />
+              <CheckOutForm :enabled="calculateCartTotal >= 60"/>
             </div>
           </div>
 

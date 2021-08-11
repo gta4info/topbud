@@ -1,7 +1,10 @@
 <template>
   <v-dialog v-model="checkoutDialog" max-width="500">
     <template v-slot:activator="{on}">
-      <v-btn color="#7FAD39" class="white--text" block depressed v-on="on">Checkout</v-btn>
+      <div>
+        <div v-if="!enabled" style="color: #DE2B2B;font-size: 18px;font-weight: 900;margin-bottom: 6px;">Minimum total amount is 60$</div>
+        <v-btn color="#7FAD39" class="white--text" block depressed v-on="on" :disabled="!enabled">Checkout</v-btn>
+      </div>
     </template>
 
     <v-card class="checkout">
@@ -78,6 +81,12 @@ import { mapGetters } from 'vuex'
 
 export default {
   name: 'CheckOutForm',
+  props: {
+    enabled: {
+      type: Boolean,
+      required: true
+    }
+  },
   data: () => ({
     checkoutDialog: false,
     payment: 'cash',
