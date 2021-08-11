@@ -26,6 +26,9 @@
               hide-details
               height="40"
               dense
+              inputmode="numeric"
+              name="phone"
+              pattern="[0-9]*"
               type="number"
             />
           </div>
