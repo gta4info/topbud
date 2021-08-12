@@ -918,6 +918,7 @@ export default {
     display: flex;
     margin: 60px auto;
     align-items: center;
+    color: #000;
 
     @media(max-width: 768px) {
       justify-content: center;

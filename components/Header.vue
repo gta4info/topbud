@@ -12,7 +12,7 @@
               <!--Dropdown-->
               <v-menu v-if="category.subs" offset-y open-on-hover content-class="header__dropdown" close-delay="150">
                 <template v-slot:activator="{on}">
-                  <span v-on="on" class="header__dropdown-activator" :class="{'active': category.active}">{{category.name}}</span>
+                  <span v-on="on" class="header__dropdown-activator" @click="goToCategory(category.slug)" :class="{'active': category.active}">{{category.name}}</span>
                 </template>
                 <div
                   v-for="item in category.subs"
@@ -99,6 +99,11 @@
       },
       otherCategories() {
         return this.categories.filter(item => (item.subs && !item.subs.length) || (item.slug === 'cartridges' || item.slug === 'vape-pens'))
+      }
+    },
+    methods: {
+      goToCategory(slug) {
+        this.$router.push({name: 'category-cslug', params: {cslug: slug}})
       }
     },
     watch: {
