@@ -45,7 +45,7 @@ export default {
     const data = await $axios.$get(`/blog?slug=${params.slug}`);
 
     let blog = data[Object.keys(data)[0]];
-    blog.img = `http://31.186.250.216:8000/${blog.img}`;
+    // blog.img = `http://31.186.250.216:8000/${blog.img}`;
 
     loading = false;
     return { blog, loading };

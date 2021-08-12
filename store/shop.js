@@ -55,13 +55,13 @@ export const mutations = {
   SET_CATEGORIES(state, data) {
     let arr = [];
     Object.keys(data).map(key => {
-      data[key].img = 'http://31.186.250.216:8000/' + data[key].img;
+      // data[key].img = 'http://31.186.250.216:8000/' + data[key].img;
       arr.push(data[key]);
 
       if(data[key].subs) {
         let subs = [];
         Object.keys(data[key].subs).map(sub => {
-          data[key].subs[sub].img = 'http://31.186.250.216:8000/' + data[key].subs[sub].img;
+          // data[key].subs[sub].img = 'http://31.186.250.216:8000/' + data[key].subs[sub].img;
           subs.push(data[key].subs[sub])
         });
         data[key].subs = subs;
@@ -74,7 +74,7 @@ export const mutations = {
     Object.keys(data).map(key => {
       let quantity = this.$cookies.get('cart').find(item => item.product_id == key).amount
       data[key].id = key;
-      data[key].img = 'http://31.186.250.216:8000/' + data[key].img;
+      // data[key].img = 'http://31.186.250.216:8000/' + data[key].img;
       data[key].quantity = quantity;
       arr.push(data[key]);
     })

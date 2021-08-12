@@ -46,7 +46,7 @@ export default {
     const blog = await $axios.$get('blog');
 
     Object.keys(blog).map(key => {
-      blog[key].img = `http://31.186.250.216:8000/${blog[key].img}`;
+      // blog[key].img = `http://31.186.250.216:8000/${blog[key].img}`;
     })
 
     loading = false;
