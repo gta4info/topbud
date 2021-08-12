@@ -149,7 +149,7 @@ export default {
       return error({ statusCode: 404 })
     }
 
-    // product.img = `http://31.186.250.216:8000/${product.img}`;
+    product.img = `/${product.img}`;
     let selectedWeight = product.prices[0].weight_id;
     let loading = false;
 

@@ -80,7 +80,7 @@ export default {
         cslug: category.slug,
         sslug: sub ? sub.slug : null,
       }
-      // data.products[key].img = `http://31.186.250.216:8000/${data.products[key].img}`
+      data.products[key].img = `/${data.products[key].img}`
       products.push(data.products[key])
 
       data.products[key].prices.map(price => {
@@ -162,7 +162,7 @@ export default {
               cslug: category.slug,
               sslug: sub ? sub.slug : null,
             }
-            // res.data.products[key].img = `http://31.186.250.216:8000/${res.data.products[key].img}`
+            res.data.products[key].img = `/${res.data.products[key].img}`
             arr.push(res.data.products[key])
 
             res.data.products[key].prices.map(price => {
@@ -214,7 +214,7 @@ export default {
               cslug: category.slug,
               sslug: sub ? sub.slug : null,
             }
-            // res.data.products[key].img = `http://31.186.250.216:8000/${res.data.products[key].img}`
+            res.data.products[key].img = `/${res.data.products[key].img}`
             arr.push(res.data.products[key])
           })
 
