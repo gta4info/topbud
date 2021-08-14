@@ -59,7 +59,7 @@ export default {
 
   server: {
     host: '0.0.0.0',
-    port: '8800'
+    port: '80'
   },
 
   gtm: {
@@ -68,59 +68,12 @@ export default {
 
   robots: [
     {
-      UserAgent: 'DISCo Pump',
-      Disallow: '/'
-    },
-    {
-      UserAgent: 'Wget',
-      Disallow: '/'
-    },
-    {
-      UserAgent: 'WebZIP',
-      Disallow: '/'
-    },
-    {
-      UserAgent: 'Teleport Pro',
-      Disallow: '/'
-    },
-    {
-      UserAgent: 'WebSnake',
-      Disallow: '/'
-    },
-    {
-      UserAgent: 'Offline Explorer',
-      Disallow: '/'
-    },
-    {
-      UserAgent: 'Web-By-Mail',
-      Disallow: '/'
-    },
-    {
-      UserAgent: 'psbot',
-      Disallow: '/'
-    },
-    {
-      UserAgent: 'gigabot',
-      Disallow: '/'
-    },
-    {
-      UserAgent: 'Twiceler',
-      Disallow: '/'
-    },
-    {
-      UserAgent: 'NetinfoBot',
-      Disallow: '/'
-    },
-    {
-      UserAgent: 'ia_archiver',
+      UserAgent: 'Googlebot',
       Disallow: '/'
     },
     {
       UserAgent: '*',
-      Disallow: ['/search', '/admin']
+      Disallow: '/'
     },
-    {
-      Allow: ['/.png', '/.jpg', '/.jpeg', '/.js', '/*.css'],
-    }
   ]
 }
