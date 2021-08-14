@@ -62,10 +62,10 @@ export default {
   server: {
     host: '0.0.0.0',
     port: '80',
-    https: {
+    // https: {
       // key: fs.readFileSync('/root/project/key.pem'),
       // cert: fs.readFileSync('/root/project/cert.pem')
-    }
+    // }
   },
 
   gtm: {
