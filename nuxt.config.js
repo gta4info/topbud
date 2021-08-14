@@ -59,7 +59,11 @@ export default {
 
   server: {
     host: '0.0.0.0',
-    port: '80'
+    port: '80',
+    https: {
+      key: fs.readFileSync(path.resolve('/root/project/key.pem')),
+      cert: fs.readFileSync(path.resolve('/root/project/cert.pem'))
+    }
   },
 
   gtm: {
