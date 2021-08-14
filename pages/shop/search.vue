@@ -37,6 +37,16 @@
 import { mapGetters } from 'vuex'
 
 export default {
+  head: {
+    title: 'Search | TOPBUD store',
+    meta: [
+      {
+        hid: 'description',
+        name: 'description',
+        content: 'Search products we offer with TOPBUD store'
+      }
+    ]
+  },
   components: {
     'ProductCard': () => import('@/components/shop/ProductCard'),
   },

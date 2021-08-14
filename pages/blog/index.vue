@@ -40,6 +40,18 @@
 
 <script>
 export default {
+  head() {
+    return {
+      title: `Blog | TOPBUD store`,
+      meta: [
+        {
+          hid: 'description',
+          name: 'description',
+          content: `Our blog fully of articles and useful information of TOPBUD store and weed`
+        }
+      ]
+    }
+  },
   name: 'about',
   async asyncData({$axios}) {
     let loading = true;

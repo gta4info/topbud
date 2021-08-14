@@ -101,7 +101,7 @@ export default {
       },
       {
         value: 'transfer',
-        text: 'Transfer'
+        text: 'E-transfer'
       },
     ],
     sending: false,

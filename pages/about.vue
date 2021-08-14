@@ -33,6 +33,16 @@
 
 <script>
 export default {
+  head: {
+    title: 'About | TOPBUD store',
+    meta: [
+      {
+        hid: 'description',
+        name: 'description',
+        content: 'Find out who we are and what we are doing'
+      }
+    ]
+  },
   name: 'about',
   async asyncData({$axios}) {
     let loading = true;

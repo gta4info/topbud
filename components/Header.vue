@@ -10,7 +10,7 @@
             <!--Categories with sub categories-->
             <li v-for="category in computedCategories.filter(item => item.subs && item.subs.length)" :key="category.slug">
               <!--Dropdown-->
-              <v-menu v-if="category.subs" offset-y open-on-hover content-class="header__dropdown" close-delay="150">
+              <v-menu v-if="category.subs" offset-y open-on-hover content-class="header__dropdown" close-delay="400">
                 <template v-slot:activator="{on}">
                   <span v-on="on" class="header__dropdown-activator" @click="goToCategory(category.slug)" :class="{'active': category.active}">{{category.name}}</span>
                 </template>
@@ -24,20 +24,20 @@
               </v-menu>
             </li>
             <!--Categories without sub categories-->
-            <li>
+            <li style="cursor: default;">
               <!--Dropdown-->
-              <v-menu offset-y open-on-hover content-class="header__dropdown" close-delay="150">
+              <v-menu offset-y open-on-hover content-class="header__dropdown" close-delay="400">
                 <template v-slot:activator="{on}">
                   <span v-on="on" class="header__dropdown-activator" :class="{'active': othersState}">Other</span>
                 </template>
-                <div v-for="category in otherCategories" :key="category.slug" class="header__dropdown-item">
+                <div v-for="category in otherCategories" :key="category.slug" class="header__dropdown-item" style="cursor: default;">
                   <nuxt-link :to="{name: 'category-cslug', params: {cslug: category.slug}}" active-class="active">{{category.name}}</nuxt-link>
                 </div>
               </v-menu>
             </li>
             <!--Info menu-->
-            <li>
-              <v-menu offset-y open-on-hover content-class="header__dropdown" close-delay="150">
+            <li style="cursor: default;">
+              <v-menu offset-y open-on-hover content-class="header__dropdown" close-delay="400">
                 <template v-slot:activator="{on}">
                   <span v-on="on" class="header__dropdown-activator" :class="{'active': infoState}">Info</span>
                 </template>

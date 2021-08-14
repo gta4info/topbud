@@ -56,6 +56,15 @@ a {
     justify-content: center;
     height: 400px;
   }
+
+  h1 {
+    display: flex;
+    width: 100%;
+    justify-content: center;
+    text-transform: uppercase;
+    margin: 10px 0;
+    text-align: center;
+  }
 }
 .breadcrumbs {
   display: flex;

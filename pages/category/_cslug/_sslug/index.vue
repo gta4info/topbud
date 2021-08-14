@@ -9,6 +9,7 @@
     </div>
     <template v-else>
       <v-container>
+        <h1>{{category.name}} {{sub.name}} products</h1>
         <nav class="breadcrumbs">
           <ul>
             <li><nuxt-link to="/">Home</nuxt-link></li>
@@ -46,6 +47,18 @@
 import { mapGetters } from 'vuex'
 
 export default {
+  head() {
+    return {
+      title: `${this.category.name} ${this.sub.name} products | TOPBUD store`,
+      meta: [
+        {
+          hid: 'description',
+          name: 'description',
+          content: `Our shop ${this.category.name} ${this.sub.name} products we offer with TOPBUD store`
+        }
+      ]
+    }
+  },
   components: {
     'ProductCard': () => import('@/components/shop/ProductCard'),
     'Filters': () => import('@/components/shop/Filters'),

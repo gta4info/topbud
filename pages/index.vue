@@ -18,7 +18,7 @@
           <img src="@/static/images/delivery-works.webp" alt="Delivery">
         </div>
         <div class="howDeliveryWorks__right">
-          <h3>How Does Our Weed Delivery Service Work?</h3>
+          <div class="howDeliveryWorks__title">How Does Our Weed Delivery Service Work?</div>
           <p>Curiosity About Life In All Its Aspects, I Think, Is Still The Secret Of Great Creative People.Our Signup Process Couldn’t Be Easier. All You Have To Do Is Create A Profile And Send Us Proof Of Your Age. Within Ten Minutes, You Will Receive An Email And A Text Message Letting You Know That Your Profile Has Been Approved. Then, You Will Be Able To Place Your Order From Our Generous Selection Of Flower, Edibles, Concentrates, And Other Cannabis Products.</p>
           <p>Reluctant To Set Up A Profile? No Problem! You Can Still Browse Our Website To Select Your Products, Then Send Us A Text To 416-893-0025 With Your Order And A Picture Of Yourself Holding A Clearly Visible ID.</p>
           <p>Once We Have Received Your Order And Verified That You Are 19 Years Or Older, We Will Package The Products You Have Requested And Send Them Off With Our Driver. We Will Text You When The Driver Is Close By. If You Place Your Order During Regular Business Hours, You Will Receive Your Goods On The Same Day.</p>
@@ -28,19 +28,19 @@
     </v-container>
     <v-container>
       <section class="productsOffer">
-          <h3>What Products Do We Offer?</h3>
+          <div>What Products Do We Offer?</div>
           <p>Not everyone uses marijuana for the same reasons, and not everyone consumes it in the same way. We carry a broad selection of quality weed products to cater to a diverse range of customer needs.</p>
       </section>
     </v-container>
     <v-container>
       <section class="category">
         <div class="category__categories">
-          <h4>Flower</h4>
+          <div class="category__categories-title">Flower</div>
           <div class="category__items">
             <v-expansion-panels v-model="panel1" multiple>
               <v-expansion-panel class="category__item">
                 <v-expansion-panel-header>
-                  <h5 class="category__item-title" :class="{'active': panel1.includes(0)}">Indica</h5>
+                  <div class="category__item-title" :class="{'active': panel1.includes(0)}">Indica</div>
                 </v-expansion-panel-header>
                 <v-expansion-panel-content>
                   <div class="category__item-text">If you are in need of relaxation, this is the way to go. Weed from indica plants will soothe you and help you sleep. Some strains are an effective treatment for anxiety and pain.</div>
@@ -49,7 +49,7 @@
               </v-expansion-panel>
               <v-expansion-panel class="category__item">
                 <v-expansion-panel-header>
-                  <h5 class="category__item-title" :class="{'active': panel1.includes(1)}">Sativa</h5>
+                  <div class="category__item-title" :class="{'active': panel1.includes(1)}">Sativa</div>
                 </v-expansion-panel-header>
                 <v-expansion-panel-content>
                   <div class="category__item-text">Are you looking for an energy boost? Marijuana from sativa plants will invigorate you, give you the energy you need to complete a task, and boost your creativit</div>
@@ -58,7 +58,7 @@
               </v-expansion-panel>
               <v-expansion-panel class="category__item">
                 <v-expansion-panel-header>
-                  <h5 class="category__item-title" :class="{'active': panel1.includes(2)}">Hybrid</h5>
+                  <div class="category__item-title" :class="{'active': panel1.includes(2)}">Hybrid</div>
                 </v-expansion-panel-header>
                 <v-expansion-panel-content>
                   <div class="category__item-text">Many people want the best of both the indica and sativa worlds. Maybe you want pain relief without the sedation, or maybe you want to take a slight edge off your energy without taking it away. Hybrid plants are bred to be indica-dominant, sativa-dominant, or equally balanced between the two.</div>
@@ -67,7 +67,7 @@
               </v-expansion-panel>
               <v-expansion-panel class="category__item">
                 <v-expansion-panel-header>
-                  <h5 class="category__item-title" :class="{'active': panel1.includes(3)}">Pre-Rolls</h5>
+                  <div class="category__item-title" :class="{'active': panel1.includes(3)}">Pre-Rolls</div>
                 </v-expansion-panel-header>
                 <v-expansion-panel-content>
                   <div class="category__item-text">If you can’t be bothered to do the grinding, rolling and sealing of your own marijuana joint, you can get prerolls that have already been rolled for you.</div>
@@ -84,12 +84,12 @@
     <v-container>
       <section class="category image-first">
         <div class="category__categories">
-          <h4>Edibles</h4>
+          <div class="category__categories-title">Edibles</div>
           <div class="category__items">
             <v-expansion-panels v-model="panel2" multiple>
               <v-expansion-panel class="category__item">
                 <v-expansion-panel-header>
-                  <h5 class="category__item-title" :class="{'active': panel2.includes(0)}">Beverages</h5>
+                  <div class="category__item-title" :class="{'active': panel2.includes(0)}">Beverages</div>
                 </v-expansion-panel-header>
                 <v-expansion-panel-content>
                   <div class="category__item-text">Tasty beverages that are infused with THC Distillate include a variety of hot teas, an iced tea mix, and cocoa.</div>
@@ -98,7 +98,7 @@
               </v-expansion-panel>
               <v-expansion-panel class="category__item">
                 <v-expansion-panel-header>
-                  <h5 class="category__item-title" :class="{'active': panel2.includes(1)}">Candy</h5>
+                  <div class="category__item-title" :class="{'active': panel2.includes(1)}">Candy</div>
                 </v-expansion-panel-header>
                 <v-expansion-panel-content>
                   <div class="category__item-text">Who doesn’t love a good piece of candy? Our selection of sweet treats containing marijuana include lollipops, caramel cups, and a variety of chocolate truffles.</div>
@@ -107,7 +107,7 @@
               </v-expansion-panel>
               <v-expansion-panel class="category__item">
                 <v-expansion-panel-header>
-                  <h5 class="category__item-title" :class="{'active': panel2.includes(2)}">Chips & Snacks</h5>
+                  <div class="category__item-title" :class="{'active': panel2.includes(2)}">Chips & Snacks</div>
                 </v-expansion-panel-header>
                 <v-expansion-panel-content>
                   <div class="category__item-text">If you prefer savoury to sweet, why not try our tortilla chips that come in a variety of flavours? Eat them on their own or add your favourite nacho toppings.</div>
@@ -116,7 +116,7 @@
               </v-expansion-panel>
               <v-expansion-panel class="category__item">
                 <v-expansion-panel-header>
-                  <h5 class="category__item-title" :class="{'active': panel2.includes(3)}">Chocolate</h5>
+                  <div class="category__item-title" :class="{'active': panel2.includes(3)}">Chocolate</div>
                 </v-expansion-panel-header>
                 <v-expansion-panel-content>
                   <div class="category__item-text">You can’t go wrong with good quality chocolate, and we offer a selection of chocolate bars, peanut butter cups, and of course, chocolate brownies.</div>
@@ -125,7 +125,7 @@
               </v-expansion-panel>
               <v-expansion-panel class="category__item">
                 <v-expansion-panel-header>
-                  <h5 class="category__item-title" :class="{'active': panel2.includes(4)}">Cookies</h5>
+                  <div class="category__item-title" :class="{'active': panel2.includes(4)}">Cookies</div>
                 </v-expansion-panel-header>
                 <v-expansion-panel-content>
                   <div class="category__item-text">We offer peanut butter cookies chocolate cookies, lemon drop cookies, and more. If you’re looking for Christmas-themed cookies, try our candy cane cookies or “Santa’s Oreos”</div>
@@ -134,7 +134,7 @@
               </v-expansion-panel>
               <v-expansion-panel class="category__item">
                 <v-expansion-panel-header>
-                  <h5 class="category__item-title" :class="{'active': panel2.includes(5)}">Gummies</h5>
+                  <div class="category__item-title" :class="{'active': panel2.includes(5)}">Gummies</div>
                 </v-expansion-panel-header>
                 <v-expansion-panel-content>
                   <div class="category__item-text">Looking for something sweet but not a chocolate fan? Try our selection of gummies that come in different flavours and THC content.</div>
@@ -143,7 +143,7 @@
               </v-expansion-panel>
               <v-expansion-panel class="category__item">
                 <v-expansion-panel-header>
-                  <h5 class="category__item-title" :class="{'active': panel2.includes(6)}">Tinctures & Oils</h5>
+                  <div class="category__item-title" :class="{'active': panel2.includes(6)}">Tinctures & Oils</div>
                 </v-expansion-panel-header>
                 <v-expansion-panel-content>
                   <div class="category__item-text">If you are looking for a way to switch from smoking weed to consuming it in a smokeless manner, our tinctures are a great way to start. You can infuse them to your baked goods or simply add a few drops to your favourite beverage.</div>
@@ -160,7 +160,7 @@
     <section class="screen topicals">
       <v-container class="d-flex fill-height">
         <div class="screen__content">
-          <h4 class="screen__title">Topicals</h4>
+          <div class="screen__title">Topicals</div>
           <p>If you are looking for relief of localized pain or inflammation but you don’t want to ingest any weed products, try our lotions and oils that are absorbed through the skin.</p>
           <div class="screen__bottom">
             <span>View Our Products</span>
@@ -172,12 +172,12 @@
     <v-container>
       <section class="category">
         <div class="category__categories">
-          <h4>Concentrates</h4>
+          <div class="category__categories-title">Concentrates</div>
           <div class="category__items">
             <v-expansion-panels v-model="panel3" multiple>
               <v-expansion-panel class="category__item">
                 <v-expansion-panel-header>
-                  <h5 class="category__item-title" :class="{'active': panel3.includes(0)}">Capsules</h5>
+                  <div class="category__item-title" :class="{'active': panel3.includes(0)}">Capsules</div>
                 </v-expansion-panel-header>
                 <v-expansion-panel-content>
                   <div class="category__item-text">Easily get the effects you are looking for without the need to smoke or vape. Cannabis capsules come in a variety of strengths and strains.</div>
@@ -186,7 +186,7 @@
               </v-expansion-panel>
               <v-expansion-panel class="category__item">
                 <v-expansion-panel-header>
-                  <h5 class="category__item-title" :class="{'active': panel3.includes(1)}">Diamonds</h5>
+                  <div class="category__item-title" :class="{'active': panel3.includes(1)}">Diamonds</div>
                 </v-expansion-panel-header>
                 <v-expansion-panel-content>
                   <div class="category__item-text">Diamonds is a THC concentrate in its purest form. With their gem-like appearance, they are up to four times stronger than your run-of-the-mill weed. They can only be consumed via a method that uses a heat source, such as smoking.</div>
@@ -195,7 +195,7 @@
               </v-expansion-panel>
               <v-expansion-panel class="category__item">
                 <v-expansion-panel-header>
-                  <h5 class="category__item-title" :class="{'active': panel3.includes(2)}">Distillate & Oils</h5>
+                  <div class="category__item-title" :class="{'active': panel3.includes(2)}">Distillate & Oils</div>
                 </v-expansion-panel-header>
                 <v-expansion-panel-content>
                   <div class="category__item-text">This is a concentrated form of weed that isolates THC or CBD, depending on what effects you are looking for. These products are designed to give you the benefits you need in just one or two drops.</div>
@@ -204,7 +204,7 @@
               </v-expansion-panel>
               <v-expansion-panel class="category__item">
                 <v-expansion-panel-header>
-                  <h5 class="category__item-title" :class="{'active': panel3.includes(3)}">Hash</h5>
+                  <div class="category__item-title" :class="{'active': panel3.includes(3)}">Hash</div>
                 </v-expansion-panel-header>
                 <v-expansion-panel-content>
                   <div class="category__item-text">When you separate trichomes from the plant matter and turn it into a brick, you end up with hash. It is a concentrated form of weed that is usually smoked in a pipe or bong.</div>
@@ -213,7 +213,7 @@
               </v-expansion-panel>
               <v-expansion-panel class="category__item">
                 <v-expansion-panel-header>
-                  <h5 class="category__item-title" :class="{'active': panel3.includes(4)}">Sauce</h5>
+                  <div class="category__item-title" :class="{'active': panel3.includes(4)}">Sauce</div>
                 </v-expansion-panel-header>
                 <v-expansion-panel-content>
                   <div class="category__item-text">If you like intense flavours, try a marijuana sauce – an extract with a thick, sticky consistency that is consumed by dabbing.</div>
@@ -222,7 +222,7 @@
               </v-expansion-panel>
               <v-expansion-panel class="category__item">
                 <v-expansion-panel-header>
-                  <h5 class="category__item-title" :class="{'active': panel3.includes(5)}">Shatter</h5>
+                  <div class="category__item-title" :class="{'active': panel3.includes(5)}">Shatter</div>
                 </v-expansion-panel-header>
                 <v-expansion-panel-content>
                   <div class="category__item-text">This extract has a translucent, glass-like appearance, and as its name suggests, it can shatter like glass on impact. It can be consumed by vaping, but it is usually dabbed.</div>
@@ -239,12 +239,12 @@
     <v-container>
       <section class="category image-first">
         <div class="category__categories">
-          <h4>Vapes</h4>
+          <div class="category__categories-title">Vapes</div>
           <div class="category__items">
             <v-expansion-panels v-model="panel4" multiple>
               <v-expansion-panel class="category__item">
                 <v-expansion-panel-header>
-                  <h5 class="category__item-title" :class="{'active': panel4.includes(0)}">Cartridges</h5>
+                  <div class="category__item-title" :class="{'active': panel4.includes(0)}">Cartridges</div>
                 </v-expansion-panel-header>
                 <v-expansion-panel-content>
                   <div class="category__item-text">Tasty beverages that are infused with THC Distillate include a variety of hot teas, an iced tea mix, and cocoa.</div>
@@ -253,7 +253,7 @@
               </v-expansion-panel>
               <v-expansion-panel class="category__item">
                 <v-expansion-panel-header>
-                  <h5 class="category__item-title" :class="{'active': panel4.includes(1)}">Disposables</h5>
+                  <div class="category__item-title" :class="{'active': panel4.includes(1)}">Disposables</div>
                 </v-expansion-panel-header>
                 <v-expansion-panel-content>
                   <div class="category__item-text">Who doesn’t love a good piece of candy? Our selection of sweet treats containing marijuana include lollipops, caramel cups, and a variety of chocolate truffles.</div>
@@ -262,7 +262,7 @@
               </v-expansion-panel>
               <v-expansion-panel class="category__item">
                 <v-expansion-panel-header>
-                  <h5 class="category__item-title" :class="{'active': panel4.includes(2)}">Batteries</h5>
+                  <div class="category__item-title" :class="{'active': panel4.includes(2)}">Batteries</div>
                 </v-expansion-panel-header>
                 <v-expansion-panel-content>
                   <div class="category__item-text">If you prefer savoury to sweet, why not try our tortilla chips that come in a variety of flavours? Eat them on their own or add your favourite nacho toppings.</div>
@@ -279,7 +279,7 @@
     <section class="screen accessories">
       <v-container class="d-flex fill-height">
         <div class="screen__content">
-          <h4 class="screen__title">Accessories</h4>
+          <div class="screen__title">Accessories</div>
           <p>We carry a selection of lighters, bongs, pipes, rolling trays and grinders that will make your consumption of our products easier and more enjoyable.</p>
           <div class="screen__bottom">
             <span>View Our Products</span>
@@ -291,7 +291,7 @@
     </section>
     <v-container>
       <section class="safety">
-        <h3>A Word About Safety</h3>
+        <div>A Word About Safety</div>
         <p>When used responsibly, our weed products can be both enjoyable and beneficial. To ensure that you have the best possible experience with our products, follow these simple safety guidelines:</p>
       </section>
     </v-container>
@@ -359,6 +359,16 @@
 
 <script>
 export default {
+  head: {
+    title: 'Best weed in Vaughan | TOPBUD store',
+    meta: [
+      {
+        hid: 'description',
+        name: 'description',
+        content: 'Fast, Reliable Weed Delivery In Vaughan And Surrounding Areas'
+      }
+    ]
+  },
   data: () => ({
     panel1: [0],
     panel2: [0],
@@ -538,7 +548,7 @@ export default {
       align-items: flex-start;
     }
 
-    h3 {
+    &__title {
       font-size: 32px;
       font-weight: 900;
       line-height: 1.55;
@@ -570,7 +580,7 @@ export default {
     flex-direction: column;
     align-items: center;
 
-    h3 {
+    div {
       font-size: 50px;
       font-weight: 900;
       margin-bottom: 10px;
@@ -615,21 +625,21 @@ export default {
       @media(max-width: 768px) {
         margin-right: 0;
       }
-    }
 
-    h4 {
-      background: #72b84a;
-      color: #ffffff;
-      font-size: 42px;
-      padding: 5px 40px 5px 10px;
-      line-height: 1;
-      align-self: flex-start;
-      margin-bottom: 40px;
+      &-title {
+        background: #72b84a;
+        color: #ffffff;
+        font-size: 42px;
+        padding: 5px 40px 5px 10px;
+        line-height: 1;
+        align-self: flex-start;
+        margin-bottom: 40px;
 
-      @media(max-width: 768px) {
-        font-size: 36px;
-        padding-right: 10px;
-        align-self: center;
+        @media(max-width: 768px) {
+          font-size: 36px;
+          padding-right: 10px;
+          align-self: center;
+        }
       }
     }
 
@@ -733,7 +743,7 @@ export default {
     flex-direction: column;
     align-items: center;
 
-    h3 {
+    div {
       font-size: 40px;
       font-weight: 900;
       margin-bottom: 35px;

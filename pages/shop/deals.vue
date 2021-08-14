@@ -9,6 +9,7 @@
     </div>
     <template v-else>
       <v-container>
+        <h1>OZ deals</h1>
         <nav class="breadcrumbs">
           <ul>
             <li><nuxt-link to="/">Home</nuxt-link></li>
@@ -53,6 +54,16 @@
 import { mapGetters } from 'vuex'
 
 export default {
+  head: {
+    title: 'OZ deals | TOPBUD store',
+    meta: [
+      {
+        hid: 'description',
+        name: 'description',
+        content: 'Best OZ deals with TOPBUD store products'
+      }
+    ]
+  },
   components: {
     'DealCard': () => import('@/components/shop/DealCard'),
     'ProductCard': () => import('@/components/shop/ProductCard'),

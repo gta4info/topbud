@@ -33,7 +33,17 @@
 
 <script>
 export default {
-  name: 'about',
+  head: {
+    title: 'Delivery information | TOPBUD store',
+    meta: [
+      {
+        hid: 'description',
+        name: 'description',
+        content: 'Delivery information for the best weed with TOPBUD store'
+      }
+    ]
+  },
+  name: 'delivery',
   async asyncData({$axios}) {
     let loading = true;
     const content = await $axios.$get('static/deliveryinfo');

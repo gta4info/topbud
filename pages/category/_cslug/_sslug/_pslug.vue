@@ -126,6 +126,18 @@
 import { mapGetters } from 'vuex'
 
 export default {
+  head() {
+    return {
+      title: `${this.product.name} | TOPBUD store`,
+      meta: [
+        {
+          hid: 'description',
+          name: 'description',
+          content: `Best ${this.product.name} we offer with TOPBUD store`
+        }
+      ]
+    }
+  },
   components: {
     'TopBar': () => import('@/components/shop/TopBar')
   },

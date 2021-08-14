@@ -9,6 +9,7 @@
     </div>
     <template v-else>
       <v-container>
+        <h1>{{category.name}} products</h1>
         <nav class="breadcrumbs">
           <ul>
             <li>
@@ -55,6 +56,18 @@
 import { mapGetters } from 'vuex'
 
 export default {
+  head() {
+    return {
+      title: `${this.category.name} products | TOPBUD store`,
+      meta: [
+        {
+          hid: 'description',
+          name: 'description',
+          content: `Our shop ${this.category.name} products we offer with TOPBUD store`
+        }
+      ]
+    }
+  },
   components: {
     'SubCategoryCard': () => import('@/components/shop/SubCategoryCard'),
     'ProductCard': () => import('@/components/shop/ProductCard'),

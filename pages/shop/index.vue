@@ -9,6 +9,7 @@
     </div>
     <template v-else>
       <v-container>
+        <h1>Shop categories</h1>
         <nav class="breadcrumbs">
           <ul>
             <li><nuxt-link to="/">Home</nuxt-link></li>
@@ -33,6 +34,16 @@
 import { mapGetters } from 'vuex'
 
 export default {
+  head: {
+    title: 'Shop categories | TOPBUD store',
+    meta: [
+      {
+        hid: 'description',
+        name: 'description',
+        content: 'Our shop categories of products we offer with TOPBUD store'
+      }
+    ]
+  },
   components: {
     'CategoryCard': () => import('@/components/shop/CategoryCard'),
   },

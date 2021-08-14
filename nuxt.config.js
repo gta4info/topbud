@@ -1,7 +1,7 @@
 export default {
   // Global page headers: https://go.nuxtjs.dev/config-head
   head: {
-    title: 'TOPBUD',
+    title: 'TOPBUD store',
     htmlAttrs: {
       lang: 'en'
     },
@@ -39,6 +39,9 @@ export default {
     // https://go.nuxtjs.dev/axios
     '@nuxtjs/axios',
     'cookie-universal-nuxt',
+    '@nuxtjs/gtm',
+    '@nuxtjs/sitemap',
+    '@nuxtjs/robots'
   ],
 
   // Axios module configuration: https://go.nuxtjs.dev/config-axios
@@ -58,4 +61,66 @@ export default {
     host: '0.0.0.0',
     port: '8800'
   },
+
+  gtm: {
+    id: 'GTM-NVKV4NH'
+  },
+
+  robots: [
+    {
+      UserAgent: 'DISCo Pump',
+      Disallow: '/'
+    },
+    {
+      UserAgent: 'Wget',
+      Disallow: '/'
+    },
+    {
+      UserAgent: 'WebZIP',
+      Disallow: '/'
+    },
+    {
+      UserAgent: 'Teleport Pro',
+      Disallow: '/'
+    },
+    {
+      UserAgent: 'WebSnake',
+      Disallow: '/'
+    },
+    {
+      UserAgent: 'Offline Explorer',
+      Disallow: '/'
+    },
+    {
+      UserAgent: 'Web-By-Mail',
+      Disallow: '/'
+    },
+    {
+      UserAgent: 'psbot',
+      Disallow: '/'
+    },
+    {
+      UserAgent: 'gigabot',
+      Disallow: '/'
+    },
+    {
+      UserAgent: 'Twiceler',
+      Disallow: '/'
+    },
+    {
+      UserAgent: 'NetinfoBot',
+      Disallow: '/'
+    },
+    {
+      UserAgent: 'ia_archiver',
+      Disallow: '/'
+    },
+    {
+      UserAgent: '*',
+      Disallow: ['/search', '/admin']
+    },
+    {
+      Allow: ['/.png', '/.jpg', '/.jpeg', '/.js', '/*.css'],
+    }
+  ]
 }

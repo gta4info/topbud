@@ -20,6 +20,9 @@
             <li>Cart</li>
           </ul>
         </nav>
+
+        <h1>Your shopping cart</h1>
+
         <div class="table" v-if="cart.length">
           <v-container class="table__header">
             <v-row>
@@ -92,6 +95,10 @@
               </div>
 
               <CheckOutForm :enabled="calculateCartTotal >= 60"/>
+
+              <div class="table__bottom-delivery">
+                <nuxt-link to="/delivery" target="_blank">Delivery information</nuxt-link>
+              </div>
             </div>
           </div>
 
@@ -109,6 +116,16 @@
 import { mapGetters } from 'vuex'
 
 export default {
+  head: {
+    title: 'Cart | TOPBUD store',
+    meta: [
+      {
+        hid: 'description',
+        name: 'description',
+        content: 'Your shopping cart with TOPBUD store'
+      }
+    ]
+  },
   components: {
     'CheckOutForm': () => import('@/components/shop/CheckOutForm')
   },
@@ -141,6 +158,10 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+h1 {
+  margin-bottom: 20px;
+}
+
 .table {
   display: flex;
   flex-direction: column;
@@ -306,6 +327,13 @@ export default {
         font-weight: 900;
         font-size: 18px;
       }
+    }
+
+    &-delivery {
+      font-size: 14px;
+      font-weight: 900;
+      text-decoration: underline;
+      margin-top: 10px;
     }
   }
 }

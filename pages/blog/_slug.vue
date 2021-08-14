@@ -39,6 +39,18 @@
 
 <script>
 export default {
+  head() {
+    return {
+      title: `${this.blog.name} | TOPBUD store`,
+      meta: [
+        {
+          hid: 'description',
+          name: 'description',
+          content: this.blog.blog.substr(0,50) + '...'
+        }
+      ]
+    }
+  },
   name: 'blog_slug',
   async asyncData({$axios, params}) {
     let loading = true;
