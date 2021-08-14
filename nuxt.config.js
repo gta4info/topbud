@@ -61,8 +61,8 @@ export default {
     host: '0.0.0.0',
     port: '80',
     https: {
-      key: fs.readFileSync(path.resolve('/root/project/key.pem')),
-      cert: fs.readFileSync(path.resolve('/root/project/cert.pem'))
+      key: '/root/project/key.pem',
+      cert: '/root/project/cert.pem'
     }
   },
 
