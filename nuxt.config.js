@@ -1,3 +1,5 @@
+import fs from 'fs'
+
 export default {
   // Global page headers: https://go.nuxtjs.dev/config-head
   head: {
@@ -61,8 +63,8 @@ export default {
     host: '0.0.0.0',
     port: '80',
     https: {
-      key: '/root/project/key.pem',
-      cert: '/root/project/cert.pem'
+      key: fs.readFileSync('/root/project/key.pem'),
+      cert: fs.readFileSync('/root/project/cert.pem')
     }
   },
 
