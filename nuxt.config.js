@@ -48,7 +48,7 @@ export default {
 
   // Axios module configuration: https://go.nuxtjs.dev/config-axios
   axios: {
-    baseURL: 'https://31.186.250.216:8443/v1/front'
+    baseURL: 'https://topbudstore.com:8443/v1/front'
   },
 
   // Build Configuration: https://go.nuxtjs.dev/config-build
@@ -62,10 +62,6 @@ export default {
   server: {
     host: '0.0.0.0',
     port: '80',
-    // https: {
-      // key: fs.readFileSync('/root/project/key.pem'),
-      // cert: fs.readFileSync('/root/project/cert.pem')
-    // }
   },
 
   gtm: {
