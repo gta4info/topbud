@@ -49,12 +49,12 @@ import { mapGetters } from 'vuex'
 export default {
   head() {
     return {
-      title: `${this.category.name} ${this.sub.name} products | TOPBUD store`,
+      title: `Weed delivery 🚬 ${this.category.name} ${this.sub.name} in Toronto, best prices — TOPBUD store`,
       meta: [
         {
           hid: 'description',
           name: 'description',
-          content: `Our shop ${this.category.name} ${this.sub.name} products we offer with TOPBUD store`
+          content: `TOPBUD store offer to you a ${this.category.name} ${this.sub.name} weeds in Toronto ✔ Best prices ✔ Weed delivery`
         }
       ]
     }

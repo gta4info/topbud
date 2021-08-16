@@ -21,11 +21,9 @@
         <v-col md="3" sm="12">
           <nav class="footer__nav">
             <ul>
-              <li class="footer__nav-title">Catalog</li>
-              <li><nuxt-link to="/category/flower">Flower</nuxt-link></li>
-              <li><nuxt-link to="/category/edibles">Edibles</nuxt-link></li>
-              <li><nuxt-link to="/category/shatters">Shatters</nuxt-link></li>
-              <li><nuxt-link to="/category/vape-pens">Vape pens</nuxt-link></li>
+              <li class="footer__nav-title">More</li>
+              <li><nuxt-link to="/contacts">Contact us</nuxt-link></li>
+              <li><nuxt-link to="/blog">Blog</nuxt-link></li>
             </ul>
           </nav>
         </v-col>
@@ -40,6 +38,9 @@
         </v-col>
       </v-row>
       <v-row class="footer__links-wrapper">
+        <v-col cols="12">
+          <div class="footer__links-title">Catalog</div>
+        </v-col>
         <v-col cols="6" :md="links.length-1" sm="6" v-for="(group, i) in links" :key="i" class="footer__links">
           <ul>
             <li class="footer__links-item" v-for="link in group"><nuxt-link :to="link.link">{{link.title}}</nuxt-link></li>
@@ -116,6 +117,13 @@ export default {
 
       &-wrapper {
         margin-top: 30px;
+      }
+
+      &-title {
+        text-transform: uppercase;
+        font-size: 15px;
+        font-weight: 900;
+        color: #CBE1BE;
       }
 
       &-item {

@@ -38,12 +38,12 @@ import { mapGetters } from 'vuex'
 
 export default {
   head: {
-    title: 'Search | TOPBUD store',
+    title: 'Weed delivery 🚬 in Toronto, best prices — TOPBUD store',
     meta: [
       {
         hid: 'description',
         name: 'description',
-        content: 'Search products we offer with TOPBUD store'
+        content: 'TOPBUD store offer to you weeds in Toronto ✔ Best prices ✔ Weed delivery'
       }
     ]
   },

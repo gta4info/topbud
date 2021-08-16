@@ -55,12 +55,12 @@ import { mapGetters } from 'vuex'
 
 export default {
   head: {
-    title: 'OZ deals | TOPBUD store',
+    title: 'Weed delivery 🚬 OZ Deals in Toronto, best prices — TOPBUD store',
     meta: [
       {
         hid: 'description',
         name: 'description',
-        content: 'Best OZ deals with TOPBUD store products'
+        content: 'TOPBUD store offer to you oz Deals in Toronto ✔ Best prices ✔ Weed delivery'
       }
     ]
   },

@@ -9,6 +9,7 @@
     </div>
     <template v-else>
       <v-container>
+        <h1>Delivery information</h1>
         <nav class="breadcrumbs">
           <ul>
             <li>
