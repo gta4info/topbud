@@ -29,6 +29,9 @@
               <v-container>
                 <v-row v-if="productsFiltered.length">
                   <v-col md="3" sm="12">
+                    <MixCard/>
+                  </v-col>
+                  <v-col md="3" sm="12">
                     <DealCard/>
                   </v-col>
                   <v-col
@@ -66,6 +69,7 @@ export default {
   },
   components: {
     'DealCard': () => import('@/components/shop/DealCard'),
+    'MixCard': () => import('@/components/shop/MixCard'),
     'ProductCard': () => import('@/components/shop/ProductCard'),
     'Filters': () => import('@/components/shop/Filters'),
   },

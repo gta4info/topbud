@@ -9,6 +9,7 @@
     </div>
     <template v-else>
       <v-container>
+        <h1>Search</h1>
         <nav class="breadcrumbs">
           <ul>
             <li><nuxt-link to="/">Home</nuxt-link></li>

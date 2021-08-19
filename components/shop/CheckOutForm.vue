@@ -129,6 +129,7 @@ export default {
   computed: {
     ...mapGetters({
       cart: 'shop/cart',
+      mixsCart: 'shop/mixsCart',
       weights: 'shop/weights'
     })
   },
@@ -163,10 +164,10 @@ export default {
         })
     },
     checkout() {
-      if(!this.name || !this.phone || !this.addressQuery) {
-        return alert('Fields are not filled!')
-      }
-      this.sending = true;
+      // if(!this.name || !this.phone || !this.addressQuery) {
+      //   return alert('Fields are not filled!')
+      // }
+      // this.sending = true;
       let order = [];
 
       this.cart.map(item => {
@@ -174,8 +175,22 @@ export default {
           id: parseInt(item.id),
           count: item.quantity,
           weight_name: this.weights[item.weight_id],
-          price: item.price
+          price: item.price,
+          mix: 0
         })
+      })
+
+      this.mixsCart.data.map(mix => {
+        mix.products[0].map(item => {
+          order.push({
+            id: parseInt(item.id),
+            count: mix.quantity,
+            weight_name: this.weights[item.weight_id],
+            price: item.price,
+            mix: mix.weight
+          })
+        });
+
       })
 
       let data = {
@@ -185,20 +200,22 @@ export default {
         order: order
       };
 
-      this.$axios
-        .post(`/checkout/${this.payment}`, data)
-        .then(res => {
-          if(res.data.success) {
-            this.name = '';
-            this.phone = '';
-            this.address = '';
-            this.orderId = res.data.order_id;
-          }
-        })
-        .catch(err => {
-          alert('Something goes wrong...');
-        })
-        .finally(() => this.sending = false);
+      console.log(data)
+
+      // this.$axios
+      //   .post(`/checkout/${this.payment}`, data)
+      //   .then(res => {
+      //     if(res.data.success) {
+      //       this.name = '';
+      //       this.phone = '';
+      //       this.address = '';
+      //       this.orderId = res.data.order_id;
+      //     }
+      //   })
+      //   .catch(err => {
+      //     alert('Something goes wrong...');
+      //   })
+      //   .finally(() => this.sending = false);
     }
   }
 }

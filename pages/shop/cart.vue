@@ -23,7 +23,7 @@
 
         <h1>Your shopping cart</h1>
 
-        <div class="table" v-if="cart.length">
+        <div class="table" v-if="cart.length || (mixs.cart.data && mixs.cart.data.length)">
           <v-container class="table__header">
             <v-row>
               <v-col cols="6">
@@ -42,7 +42,7 @@
             </v-row>
           </v-container>
           <div class="table__list">
-            <v-container class="table__list">
+            <v-container>
               <v-row v-for="product in cart" :key="product.id" class="table__item">
                 <v-col cols="6">
                   <div class="table__item-title">
@@ -77,6 +77,50 @@
                 </v-col>
                 <v-col cols="1">
                   <v-btn icon @click="$store.dispatch('shop/deleteProductFromCart', product.id)">
+                    <v-icon small>mdi-close</v-icon>
+                  </v-btn>
+                </v-col>
+              </v-row>
+
+              <!--Mix'N'Match-->
+              <v-row v-for="(mix, i) in mixs.cart.data" :key="i" class="table__item table__item-mix">
+                <v-col cols="6">
+                  <div class="table__item-title" :class="`table__item-mix--${mix.weight}`">
+                    <div class="table__item-imgGroup">
+                      <img :src="product.img" :alt="product.name" v-for="product in mix.products[0]" :key="product.id">
+                    </div>
+                    <div class="table__item-titleGroup">
+                      <div v-for="product in mix.products[0]" :key="product.id">{{ product.name }}</div>
+                    </div>
+                  </div>
+                </v-col>
+                <v-col cols="2">
+                  <div class="table__item-price">${{ mix.price }}</div>
+                </v-col>
+                <v-col cols="2">
+                  <div class="table__item-quantity">
+                    <v-btn
+                      x-small
+                      depressed
+                      @click="$store.commit('shop/CHANGE_AMOUNT_OF_MIX_IN_MIXS_CART', {key: i, quantity: mix.quantity - 1})"
+                    >
+                      <v-icon small>mdi-minus</v-icon>
+                    </v-btn>
+                    <div>{{mix.quantity}}</div>
+                    <v-btn
+                      x-small
+                      depressed
+                      @click="$store.commit('shop/CHANGE_AMOUNT_OF_MIX_IN_MIXS_CART', {key: i, quantity: mix.quantity + 1})"
+                    >
+                      <v-icon small>mdi-plus</v-icon>
+                    </v-btn>
+                  </div>
+                </v-col>
+                <v-col cols="1">
+                  <div class="table__item-total">${{ mix.price * mix.quantity }}</div>
+                </v-col>
+                <v-col cols="1">
+                  <v-btn icon @click="$store.commit('shop/DELETE_MIX_FROM_MIXS_CART', i)">
                     <v-icon small>mdi-close</v-icon>
                   </v-btn>
                 </v-col>
@@ -135,6 +179,7 @@ export default {
   computed: {
     ...mapGetters({
       cart: 'shop/cart',
+      mixs: 'shop/mixs',
       weights: 'shop/weights'
     }),
     calculateCartTotal() {
@@ -142,6 +187,11 @@ export default {
       this.cart.map(item => {
         total += item.quantity * item.price;
       })
+      if(this.mixs.cart.data) {
+        this.mixs.cart.data.map(item => {
+          total += item.quantity * item.price;
+        })
+      }
 
       return total;
     }
@@ -152,6 +202,7 @@ export default {
     }
   },
   created () {
+    this.$store.dispatch('shop/setMixsCart');
     this.$store.dispatch('shop/getCartProducts').then(() => this.loading = false);
   }
 }
@@ -202,6 +253,75 @@ h1 {
           position: absolute;
           top: 0;
           right: 10px;
+        }
+      }
+    }
+
+    &-mix {
+
+      .table__item {
+
+        &-imgGroup {
+          display: flex;
+          align-items: center;
+          position: relative;
+          width: 70px;
+          height: 70px;
+          margin-right: 20px;
+
+          img {
+            margin-right: 0;
+          }
+        }
+
+        &-titleGroup {
+          display: flex;
+          flex-direction: column;
+
+          div {
+            font-size: 14px;
+          }
+        }
+      }
+
+      &--2 {
+        .table__item {
+          &-imgGroup {
+            img {
+              width: 50%;
+              object-fit: cover;
+
+              &:first-child {
+                left: 0;
+              }
+
+              &:last-child {
+                right: 0;
+              }
+            }
+          }
+        }
+      }
+
+      &--4 {
+        .table__item {
+          &-imgGroup {
+            flex-wrap: wrap;
+            img {
+              width: 50%;
+              height: 50%;
+              object-fit: cover;
+
+
+              &:nth-child(even) {
+                left: 0;
+              }
+
+              &:nth-child(odd) {
+                right: 0;
+              }
+            }
+          }
         }
       }
     }

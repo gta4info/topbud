@@ -39,6 +39,7 @@ export default {
   },
   created() {
     this.$store.commit('shop/SET_CART_LENGTH');
+    this.$store.commit('shop/SET_MIXS_CART');
     if (process.browser) {
       this.windowWidth = window.outerWidth;
       window.addEventListener("resize", this.setWindowWidth);

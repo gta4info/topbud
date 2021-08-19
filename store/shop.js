@@ -2,7 +2,16 @@ export const state = () => ({
   cart: [],
   weights: {},
   categories: [],
-  cartLength: 0
+  cartLength: 0,
+  mixs: {
+    2: [],
+    4: [],
+    selected: {
+      2: [],
+      4: []
+    },
+    cart: []
+  }
 });
 
 export const getters = {
@@ -10,9 +19,14 @@ export const getters = {
   weights: state => state.weights,
   categories: state => state.categories,
   cartLength: state => state.cartLength,
+  mixs: state => state.mixs,
+  mixsCart: state => state.mixs.cart,
 }
 
 export const actions = {
+  async setMixsCart({commit}) {
+    commit('SET_MIXS_CART');
+  },
   async getWeights({commit}) {
     const response = await this.$axios.get('/weights');
     commit('SET_WEIGHTS', response.data);
@@ -43,6 +57,16 @@ export const actions = {
 export const mutations = {
   SET_CART_LENGTH(state) {
     state.cartLength = this.$cookies.get('cart') ? this.$cookies.get('cart').length : 0;
+  },
+  SET_MIXS(state, data) {
+    state.mixs[data.type] = data.products;
+  },
+  DELETE_PRODUCT_FROM_SELECTED_MIXS(state, data) {
+    state.mixs.selected[data.type].splice(data.key, 1)
+  },
+  PUSH_PRODUCT_STATE_TO_SELECTED_MIXS(state, data) {
+    if(state.mixs.selected[data.type].length === data.type) return;
+    state.mixs.selected[data.type].push(data.product)
   },
   SET_WEIGHTS(state, data) {
     state.weights = data;
@@ -98,5 +122,18 @@ export const mutations = {
     let key = cookies.indexOf(cookies.find(item => item.product_id === id))
     cookies.splice(key, 1);
     this.$cookies.set('cart', cookies)
+  },
+  SET_MIXS_CART(state) {
+    state.mixs.cart = this.$cookies.get('mixs')
+  },
+  CHANGE_AMOUNT_OF_MIX_IN_MIXS_CART(state, data) {
+    if(data.quantity < 1) {
+      return;
+    }
+    state.mixs.cart.data[data.key].quantity = data.quantity;
+  },
+  DELETE_MIX_FROM_MIXS_CART(state, data) {
+    state.mixs.cart.data.splice(data.key, 1);
+    this.$cookies.set('mixs', state.mixs.cart)
   }
 }

@@ -1,8 +1,8 @@
 <template>
-  <nuxt-link to="/shop/cart" class="cart" v-if="cartLength > 0">
+  <nuxt-link to="/shop/cart" class="cart" v-if="totalLength > 0">
     <v-icon size="40">mdi-cart</v-icon>
     <div class="badge">
-      {{ cartLength }}
+      {{ totalLength }}
     </div>
   </nuxt-link>
 </template>
@@ -14,8 +14,12 @@ import { mapGetters } from 'vuex'
 export default {
   computed: {
     ...mapGetters({
-      cartLength: 'shop/cartLength'
-    })
+      cartLength: 'shop/cartLength',
+      mixs: 'shop/mixs'
+    }),
+    totalLength() {
+      return this.cartLength + (this.mixs.cart.data ? this.mixs.cart.data.length : 0)
+    }
   }
 }
 </script>
