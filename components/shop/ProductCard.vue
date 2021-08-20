@@ -316,7 +316,7 @@ export default {
         margin-top: auto;
 
         &:before {
-          content: '⯆';
+          content: '▼';
           position: absolute;
           right: 6px;
           transition: .3s;

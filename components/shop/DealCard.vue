@@ -3,18 +3,26 @@
     <template v-slot:activator="{on}">
       <div class="card" v-on="on">
         <div class="card__img">
-          <img src="@/assets/images/banner1.jpeg" alt="Deals menu">
+          <img :src="img" alt="Deals menu">
         </div>
         <div class="card__title">Deals menu</div>
       </div>
     </template>
-    <img src="@/assets/images/banner1.jpeg" alt="Deals menu" style="height: auto;width: 100%;">
+    <img :src="img" alt="Deals menu" style="height: auto;width: 100%;">
   </v-dialog>
 </template>
 
 <script>
 export default {
   name: 'DealCard',
+  data: () => ({
+    img: null
+  }),
+  created () {
+    this.$axios
+      .get('/deals/menu')
+      .then(res => this.img = '/' + res.data.img)
+  }
 }
 </script>
 

@@ -6,6 +6,7 @@
           v-model="query"
           placeholder="What do you need?"
           required
+          ref="queryinput"
         />
       </div>
       <v-btn icon @click="showOrSubmit" depressed>
@@ -29,6 +30,7 @@ export default {
     showOrSubmit() {
       if(!this.query.length) {
         this.show = !this.show;
+        this.$refs['queryinput'].focus();
       } else {
         this.submit();
       }

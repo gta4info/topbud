@@ -186,7 +186,10 @@ export default {
     }
   },
   watch: {
-    range() {
+    min() {
+      this.getFilteredProducts();
+    },
+    max() {
       this.getFilteredProducts();
     },
     categoriesFilter: {
@@ -214,11 +217,13 @@ export default {
         }
       })
       let data = {
-        min: this.range[0],
-        max: this.range[1],
+        min: this.min ? this.min : 1,
+        max: this.max ? this.max : 2,
         cats: cats,
         subs: subs,
       }
+
+      console.log(data)
 
       if(data.cats.length) {
 
@@ -291,7 +296,8 @@ export default {
   },
   created () {
     this.$root.$on('change-filter-range', data => {
-      this.range = data;
+      this.min = data.min;
+      this.max = data.max;
     })
     this.$root.$on('change-filter-categories', data => {
       this.categoriesFilter = data;

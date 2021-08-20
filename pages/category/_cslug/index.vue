@@ -132,6 +132,14 @@ export default {
     loadingFiltered: false,
     search: ''
   }),
+  watch: {
+    min() {
+      this.getFilteredProducts();
+    },
+    max() {
+      this.getFilteredProducts();
+    },
+  },
   computed: {
     ...mapGetters({
       categories: 'shop/categories'
@@ -148,11 +156,6 @@ export default {
         }
       })
     }
-  },
-  watch: {
-    range () {
-      this.getFilteredProducts()
-    },
   },
   methods: {
     getProducts () {
@@ -210,8 +213,8 @@ export default {
       if (this.loadingFiltered) return;
 
       let data = {
-        min: this.range[0],
-        max: this.range[1]
+        min: this.min,
+        max: this.max
       }
 
       this.loadingFiltered = true
@@ -239,7 +242,8 @@ export default {
   },
   created () {
     this.$root.$on('change-filter-range', data => {
-      this.range = data
+      this.min = data.min;
+      this.max = data.max;
     })
     this.$root.$on('change-filter-search-query', data => {
       this.search = data;

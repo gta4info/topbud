@@ -3,17 +3,18 @@
     <div class="filter__group">
       <div class="filter__title">Price range</div>
       <div class="filter__slider">
-        <v-range-slider
-          v-model="rangeData"
-          :min="min"
-          :max="max"
-          hide-details
-        />
         <div class="filter__slider-inputs">
-          <span>${{rangeData[0]}}</span>
-          <span>${{rangeData[1]}}</span>
+          <div class="mr-6">
+            <span class="mb-2 d-block">From</span>
+            <v-text-field v-model="minData" placeholder="From" solo dense class="filter__name" hide-details type="number" @keypress.enter="updatePrices"/>
+          </div>
+          <div>
+            <span class="mb-2 d-block">To</span>
+            <v-text-field v-model="maxData" placeholder="To" solo dense class="filter__name" hide-details type="number" @keypress.enter="updatePrices"/>
+          </div>
         </div>
       </div>
+      <v-btn @click="updatePrices" color="#7FAD39" class="mt-4 white--text" depressed>Apply</v-btn>
     </div>
     <div class="filter__group" v-if="categories && categories.length">
       <div class="filter__title">Categories</div>
@@ -94,12 +95,15 @@ export default {
       required: true
     }
   },
+  methods: {
+    updatePrices() {
+      this.$root.$emit('change-filter-range', {
+        min: parseInt(this.minData),
+        max: parseInt(this.maxData),
+      })
+    }
+  },
   watch: {
-    rangeData() {
-      setTimeout(() => {
-        this.$root.$emit('change-filter-range', this.rangeData)
-      }, 1000)
-    },
     categoriesData: {
       handler() {
         this.$root.$emit('change-filter-categories', this.categoriesData)
@@ -114,7 +118,9 @@ export default {
     return {
       rangeData: this.range,
       categoriesData: this.categories ?? [],
-      searchQuery: this.search
+      searchQuery: this.search,
+      minData: this.min,
+      maxData: this.max,
     }
   }
 }
