@@ -30,7 +30,7 @@ export default {
   },
   methods: {
     changeSelected() {
-      this.$store.commit('shop/PUSH_PRODUCT_STATE_TO_SELECTED_MIXS', {
+      this.$store.commit('shop/PUSH_PRODUCT_TO_SELECTED_MIXS', {
         type: this.selectedWeight,
         product: this.product
       })

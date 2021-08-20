@@ -23,7 +23,7 @@
 
         <h1>Your shopping cart</h1>
 
-        <div class="table" v-if="cart.length || (mixs.cart.data && mixs.cart.data.length)">
+        <div class="table" v-if="cart.length || (mixs.cart && mixs.cart.data && mixs.cart.data.length)">
           <v-container class="table__header">
             <v-row>
               <v-col cols="6">
@@ -43,7 +43,7 @@
           </v-container>
           <div class="table__list">
             <v-container>
-              <v-row v-for="product in cart" :key="product.id" class="table__item">
+              <v-row v-for="(product, ind) in cart" :key="`${product.id}+${ind}`" class="table__item">
                 <v-col cols="6">
                   <div class="table__item-title">
                     <img :src="product.img" :alt="product.title">
@@ -87,10 +87,10 @@
                 <v-col cols="6">
                   <div class="table__item-title" :class="`table__item-mix--${mix.weight}`">
                     <div class="table__item-imgGroup">
-                      <img :src="product.img" :alt="product.name" v-for="product in mix.products[0]" :key="product.id">
+                      <img :src="product.img" :alt="product.name" v-for="(product, index) in mix.products[0]" :key="index">
                     </div>
                     <div class="table__item-titleGroup">
-                      <div v-for="product in mix.products[0]" :key="product.id">{{ product.name }}</div>
+                      <div v-for="(product, ind) in mix.products[0]" :key="`${product.id}+${ind}`">{{ product.name }} <span>{{ weights[product.weight_id] }}</span></div>
                     </div>
                   </div>
                 </v-col>
@@ -201,9 +201,10 @@ export default {
       alert('Checkout!')
     }
   },
-  created () {
-    this.$store.dispatch('shop/setMixsCart');
-    this.$store.dispatch('shop/getCartProducts').then(() => this.loading = false);
+  async created () {
+    await this.$store.dispatch('shop/setMixsCart');
+    await this.$store.dispatch('shop/getMixProducts');
+    await this.$store.dispatch('shop/getCartProducts').then(() => this.loading = false);
   }
 }
 </script>
@@ -237,7 +238,7 @@ h1 {
     position: relative;
 
     .col {
-      height: 110px;
+      min-height: 110px;
       display: flex;
       align-items: center;
 
@@ -263,14 +264,16 @@ h1 {
 
         &-imgGroup {
           display: flex;
+          flex-wrap: wrap;
           align-items: center;
           position: relative;
           width: 70px;
-          height: 70px;
           margin-right: 20px;
 
           img {
             margin-right: 0;
+            width: 50%;
+            height: 50%;
           }
         }
 
@@ -280,47 +283,6 @@ h1 {
 
           div {
             font-size: 14px;
-          }
-        }
-      }
-
-      &--2 {
-        .table__item {
-          &-imgGroup {
-            img {
-              width: 50%;
-              object-fit: cover;
-
-              &:first-child {
-                left: 0;
-              }
-
-              &:last-child {
-                right: 0;
-              }
-            }
-          }
-        }
-      }
-
-      &--4 {
-        .table__item {
-          &-imgGroup {
-            flex-wrap: wrap;
-            img {
-              width: 50%;
-              height: 50%;
-              object-fit: cover;
-
-
-              &:nth-child(even) {
-                left: 0;
-              }
-
-              &:nth-child(odd) {
-                right: 0;
-              }
-            }
           }
         }
       }

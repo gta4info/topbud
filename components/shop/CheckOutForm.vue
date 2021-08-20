@@ -69,7 +69,7 @@
           <v-btn depressed color="#28A745" class="white--text" @click="checkout" :loading="sending">Send order</v-btn>
         </template>
         <template v-else>
-          <v-btn depressed color="#6C757D" class="white--text" @click="$store.commit('shop/EMPTY_CART'); checkoutDialog = false">Close</v-btn>
+          <v-btn depressed color="#6C757D" class="white--text" @click="closeDialog">Close</v-btn>
         </template>
       </v-card-actions>
     </v-card>
@@ -134,6 +134,11 @@ export default {
     })
   },
   methods: {
+    closeDialog() {
+      this.$store.commit('shop/EMPTY_CART');
+      this.$store.commit('shop/EMPTY_MIX_CART');
+      this.checkoutDialog = false;
+    },
     onResultSelected(result) {
       this.addressQuery = result;
       this.showResults = false;
@@ -164,10 +169,10 @@ export default {
         })
     },
     checkout() {
-      // if(!this.name || !this.phone || !this.addressQuery) {
-      //   return alert('Fields are not filled!')
-      // }
-      // this.sending = true;
+      if(!this.name || !this.phone || !this.addressQuery) {
+        return alert('Fields are not filled!')
+      }
+      this.sending = true;
       let order = [];
 
       this.cart.map(item => {
@@ -200,22 +205,20 @@ export default {
         order: order
       };
 
-      console.log(data)
-
-      // this.$axios
-      //   .post(`/checkout/${this.payment}`, data)
-      //   .then(res => {
-      //     if(res.data.success) {
-      //       this.name = '';
-      //       this.phone = '';
-      //       this.address = '';
-      //       this.orderId = res.data.order_id;
-      //     }
-      //   })
-      //   .catch(err => {
-      //     alert('Something goes wrong...');
-      //   })
-      //   .finally(() => this.sending = false);
+      this.$axios
+        .post(`/checkout/${this.payment}`, data)
+        .then(res => {
+          if(res.data.success) {
+            this.name = '';
+            this.phone = '';
+            this.address = '';
+            this.orderId = res.data.order_id;
+          }
+        })
+        .catch(err => {
+          alert('Something goes wrong...');
+        })
+        .finally(() => this.sending = false);
     }
   }
 }

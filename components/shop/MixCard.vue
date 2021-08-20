@@ -1,7 +1,7 @@
 <template>
   <nuxt-link to="/shop/mix" class="card">
     <div class="card__img">
-      <img src="@/assets/images/banner1.jpeg" alt="Deals menu">
+      <img src="@/static/images/Mix-and-Match.jpg" alt="Mix'N'Match">
     </div>
     <div class="card__title">Mix'N'Match</div>
   </nuxt-link>

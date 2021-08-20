@@ -18,7 +18,7 @@ export default {
       mixs: 'shop/mixs'
     }),
     totalLength() {
-      return this.cartLength + (this.mixs.cart.data ? this.mixs.cart.data.length : 0)
+      return this.cartLength + (this.mixs.cart && this.mixs.cart.data ? this.mixs.cart.data.length : 0)
     }
   }
 }

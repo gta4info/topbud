@@ -7,8 +7,8 @@ export const state = () => ({
     2: [],
     4: [],
     selected: {
-      2: [],
-      4: []
+      2: [{},{}],
+      4: [{},{},{},{}]
     },
     cart: []
   }
@@ -39,14 +39,30 @@ export const actions = {
     let ids = [];
     if(this.$cookies.get('cart')) {
       this.$cookies.get('cart').map(item => {
-        ids.push(item.product_id)
+        ids.push([item.product_id, 0])
       });
 
       const response = await this.$axios.post('/cart', {
         ids: ids
       });
-      commit('SET_CART', response.data);
+      commit('SET_CART', response.data.result);
     }
+  },
+  async getMixProducts({commit, state}) {
+    let ids = [];
+
+    state.mixs.cart.data.map(mix => {
+      mix.products[0].map(item => {
+        if(!ids.find(id => id === item.id)) {
+          ids.push([item.id, mix.weight])
+        }
+      })
+    })
+
+    const response = await this.$axios.post('/cart', {
+      ids: ids
+    });
+    commit('UPDATE_MIXS_PRICES', response.data.result);
   },
   deleteProductFromCart({commit}, data) {
     commit('DELETE_PRODUCT_IN_CART', data);
@@ -63,10 +79,17 @@ export const mutations = {
   },
   DELETE_PRODUCT_FROM_SELECTED_MIXS(state, data) {
     state.mixs.selected[data.type].splice(data.key, 1)
+    if(state.mixs.selected[data.type].length < data.type) {
+      state.mixs.selected[data.type].push({});
+    }
   },
-  PUSH_PRODUCT_STATE_TO_SELECTED_MIXS(state, data) {
-    if(state.mixs.selected[data.type].length === data.type) return;
-    state.mixs.selected[data.type].push(data.product)
+  PUSH_PRODUCT_TO_SELECTED_MIXS(state, data) {
+    state.mixs.selected[data.type].unshift(data.product);
+
+    let firstEmpty = state.mixs.selected[data.type].indexOf(state.mixs.selected[data.type].find(item => !item.id));
+    if(firstEmpty >= 0) {
+      state.mixs.selected[data.type].splice(firstEmpty, 1)
+    }
   },
   SET_WEIGHTS(state, data) {
     state.weights = data;
@@ -75,6 +98,10 @@ export const mutations = {
     this.$cookies.remove('cart');
     state.cartLength = 0;
     state.cart = [];
+  },
+  EMPTY_MIX_CART(state) {
+    this.$cookies.remove('mixs');
+    state.mixs.cart = [];
   },
   SET_CATEGORIES(state, data) {
     let arr = [];
@@ -94,15 +121,13 @@ export const mutations = {
     state.categories = arr;
   },
   SET_CART(state, data) {
-    let arr = [];
-    Object.keys(data).map(key => {
-      let quantity = this.$cookies.get('cart').find(item => item.product_id == key).amount
-      data[key].id = key;
-      data[key].img = '/' + data[key].img;
-      data[key].quantity = quantity;
-      arr.push(data[key]);
+    data.map(p => {
+      let quantity = this.$cookies.get('cart').find(item => item.product_id === p.id).amount
+      p.img = '/' + p.img;
+      p.quantity = quantity;
+      return p;
     })
-    state.cart = arr;
+    state.cart = data;
   },
   CHANGE_AMOUNT_OF_PRODUCT_IN_CART(state, data) {
     if(data.quantity < 1) {
@@ -124,7 +149,7 @@ export const mutations = {
     this.$cookies.set('cart', cookies)
   },
   SET_MIXS_CART(state) {
-    state.mixs.cart = this.$cookies.get('mixs')
+    state.mixs.cart = this.$cookies.get('mixs') ?? [];
   },
   CHANGE_AMOUNT_OF_MIX_IN_MIXS_CART(state, data) {
     if(data.quantity < 1) {
@@ -135,5 +160,29 @@ export const mutations = {
   DELETE_MIX_FROM_MIXS_CART(state, data) {
     state.mixs.cart.data.splice(data.key, 1);
     this.$cookies.set('mixs', state.mixs.cart)
+  },
+  CLEAR_SELECTED_MIXS(state, data) {
+    state.mixs.selected[data.type] = [];
+  },
+  UPDATE_MIXS_PRICES(state, data) {
+    data.map(d => {
+      state.mixs.cart.data.map(item => {
+        item.products[0].map(p => {
+          if(p.id === d.id) {
+            p.price = d.price;
+          }
+          return p;
+        });
+        return item;
+      });
+    })
+    state.mixs.cart.data.map(item => {
+      let price = 0;
+      item.products[0].map(p => {
+        price = price + p.price;
+      });
+      item.price = price;
+      return item;
+    });
   }
 }

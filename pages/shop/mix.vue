@@ -6,6 +6,7 @@
         <ul>
           <li><nuxt-link to="/">Home</nuxt-link></li>
           <li><nuxt-link to="/shop">Shop</nuxt-link></li>
+          <li><nuxt-link to="/shop/deals">OZ Deals</nuxt-link></li>
           <li>Mix'N'Match</li>
         </ul>
       </nav>
@@ -65,18 +66,19 @@
                       <template v-if="selectedWeight === 2">
                         <div
                           class="pack__options-slot"
-                          v-for="i of 2"
+                          v-for="(product, i) of mixs.selected[2]"
+                          :key="i"
                         >
-                          <template v-if="mixs.selected[2][i-1]">
+                          <template v-if="Object.keys(product).length">
                             <div class="pack__options-slot--image">
-                              <img :src="mixs.selected[2][i-1].img" :alt="mixs.selected[2][i-1].name">
+                              <img :src="product.img" :alt="product.name">
                             </div>
                             <div class="pack__options-slot--content">
-                              <div class="pack__options-slot--name">{{mixs.selected[2][i-1].name}}</div>
-                              <div class="pack__options-slot--price">${{mixs.selected[2][i-1].deal_price}}</div>
+                              <div class="pack__options-slot--name">{{product.name}}</div>
+                              <div class="pack__options-slot--price">${{product.deal_price}}</div>
                             </div>
                             <div class="pack__options-slot--remove">
-                              <v-btn icon @click="removeFromSelected(i-1)"><v-icon>mdi-close</v-icon></v-btn>
+                              <v-btn icon @click="removeFromSelected(i)"><v-icon>mdi-close</v-icon></v-btn>
                             </div>
                           </template>
                           <div class="pack__options-slot--empty" v-else>
@@ -88,18 +90,19 @@
                       <template v-if="selectedWeight === 4">
                         <div
                           class="pack__options-slot"
-                          v-for="i of 4"
+                          v-for="(product, i) of mixs.selected[4]"
+                          :key="i"
                         >
-                          <template v-if="mixs.selected[4][i-1]">
+                          <template v-if="Object.keys(product).length">
                             <div class="pack__options-slot--image">
-                              <img :src="mixs.selected[4][i-1].img" :alt="mixs.selected[4][i-1].name">
+                              <img :src="product.img" :alt="product.name">
                             </div>
                             <div class="pack__options-slot--content">
-                              <div class="pack__options-slot--name">{{mixs.selected[4][i-1].name}}</div>
-                              <div class="pack__options-slot--price">${{mixs.selected[4][i-1].deal_price}}</div>
+                              <div class="pack__options-slot--name">{{product.name}}</div>
+                              <div class="pack__options-slot--price">${{product.deal_price}}</div>
                             </div>
                             <div class="pack__options-slot--remove">
-                              <v-btn icon @click="removeFromSelected(i-1)"><v-icon>mdi-close</v-icon></v-btn>
+                              <v-btn icon @click="removeFromSelected(i)"><v-icon>mdi-close</v-icon></v-btn>
                             </div>
                           </template>
                           <div class="pack__options-slot--empty" v-else>
@@ -118,7 +121,7 @@
                         depressed
                         color="#7FAD39"
                         class="pack__cart-btn"
-                        :disabled="mixs.selected[selectedWeight].length < selectedWeight"
+                        :disabled="mixs.selected[selectedWeight].filter(item => Object.keys(item).length).length < selectedWeight"
                         @click="addToCart"
                       >
                         Add to cart (${{calculateMixPrice.sum}})
@@ -176,7 +179,7 @@ export default {
     })
   },
   data: () => ({
-    selectedWeight: 2
+    selectedWeight: 2,
   }),
   computed: {
     ...mapGetters({
@@ -187,8 +190,10 @@ export default {
       let saved = 0;
 
       this.mixs.selected[this.selectedWeight].map(item => {
-        sum = sum + item.deal_price;
-        saved = saved + (item.price - item.deal_price)
+        if(Object.keys(item).length) {
+          sum = sum + item.deal_price;
+          saved = saved + (item.price - item.deal_price)
+        }
       })
 
       return {
@@ -225,6 +230,8 @@ export default {
       this.$cookies.set('mixs', {
         data: mixs
       });
+
+      this.$store.commit('shop/CLEAR_SELECTED_MIXS', {type: this.selectedWeight});
 
       this.$store.commit('shop/SET_MIXS_CART');
       this.$root.$emit('show-product-added-to-cart-dialog');
@@ -311,6 +318,9 @@ export default {
         display: flex;
         flex-direction: column;
         align-items: center;
+        max-height: 404px;
+        overflow-y: auto;
+        padding-bottom: 4px;
       }
 
       &-slot {
