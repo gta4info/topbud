@@ -1,5 +1,5 @@
 <template>
-  <v-dialog width="90%">
+  <v-dialog width="90%" content-class="dealsImage">
     <template v-slot:activator="{on}">
       <div class="card" v-on="on">
         <div class="card__img">
@@ -8,7 +8,9 @@
         <div class="card__title">Deals menu</div>
       </div>
     </template>
-    <img :src="img" alt="Deals menu" style="height: auto;width: 100%;">
+    <div class="dealsImage__content">
+      <img :src="img" alt="Deals menu" class="dealsImage__img">
+    </div>
   </v-dialog>
 </template>
 
@@ -21,7 +23,7 @@ export default {
   created () {
     this.$axios
       .get('/deals/menu')
-      .then(res => this.img = '/' + res.data.img)
+      .then(res => this.img = 'https://topbudstore.com/' + res.data.img)
   }
 }
 </script>
@@ -69,5 +71,10 @@ export default {
       flex-grow: 1;
       width: 100%;
     }
+  }
+
+  .dealsImage {
+    max-height: 100% !important;
+    max-width: 100% !important;
   }
 </style>

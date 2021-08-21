@@ -13,6 +13,9 @@
 
       <div class="pack">
         <v-container>
+<!--          <v-row>-->
+<!--            <Filters :min="min" :max="max" :range="range" :search="search" inline/>-->
+<!--          </v-row>-->
           <v-row class="d-flex flex-wrap">
             <v-col cols="12" sm="12" md="7">
               <div class="pack__products">
@@ -154,7 +157,8 @@ export default {
     ]
   },
   components: {
-    'PackProductCard': () => import('@/components/shop/PackProductCard')
+    'PackProductCard': () => import('@/components/shop/PackProductCard'),
+    'Filters': () => import('@/components/shop/Filters'),
   },
   async asyncData({$axios, store}) {
     const first = await $axios.$get('/deals/mixs/2');

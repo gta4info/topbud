@@ -110,7 +110,8 @@ export default {
             id: category.id,
             name: category.name,
             selected: true,
-            subs: subs
+            subs: subs,
+            showSubs: false
           });
         }
       } else {
@@ -119,7 +120,7 @@ export default {
           name: category.name,
           selected: true,
           subs: subs,
-          showSubs: true
+          showSubs: false
         });
       }
 
@@ -223,8 +224,6 @@ export default {
         subs: subs,
       }
 
-      console.log(data)
-
       if(data.cats.length) {
 
         this.loadingFiltered = true;
@@ -265,7 +264,8 @@ export default {
                     id: category.id,
                     name: category.name,
                     selected: true,
-                    subs: subs
+                    subs: subs,
+                    showSubs: false
                   });
                 }
               } else {
@@ -274,7 +274,7 @@ export default {
                   name: category.name,
                   selected: true,
                   subs: subs,
-                  showSubs: true
+                  showSubs: false
                 });
               }
 

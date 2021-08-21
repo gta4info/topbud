@@ -1,5 +1,5 @@
 <template>
-  <div class="filters">
+  <div class="filters" :class="{inline: inline}">
     <div class="filter__group">
       <div class="filter__title">Price range</div>
       <div class="filter__slider">
@@ -74,6 +74,10 @@
 export default {
   name: 'Filters',
   props: {
+    inline: {
+      type: Boolean,
+      default: false
+    },
     categories: {
       type: Array,
       required: false
@@ -134,6 +138,26 @@ export default {
     border-radius: 8px;
     padding: 20px 12px;
     margin-top: 24px;
+
+    &.inline {
+      flex-direction: row;
+
+      .filter__group {
+        flex-direction: row;
+        flex-wrap: wrap;
+        margin-bottom: 0;
+
+        .v-btn {
+          margin-top: auto !important;
+          height: 38px !important;
+          margin-left: 20px;
+        }
+      }
+
+      .filter__title {
+        width: 100%;
+      }
+    }
   }
 
   .filter {

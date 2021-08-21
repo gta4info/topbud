@@ -255,6 +255,8 @@ export default {
       margin-right: 60px;
       border: 1px solid #CECECE;
       border-radius: 8px;
+      width: 300px;
+      height: 300px;
       @media(max-width: 768px) {
         margin-right: 0;
       }

@@ -51,13 +51,15 @@ export const actions = {
   async getMixProducts({commit, state}) {
     let ids = [];
 
-    state.mixs.cart.data.map(mix => {
-      mix.products[0].map(item => {
-        if(!ids.find(id => id === item.id)) {
-          ids.push([item.id, mix.weight])
-        }
+    if(state.mixs.cart.data) {
+      state.mixs.cart.data.map(mix => {
+        mix.products[0].map(item => {
+          if(!ids.find(id => id === item.id)) {
+            ids.push([item.id, mix.weight])
+          }
+        })
       })
-    })
+    }
 
     const response = await this.$axios.post('/cart', {
       ids: ids
@@ -165,24 +167,26 @@ export const mutations = {
     state.mixs.selected[data.type] = [];
   },
   UPDATE_MIXS_PRICES(state, data) {
-    data.map(d => {
-      state.mixs.cart.data.map(item => {
-        item.products[0].map(p => {
-          if(p.id === d.id) {
-            p.price = d.price;
-          }
-          return p;
+    if(state.mixs.cart.data) {
+      data.map(d => {
+        state.mixs.cart.data.map(item => {
+          item.products[0].map(p => {
+            if(p.id === d.id) {
+              p.price = d.price;
+            }
+            return p;
+          });
+          return item;
         });
+      })
+      state.mixs.cart.data.map(item => {
+        let price = 0;
+        item.products[0].map(p => {
+          price = price + p.price;
+        });
+        item.price = price;
         return item;
       });
-    })
-    state.mixs.cart.data.map(item => {
-      let price = 0;
-      item.products[0].map(p => {
-        price = price + p.price;
-      });
-      item.price = price;
-      return item;
-    });
+    }
   }
 }

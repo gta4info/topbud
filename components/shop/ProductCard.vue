@@ -306,7 +306,7 @@ export default {
         display: flex;
         align-items: center;
         width: 100%;
-        font-size: 14px;
+        font-size: 12px;
         height: 30px;
         border: 1px solid #AAAAAA;
         padding: 4px 25px 4px 12px;

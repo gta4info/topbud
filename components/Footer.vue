@@ -13,8 +13,6 @@
               <li class="footer__nav-title">Info</li>
               <li><nuxt-link to="/about">About us</nuxt-link></li>
               <li><nuxt-link to="/delivery">Delivery</nuxt-link></li>
-              <li><nuxt-link to="/contacts">Contact us</nuxt-link></li>
-              <li><nuxt-link to="/blog">Blog</nuxt-link></li>
             </ul>
           </nav>
         </v-col>

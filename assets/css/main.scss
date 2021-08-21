@@ -161,3 +161,21 @@ input[type="number"]::-webkit-outer-spin-button {
   -webkit-appearance: none;
   margin: 0;
 }
+
+.dealsImage {
+  overflow: hidden !important;
+  height: auto !important;
+  width: auto !important;
+
+  &__content {
+    width: 100%;
+    height: 100%;
+  }
+
+  &__img {
+    max-height: 90vh;
+    max-width: 90vw;
+    height: auto;
+    width: auto !important;
+  }
+}
