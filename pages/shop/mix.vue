@@ -163,7 +163,7 @@ export default {
   async asyncData({$axios, store}) {
     let min = 0;
     let max = 0;
-    const first = await $axios.$get('/deals/mixs/2/0/9999');
+    const first = await $axios.$get('/deals/mixs/2/0/0');
     let fProducts = first.products.map(item => {
       if(min > item.deal_price || min === 0) min = item.deal_price;
       if(max < item.deal_price || max === 0) max = item.deal_price;
@@ -175,7 +175,7 @@ export default {
       products: fProducts
     })
 
-    const second = await $axios.$get('/deals/mixs/4/0/9999');
+    const second = await $axios.$get('/deals/mixs/4/0/0');
     let sProducts = second.products.map(item => {
       if(min > item.deal_price) min = item.deal_price;
       if(max < item.deal_price) max = item.deal_price;
