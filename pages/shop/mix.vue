@@ -181,6 +181,7 @@ export default {
       if(max < item.deal_price) max = item.deal_price;
       item.img = 'https://topbudstore.com/' + item.img;
       return item;
+
     })
 
     store.commit('shop/SET_MIXS', {
