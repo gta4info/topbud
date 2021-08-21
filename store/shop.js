@@ -92,6 +92,9 @@ export const mutations = {
     if(firstEmpty >= 0) {
       state.mixs.selected[data.type].splice(firstEmpty, 1)
     }
+    if(!state.mixs.selected[data.type].find(item => !item.id)) {
+      state.mixs.selected[data.type].unshift({});
+    }
   },
   SET_WEIGHTS(state, data) {
     state.weights = data;
