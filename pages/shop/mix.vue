@@ -13,13 +13,13 @@
 
       <div class="pack">
         <v-container>
-<!--          <v-row>-->
-<!--            <Filters :min="min" :max="max" :range="range" :search="search" inline/>-->
-<!--          </v-row>-->
           <v-row class="d-flex flex-wrap">
             <v-col cols="12" sm="12" md="7">
               <div class="pack__products">
                 <v-container>
+                  <v-row>
+                    <Filters :min="min" :max="max" :range="[]" :search="search" inline/>
+                  </v-row>
                   <v-row>
                     <v-col cols="12">
                       <div class="pack__title">Choose products</div>
@@ -29,7 +29,7 @@
                     <v-col
                       md="4"
                       sm="12"
-                      v-for="product in mixs[selectedWeight]"
+                      v-for="product in productsFiltered"
                       :key="product.id"
                     >
                       <PackProductCard :product="product" :key="product.id" :selectedWeight="selectedWeight"/>
@@ -161,8 +161,12 @@ export default {
     'Filters': () => import('@/components/shop/Filters'),
   },
   async asyncData({$axios, store}) {
-    const first = await $axios.$get('/deals/mixs/2');
+    let min = 0;
+    let max = 0;
+    const first = await $axios.$get('/deals/mixs/2/0/9999');
     let fProducts = first.products.map(item => {
+      if(min > item.deal_price || min === 0) min = item.deal_price;
+      if(max < item.deal_price || max === 0) max = item.deal_price;
       item.img = 'https://topbudstore.com/' + item.img;
       return item;
     })
@@ -171,8 +175,10 @@ export default {
       products: fProducts
     })
 
-    const second = await $axios.$get('/deals/mixs/4');
+    const second = await $axios.$get('/deals/mixs/4/0/9999');
     let sProducts = second.products.map(item => {
+      if(min > item.deal_price) min = item.deal_price;
+      if(max < item.deal_price) max = item.deal_price;
       item.img = 'https://topbudstore.com/' + item.img;
       return item;
     })
@@ -181,10 +187,24 @@ export default {
       type: 4,
       products: sProducts
     })
+
+    min = Math.round(min) - 1;
+    max = Math.round(max) + 1;
+
+    return {min, max};
   },
   data: () => ({
     selectedWeight: 2,
+    search: ''
   }),
+  watch: {
+    min() {
+      this.getFilteredProducts();
+    },
+    max() {
+      this.getFilteredProducts();
+    },
+  },
   computed: {
     ...mapGetters({
       mixs: 'shop/mixs'
@@ -204,9 +224,47 @@ export default {
         sum: sum,
         saved: saved
       };
-    }
+    },
+    productsFiltered() {
+      return this.mixs[this.selectedWeight].filter(item => {
+        let re = new RegExp(this.search, 'ig');
+        if(item.name.match(re)) {
+          return item;
+        } else {
+          if(!this.search) {
+            return item;
+          }
+        }
+      })
+    },
   },
   methods: {
+    async getFilteredProducts() {
+      await this.$axios
+        .get(`/deals/mixs/2/${this.min}/${this.max}`)
+        .then(res => {
+          res.data.products.map(item => {
+            item.img = 'https://topbudstore.com/' + item.img;
+            return item;
+          })
+          this.$store.commit('shop/SET_MIXS', {
+            type: 2,
+            products: res.data.products
+          })
+        });
+      await this.$axios
+        .get(`/deals/mixs/4/${this.min}/${this.max}`)
+        .then(res => {
+          res.data.products.map(item => {
+            item.img = 'https://topbudstore.com/' + item.img;
+            return item;
+          })
+          this.$store.commit('shop/SET_MIXS', {
+            type: 4,
+            products: res.data.products
+          })
+        });
+    },
     removeFromSelected(key) {
       this.$store.commit('shop/DELETE_PRODUCT_FROM_SELECTED_MIXS', {
         type: this.selectedWeight,
@@ -241,6 +299,15 @@ export default {
       this.$root.$emit('show-product-added-to-cart-dialog');
     }
   },
+  created () {
+    this.$root.$on('change-filter-range', data => {
+      this.min = data.min;
+      this.max = data.max;
+    })
+    this.$root.$on('change-filter-search-query', data => {
+      this.search = data;
+    })
+  }
 }
 </script>
 

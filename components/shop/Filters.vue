@@ -154,8 +154,18 @@ export default {
         }
       }
 
+      .filter__slider-inputs {
+        span {
+          display: none !important;
+        }
+      }
+
       .filter__title {
         width: 100%;
+      }
+
+      .filter__name {
+        width: 100px;
       }
     }
   }
