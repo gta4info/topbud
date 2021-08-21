@@ -53,7 +53,7 @@
 
         <div class="header__buttons">
           <nuxt-link to="/shop/deals" v-ripple>OZ DEALS</nuxt-link>
-          <a href="tel:4932-2231-3433" v-ripple>4932-2231-3433</a>
+          <a href="tel:14163884091" v-ripple>1 (416) 388 - 4091</a>
         </div>
       </v-container>
     </header>
@@ -80,10 +80,10 @@
           title: 'Delivery Information',
           link: 'delivery'
         },
-        {
-          title: 'Contacts',
-          link: 'contacts'
-        },
+        // {
+        //   title: 'Contacts',
+        //   link: 'contacts'
+        // },
         {
           title: 'Blog',
           link: 'blog'
