@@ -214,7 +214,7 @@ export default {
       let sum = 0;
       let saved = 0;
 
-      this.mixs.selected[this.selectedWeight].map(item => {
+      this.mixs.selected[this.selectedWeight].filter(item => item.id).map(item => {
         if(Object.keys(item).length) {
           sum = sum + item.deal_price;
           saved = saved + (item.price - item.deal_price)
@@ -281,7 +281,7 @@ export default {
         })
       }
 
-      products.push(this.mixs.selected[this.selectedWeight]);
+      products.push(this.mixs.selected[this.selectedWeight].filter(item => item.id));
 
       mixs.push({
         weight: this.selectedWeight,
