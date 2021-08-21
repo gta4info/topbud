@@ -57,6 +57,18 @@
               </div>
             </div>
           </div>
+          <div class="checkout__group">
+            <span>Comment (optional)</span>
+            <v-text-field
+              v-model="comment"
+              label="Leave a comment for the order"
+              solo
+              hide-details
+              height="40"
+              dense
+              name="comment"
+            />
+          </div>
         </div>
         <div class="checkout__success" v-if="orderId">
           <v-icon size="80" color="#28A745">mdi-check-circle-outline</v-icon>
@@ -92,6 +104,7 @@ export default {
     payment: 'cash',
     phone: '',
     name: '',
+    comment: '',
     addressQuery: null,
     orderId: null,
     payments: [
@@ -202,7 +215,8 @@ export default {
         name: this.name,
         phone: this.phone,
         address: this.addressQuery,
-        order: order
+        order: order,
+        comment: this.comment
       };
 
       this.$axios
