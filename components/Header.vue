@@ -10,7 +10,7 @@
             <!--Categories with sub categories-->
             <li v-for="category in computedCategories.filter(item => item.subs && item.subs.length)" :key="category.slug">
               <!--Dropdown-->
-              <v-menu v-if="category.subs" offset-y open-on-hover content-class="header__dropdown" close-delay="400">
+              <v-menu v-if="category.subs" offset-y open-on-hover content-class="header__dropdown" close-delay="200">
                 <template v-slot:activator="{on}">
                   <span v-on="on" class="header__dropdown-activator" @click="goToCategory(category.slug)" :class="{'active': category.active}">{{category.name}}</span>
                 </template>
@@ -26,7 +26,7 @@
             <!--Categories without sub categories-->
             <li style="cursor: default;">
               <!--Dropdown-->
-              <v-menu offset-y open-on-hover content-class="header__dropdown" close-delay="400">
+              <v-menu offset-y open-on-hover content-class="header__dropdown" close-delay="200">
                 <template v-slot:activator="{on}">
                   <span v-on="on" class="header__dropdown-activator" :class="{'active': othersState}">Other</span>
                 </template>
@@ -37,7 +37,7 @@
             </li>
             <!--Info menu-->
             <li style="cursor: default;">
-              <v-menu offset-y open-on-hover content-class="header__dropdown" close-delay="400">
+              <v-menu offset-y open-on-hover content-class="header__dropdown" close-delay="200">
                 <template v-slot:activator="{on}">
                   <span v-on="on" class="header__dropdown-activator" :class="{'active': infoState}">Info</span>
                 </template>
