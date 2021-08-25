@@ -188,28 +188,34 @@ export default {
       this.sending = true;
       let order = [];
 
-      this.cart.map(item => {
-        order.push({
-          id: parseInt(item.id),
-          count: item.quantity,
-          weight_name: this.weights[item.weight_id],
-          price: item.price,
-          mix: 0
-        })
-      })
-
-      this.mixsCart.data.map(mix => {
-        mix.products[0].map(item => {
+      if(this.cart.length) {
+        this.cart.map(item => {
           order.push({
             id: parseInt(item.id),
-            count: mix.quantity,
+            count: item.quantity,
             weight_name: this.weights[item.weight_id],
             price: item.price,
-            mix: mix.weight
+            mix: 0
           })
-        });
+        })
+      }
+      if(this.mixsCart.length) {
+        this.mixsCart.data.map(mix => {
+          mix.products[0].map(item => {
+            order.push({
+              id: parseInt(item.id),
+              count: mix.quantity,
+              weight_name: this.weights[item.weight_id],
+              price: item.price,
+              mix: mix.weight
+            })
+          });
+        })
+      }
 
-      })
+      if(!order.length) {
+        return alert('Please check your cart for products!')
+      }
 
       let data = {
         name: this.name,
