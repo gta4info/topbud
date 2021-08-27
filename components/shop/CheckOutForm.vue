@@ -199,12 +199,12 @@ export default {
           })
         })
       }
-      if(this.mixsCart.length) {
+      if(this.mixsCart && this.mixsCart.data && this.mixsCart.data.length) {
         this.mixsCart.data.map(mix => {
           mix.products[0].map(item => {
             order.push({
               id: parseInt(item.id),
-              count: mix.quantity,
+              count: mix.quantity * item.quantity,
               weight_name: this.weights[item.weight_id],
               price: item.price,
               mix: mix.weight

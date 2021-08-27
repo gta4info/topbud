@@ -1,3 +1,5 @@
+import Vue from 'vue'
+
 export const state = () => ({
   cart: [],
   weights: {},
@@ -8,7 +10,7 @@ export const state = () => ({
     4: [],
     selected: {
       2: [{},{}],
-      4: [{},{},{},{}]
+      4: [{},{}]
     },
     cart: []
   }
@@ -21,6 +23,7 @@ export const getters = {
   cartLength: state => state.cartLength,
   mixs: state => state.mixs,
   mixsCart: state => state.mixs.cart,
+  mixsSelected: state => state.mixs.selected
 }
 
 export const actions = {
@@ -69,6 +72,13 @@ export const actions = {
   deleteProductFromCart({commit}, data) {
     commit('DELETE_PRODUCT_IN_CART', data);
     commit('SET_CART_LENGTH');
+  },
+  changeMixProductAmount({commit}, data) {
+    if(data.quantity < 1) {
+      return false;
+    }
+    commit('CHANGE_AMOUNT_OF_PRODUCT_IN_MIXS', data);
+    return true;
   }
 }
 
@@ -81,19 +91,22 @@ export const mutations = {
   },
   DELETE_PRODUCT_FROM_SELECTED_MIXS(state, data) {
     state.mixs.selected[data.type].splice(data.key, 1)
-    if(state.mixs.selected[data.type].length < data.type) {
+    if(state.mixs.selected[data.type].length === 1) {
       state.mixs.selected[data.type].push({});
     }
   },
   PUSH_PRODUCT_TO_SELECTED_MIXS(state, data) {
-    state.mixs.selected[data.type].unshift(data.product);
+    if(!state.mixs.selected[data.type].find(item => item.id === data.product.id)) {
+      data.product.quantity = 1;
+      state.mixs.selected[data.type].unshift(data.product);
 
-    let firstEmpty = state.mixs.selected[data.type].indexOf(state.mixs.selected[data.type].find(item => !item.id));
-    if(firstEmpty >= 0) {
-      state.mixs.selected[data.type].splice(firstEmpty, 1)
-    }
-    if(!state.mixs.selected[data.type].find(item => !item.id)) {
-      state.mixs.selected[data.type].unshift({});
+      let firstEmpty = state.mixs.selected[data.type].indexOf(state.mixs.selected[data.type].find(item => !item.id));
+      if (firstEmpty >= 0) {
+        state.mixs.selected[data.type].splice(firstEmpty, 1)
+      }
+      if (!state.mixs.selected[data.type].find(item => !item.id)) {
+        state.mixs.selected[data.type].unshift({});
+      }
     }
   },
   SET_WEIGHTS(state, data) {
@@ -191,5 +204,10 @@ export const mutations = {
         return item;
       });
     }
-  }
+  },
+  CHANGE_AMOUNT_OF_PRODUCT_IN_MIXS(state, data) {
+    let item = data.product;
+    item.quantity = data.quantity;
+    Vue.set(state.mixs.selected[data.type], data.key, item)
+  },
 }

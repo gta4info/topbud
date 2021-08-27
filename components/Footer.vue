@@ -30,7 +30,7 @@
             <ul>
               <li class="footer__nav-title">Help</li>
               <li><a href="tel:14163884091">P: 1 (416) 388 - 4091</a></li>
-              <li><a href="mailto:topbud@gmail.com">E: Topbud@gmail.com</a></li>
+              <li><a href="mailto:topbudstore@gmail.com">E: Topbudstore@gmail.com</a></li>
             </ul>
           </nav>
         </v-col>

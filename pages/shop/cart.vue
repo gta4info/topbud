@@ -90,7 +90,7 @@
                       <img :src="product.img" :alt="product.name" v-for="(product, index) in mix.products[0]" :key="index">
                     </div>
                     <div class="table__item-titleGroup">
-                      <div v-for="(product, ind) in mix.products[0]" :key="`${product.id}+${ind}`">{{ product.name }} <span>{{ weights[product.weight_id] }}</span></div>
+                      <div v-for="(product, ind) in mix.products[0]" :key="`${product.id}+${ind}`"><div style="font-weight: 700;display: inline;">{{product.quantity}}x</div> {{ product.name }} <span>{{ weights[product.weight_id] }}</span></div>
                     </div>
                   </div>
                 </v-col>

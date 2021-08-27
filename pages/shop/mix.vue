@@ -51,14 +51,14 @@
                           :class="{active: selectedWeight === 2}"
                           @click="selectedWeight = 2"
                         >
-                          1/2 oz
+                          1 oz
                         </div>
                         <div
                           class="pack__options-weights--item"
                           :class="{active: selectedWeight === 4}"
                           @click="selectedWeight = 4"
                         >
-                          1/4 oz
+                          1/2 oz
                         </div>
                       </div>
                     </div>
@@ -69,8 +69,8 @@
                       <template v-if="selectedWeight === 2">
                         <div
                           class="pack__options-slot"
-                          v-for="(product, i) of mixs.selected[2]"
-                          :key="i"
+                          v-for="(product, i) of mixsSelected[2]"
+                          :key="product.id"
                         >
                           <template v-if="Object.keys(product).length">
                             <div class="pack__options-slot--image">
@@ -78,14 +78,37 @@
                             </div>
                             <div class="pack__options-slot--content">
                               <div class="pack__options-slot--name">{{product.name}}</div>
-                              <div class="pack__options-slot--price">${{product.deal_price}}</div>
+                              <div class="pack__options-slot--price">1x ${{product.deal_price}} <span v-if="product.quantity > 1"> / Total: ${{product.deal_price * product.quantity}}</span></div>
+
+                              <div class="pack__options-slot--quantity">
+                                <v-btn
+                                  width="20"
+                                  height="20"
+                                  x-small
+                                  depressed
+                                  @click="changeAmountForProduct(i, product, product.quantity - 1)"
+                                >
+                                  <v-icon small>mdi-minus</v-icon>
+                                </v-btn>
+                                <div class="mx-2">{{product.quantity}}</div>
+                                <v-btn
+                                  width="20"
+                                  height="20"
+                                  x-small
+                                  depressed
+                                  @click="changeAmountForProduct(i, product, product.quantity + 1)"
+                                >
+                                  <v-icon small>mdi-plus</v-icon>
+                                </v-btn>
+                              </div>
+
                             </div>
                             <div class="pack__options-slot--remove">
                               <v-btn icon @click="removeFromSelected(i)"><v-icon>mdi-close</v-icon></v-btn>
                             </div>
                           </template>
                           <div class="pack__options-slot--empty" v-else>
-                            <div>?</div>
+                            <div>1/2 oz</div>
                             <span>Empty slot</span>
                           </div>
                         </div>
@@ -93,7 +116,7 @@
                       <template v-if="selectedWeight === 4">
                         <div
                           class="pack__options-slot"
-                          v-for="(product, i) of mixs.selected[4]"
+                          v-for="(product, i) of mixsSelected[4]"
                           :key="i"
                         >
                           <template v-if="Object.keys(product).length">
@@ -102,14 +125,33 @@
                             </div>
                             <div class="pack__options-slot--content">
                               <div class="pack__options-slot--name">{{product.name}}</div>
-                              <div class="pack__options-slot--price">${{product.deal_price}}</div>
+                              <div class="pack__options-slot--price">1x ${{product.deal_price}} <span v-if="product.quantity > 1"> / Total: ${{product.deal_price * product.quantity}}</span></div>
+
+                              <div class="pack__options-slot--quantity">
+                                <v-btn
+                                  x-small
+                                  depressed
+                                  @click="changeAmountForProduct(i, product, product.quantity - 1)"
+                                >
+                                  <v-icon small>mdi-minus</v-icon>
+                                </v-btn>
+                                <div class="mx-2">{{product.quantity}}</div>
+                                <v-btn
+                                  x-small
+                                  depressed
+                                  @click="changeAmountForProduct(i, product, product.quantity + 1)"
+                                >
+                                  <v-icon small>mdi-plus</v-icon>
+                                </v-btn>
+                              </div>
+
                             </div>
                             <div class="pack__options-slot--remove">
                               <v-btn icon @click="removeFromSelected(i)"><v-icon>mdi-close</v-icon></v-btn>
                             </div>
                           </template>
                           <div class="pack__options-slot--empty" v-else>
-                            <div>?</div>
+                            <div>1/4 oz</div>
                             <span>Empty slot</span>
                           </div>
                         </div>
@@ -117,18 +159,19 @@
                     </div>
                   </div>
                   <div class="pack__options-group">
-                    <div class="pack__options-title">Mix'N'Match totals</div>
+                    <div class="pack__options-title">Mix'N'Match total</div>
                     <div class="pack__cart">
-                      <div class="pack__cart-saved">You've just saved with Mix'N'Match: <span>${{calculateMixPrice.saved}}</span></div>
+                      <div class="pack__cart-saved"><span>${{calculateMixPrice.sum}}</span></div>
                       <v-btn
                         depressed
                         color="#7FAD39"
                         class="pack__cart-btn"
-                        :disabled="mixs.selected[selectedWeight].filter(item => Object.keys(item).length).length < selectedWeight"
+                        :disabled="mixs.selected[selectedWeight].filter(item => Object.keys(item).length).length < 2"
                         @click="addToCart"
                       >
-                        Add to cart (${{calculateMixPrice.sum}})
+                        Add to cart
                       </v-btn>
+                      <div class="pack__cart-saved mt-5">You've just saved with Mix'N'Match: <span style="font-size: 18px;">${{calculateMixPrice.saved}}</span></div>
                     </div>
                   </div>
                 </div>
@@ -208,7 +251,8 @@ export default {
   },
   computed: {
     ...mapGetters({
-      mixs: 'shop/mixs'
+      mixs: 'shop/mixs',
+      mixsSelected: 'shop/mixsSelected'
     }),
     calculateMixPrice() {
       let sum = 0;
@@ -216,8 +260,8 @@ export default {
 
       this.mixs.selected[this.selectedWeight].filter(item => item.id).map(item => {
         if(Object.keys(item).length) {
-          sum = sum + item.deal_price;
-          saved = saved + (item.price - item.deal_price)
+          sum = sum + item.deal_price * item.quantity;
+          saved = saved + (item.price * item.quantity - item.deal_price * item.quantity)
         }
       })
 
@@ -240,6 +284,14 @@ export default {
     },
   },
   methods: {
+    async changeAmountForProduct(key, product, quantity) {
+      await this.$store.dispatch('shop/changeMixProductAmount', {key: key, product: product, quantity: quantity, type: this.selectedWeight})
+        .then(res => {
+          if(res === true) {
+            this.mixs.selected[this.selectedWeight].find(item => item.id === product.id).quantity = quantity;
+          }
+        })
+    },
     async getFilteredProducts() {
       await this.$axios
         .get(`/deals/mixs/2/${this.min}/${this.max}`)
@@ -430,6 +482,25 @@ export default {
           color: #7FAD39;
         }
 
+        &--content {
+          display: flex;
+          flex-direction: column;
+          align-items: flex-start;
+        }
+
+        &--quantity {
+          display: flex;
+          align-items: center;
+          border: 1px solid #7FAD39;
+          border-radius: 4px;
+          margin-top: 6px;
+          padding: 4px;
+
+          .v-btn {
+            min-width: 20px !important;
+          }
+        }
+
         &--remove {
           position: absolute;
           top: 0;
@@ -459,7 +530,7 @@ export default {
             align-items: center;
             justify-content: center;
             font-weight: 900;
-            font-size: 22px;
+            font-size: 16px;
             background: #eeeeee;
           }
 
