@@ -15,7 +15,7 @@
         <v-container>
           <v-row class="d-flex flex-wrap">
             <v-col cols="12" sm="12" md="7">
-              <div class="pack__products">
+              <div>
                 <v-container>
                   <v-row>
                     <Filters :min="min" :max="max" :range="[]" :search="search" inline/>
@@ -25,14 +25,15 @@
                       <div class="pack__title">Choose products</div>
                     </v-col>
                   </v-row>
-                  <v-row>
+                  <v-row class="pack__products">
                     <v-col
                       md="4"
                       sm="12"
+                      cols="6"
                       v-for="product in productsFiltered"
                       :key="product.id"
                     >
-                      <PackProductCard :product="product" :key="product.id" :selectedWeight="selectedWeight"/>
+                      <PackProductCard :product="product" :key="product.id" :selectedWeight="selectedWeight" :selected="product.selected"/>
                     </v-col>
                   </v-row>
                 </v-container>
@@ -104,7 +105,7 @@
 
                             </div>
                             <div class="pack__options-slot--remove">
-                              <v-btn icon @click="removeFromSelected(i)"><v-icon>mdi-close</v-icon></v-btn>
+                              <v-btn icon @click="removeFromSelected(i, product.id)"><v-icon>mdi-close</v-icon></v-btn>
                             </div>
                           </template>
                           <div class="pack__options-slot--empty" v-else>
@@ -125,7 +126,7 @@
                             </div>
                             <div class="pack__options-slot--content">
                               <div class="pack__options-slot--name">{{product.name}}</div>
-                              <div class="pack__options-slot--price">1x ${{product.deal_price}} <span v-if="product.quantity > 1"> / Total: ${{product.deal_price * product.quantity}}</span></div>
+                              <div class="pack__options-slot--price">${{product.deal_price}} x{{product.quantity}} = ${{product.deal_price * product.quantity}}</div>
 
                               <div class="pack__options-slot--quantity">
                                 <v-btn
@@ -147,7 +148,7 @@
 
                             </div>
                             <div class="pack__options-slot--remove">
-                              <v-btn icon @click="removeFromSelected(i)"><v-icon>mdi-close</v-icon></v-btn>
+                              <v-btn icon @click="removeFromSelected(i, product.id)"><v-icon>mdi-close</v-icon></v-btn>
                             </div>
                           </template>
                           <div class="pack__options-slot--empty" v-else>
@@ -298,6 +299,7 @@ export default {
         .then(res => {
           res.data.products.map(item => {
             item.img = 'https://topbudstore.com/' + item.img;
+            item.selected = false;
             return item;
           })
           this.$store.commit('shop/SET_MIXS', {
@@ -310,6 +312,7 @@ export default {
         .then(res => {
           res.data.products.map(item => {
             item.img = 'https://topbudstore.com/' + item.img;
+            item.selected = false;
             return item;
           })
           this.$store.commit('shop/SET_MIXS', {
@@ -318,10 +321,11 @@ export default {
           })
         });
     },
-    removeFromSelected(key) {
+    removeFromSelected(key, id) {
       this.$store.commit('shop/DELETE_PRODUCT_FROM_SELECTED_MIXS', {
         type: this.selectedWeight,
-        key: key
+        key: key,
+        id: id
       })
     },
     addToCart() {
@@ -367,6 +371,17 @@ export default {
 <style lang="scss" scoped>
   .pack {
 
+    @media(max-width: 768px) {
+      margin: 0 -12px;
+    }
+
+    &__products {
+      @media(max-width: 768px) {
+        max-height: 568px;
+        overflow-y: auto;
+      }
+    }
+
     &__title {
       font-size: 22px;
       font-weight: 900;
@@ -388,6 +403,12 @@ export default {
         top: 100px;
         max-height: calc(100vh - 100px);
         overflow-y: auto;
+
+        @media(max-width: 768px) {
+          max-height: 100%;
+          top: 0;
+          position: relative;
+        }
       }
 
       &-title {

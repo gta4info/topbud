@@ -90,6 +90,7 @@ export const mutations = {
     state.mixs[data.type] = data.products;
   },
   DELETE_PRODUCT_FROM_SELECTED_MIXS(state, data) {
+    state.mixs[data.type].find(item => item.id === data.id).selected = false;
     state.mixs.selected[data.type].splice(data.key, 1)
     if(state.mixs.selected[data.type].length === 1) {
       state.mixs.selected[data.type].push({});
@@ -98,7 +99,10 @@ export const mutations = {
   PUSH_PRODUCT_TO_SELECTED_MIXS(state, data) {
     if(!state.mixs.selected[data.type].find(item => item.id === data.product.id)) {
       data.product.quantity = 1;
+      data.product.selected = true;
       state.mixs.selected[data.type].unshift(data.product);
+
+      Vue.set(state.mixs.selected[data.type], data.key, data.product)
 
       let firstEmpty = state.mixs.selected[data.type].indexOf(state.mixs.selected[data.type].find(item => !item.id));
       if (firstEmpty >= 0) {

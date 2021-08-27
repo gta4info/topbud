@@ -407,8 +407,17 @@ export default {
       background-position: right center;
       margin-top: -85px;
 
+      @media(max-width: 768px) {
+        height: auto;
+        padding-top: 100px;
+      }
+
       .screen__content {
         width: 65%;
+
+        @media(max-width: 768px) {
+          width: 100%;
+        }
 
         p {
           font-size: 16px;
@@ -549,9 +558,10 @@ export default {
       height: 485px;
 
       @media(max-width: 768px) {
-        height: 385px;
+        height: auto;
         img {
           width: 100%;
+          height: 100%;
         }
       }
     }

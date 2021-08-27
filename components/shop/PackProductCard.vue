@@ -1,5 +1,5 @@
 <template>
-  <div class="card" :class="{selected: product.selected}" @click="changeSelected">
+  <div class="card" :class="{selected: selected}" @click="pushToSelected">
     <div class="card__header">
       <div class="img">
         <img :src="product.img" :alt="product.name">
@@ -26,10 +26,11 @@ export default {
     selectedWeight: {
       type: Number,
       required: true
-    }
+    },
+    selected: Boolean
   },
   methods: {
-    changeSelected() {
+    pushToSelected() {
       this.$store.commit('shop/PUSH_PRODUCT_TO_SELECTED_MIXS', {
         type: this.selectedWeight,
         product: this.product

@@ -142,6 +142,10 @@ export default {
     &.inline {
       flex-direction: row;
 
+      @media(max-width: 768px) {
+        flex-direction: column;
+      }
+
       .filter__group {
         flex-direction: row;
         flex-wrap: wrap;
@@ -151,10 +155,22 @@ export default {
           margin-top: auto !important;
           height: 38px !important;
           margin-left: 20px;
+
+          @media(max-width: 768px) {
+            margin-left: 0;
+            width: 100%;
+            margin-top: 10px !important;
+            margin-bottom: 15px;
+          }
         }
       }
 
       .filter__slider-inputs {
+
+        @media(max-width: 768px) {
+          width: 100%;
+        }
+
         span {
           display: none !important;
         }
@@ -166,6 +182,10 @@ export default {
 
       .filter__name {
         width: 100px;
+
+        @media(max-width: 768px) {
+          width: auto;
+        }
       }
     }
   }
