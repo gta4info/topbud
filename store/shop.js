@@ -192,7 +192,7 @@ export const mutations = {
         state.mixs.cart.data.map(item => {
           item.products[0].map(p => {
             if(p.id === d.id) {
-              p.price = d.price;
+              p.price = d.price * p.quantity;
             }
             return p;
           });

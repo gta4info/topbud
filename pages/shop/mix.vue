@@ -79,7 +79,7 @@
                             </div>
                             <div class="pack__options-slot--content">
                               <div class="pack__options-slot--name">{{product.name}}</div>
-                              <div class="pack__options-slot--price">1x ${{product.deal_price}} <span v-if="product.quantity > 1"> / Total: ${{product.deal_price * product.quantity}}</span></div>
+                              <div class="pack__options-slot--price">${{product.deal_price}} x{{product.quantity}} = ${{product.deal_price * product.quantity}}</div>
 
                               <div class="pack__options-slot--quantity">
                                 <v-btn
