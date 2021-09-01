@@ -3,15 +3,11 @@
     <section class="screen main">
       <v-container class="d-flex fill-height">
         <div class="screen__content">
-          <h1 class="screen__title">Grogu Giveaway!</h1>
-          <p>Hey Lucky You! It's Top Bud Here 🙂<br/>
-            Summer is almost over and we have great news for you! Here is a special offer to be caught ! don't miss your chance to make the best shopping at the end of August! the promotion will run until August 31, 2021.<br/>
-            With various bonuses to your orders! random gifts! also, we will randomly give away bonus discounts for your next orders! 5 prizes will be drawn:<br/>
-            5 promotional codes for 15% discount on next 3 orders and 3.5g Top Bud Quads or 3.5g Top Bud Hash! and random 3 people will receive 7g Top Bud Quads or 2g Top Bud Hash, to participate in the GIVEAWAY you simply need to place 1 order before August 31st!<br/>
-            Have a nice day and only positive vibes ! 🤗</p>
+          <h1 class="screen__title">Fast, Reliable Weed Delivery In Vaughan And Surrounding Areas</h1>
+          <p>From flower to concentrates, from edibles to topicals, Tweeder is the go-to weed delivery service for residents of Vaughan, Richmond Hill, Woodbridge, Kleinburg, Markham, Concord and the surrounding areas.</p>
           <div class="screen__bottom">
-            <span>Enter To win</span>
-            <nuxt-link to="/category/giveaway/product/grogu-giveaway" v-ripple>></nuxt-link>
+            <span>View Our Products</span>
+            <nuxt-link to="/shop" v-ripple>></nuxt-link>
           </div>
         </div>
       </v-container>
