@@ -3,8 +3,8 @@
     <section class="screen main">
       <v-container class="d-flex fill-height">
         <div class="screen__content">
-          <h1 class="screen__title">Fast, Reliable Weed Delivery In Vaughan And Surrounding Areas</h1>
-          <p>From flower to concentrates, from edibles to topicals, Tweeder is the go-to weed delivery service for residents of Vaughan, Richmond Hill, Woodbridge, Kleinburg, Markham, Concord and the surrounding areas.</p>
+          <h1 class="screen__title">Fast, Reliable Weed Delivery In GTA!</h1>
+          <p>From flower to concentrates, from edibles to topicals, Top Bud is the go-to weed delivery service for residents of North York, Richmond Hill, Woodbridge, Markham, Concord, Toronto and the Surrounding areas.</p>
           <div class="screen__bottom">
             <span>View Our Products</span>
             <nuxt-link to="/shop" v-ripple>></nuxt-link>
@@ -20,7 +20,7 @@
         <div class="howDeliveryWorks__right">
           <div class="howDeliveryWorks__title">How Does Our Weed Delivery Service Work?</div>
           <p>Curiosity About Life In All Its Aspects, I Think, Is Still The Secret Of Great Creative People.Our Signup Process Couldn’t Be Easier. All You Have To Do Is Create A Profile And Send Us Proof Of Your Age. Within Ten Minutes, You Will Receive An Email And A Text Message Letting You Know That Your Profile Has Been Approved. Then, You Will Be Able To Place Your Order From Our Generous Selection Of Flower, Edibles, Concentrates, And Other Cannabis Products.</p>
-          <p>Reluctant To Set Up A Profile? No Problem! You Can Still Browse Our Website To Select Your Products, Then Send Us A Text To 416-893-0025 With Your Order And A Picture Of Yourself Holding A Clearly Visible ID.</p>
+          <p>Reluctant To Set Up A Profile? No Problem! You Can Still Browse Our Website To Select Your Products, Then Send Us A Text To 416-388-4091 With Your Order And A Picture Of Yourself Holding A Clearly Visible ID.</p>
           <p>Once We Have Received Your Order And Verified That You Are 19 Years Or Older, We Will Package The Products You Have Requested And Send Them Off With Our Driver. We Will Text You When The Driver Is Close By. If You Place Your Order During Regular Business Hours, You Will Receive Your Goods On The Same Day.</p>
           <nuxt-link to="/shop" v-ripple>View Our Products</nuxt-link>
         </div>
