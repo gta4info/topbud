@@ -3,7 +3,7 @@
     <section class="screen main">
       <v-container class="d-flex fill-height">
         <div class="screen__content">
-          <h1 class="screen__title">Fast, Reliable Weed Delivery In GTA!</h1>
+          <h1 class="screen__title">Fast, Reliable Weed Delivery In Great Toronto Area</h1>
           <p>From flower to concentrates, from edibles to topicals, Top Bud is the go-to weed delivery service for residents of North York, Richmond Hill, Woodbridge, Markham, Concord, Toronto and the Surrounding areas.</p>
           <div class="screen__bottom">
             <span>View Our Products</span>
