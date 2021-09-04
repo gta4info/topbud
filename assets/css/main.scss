@@ -179,3 +179,25 @@ input[type="number"]::-webkit-outer-spin-button {
     width: auto !important;
   }
 }
+
+.toasted-container.top-right {
+  right: 2% !important;
+}
+
+.header__search.new {
+  .v-input__slot {
+    color: #fff;
+    background: transparent !important;
+    box-shadow: none !important;
+
+    .v-icon, input, label {
+      color: #fff !important;
+    }
+
+    input, label {
+      padding-left: 10px !important;
+      font-size: 18px;
+      margin-top: -2px;
+    }
+  }
+}

@@ -215,7 +215,8 @@ export default {
 
       this.$store.commit('shop/SET_CART_LENGTH');
 
-      this.$root.$emit('show-product-added-to-cart-dialog');
+      // this.$root.$emit('show-product-added-to-cart-dialog');
+      this.$toast.success('Product was added to cart!', {duration: 1500})
     },
     addToWishList() {
       alert('Added to wishlist!')
