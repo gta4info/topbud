@@ -27,7 +27,7 @@
                     </div>
                     <div class="header__shop-content">
                       <div class="header__shop-category" v-for="(category, i) in categories" :key="i">
-                        <template v-if="i < 7">
+                        <template v-if="i < 6">
                           <nuxt-link
                             :to="{name: 'category-cslug', params: {cslug: category.slug}}"
                             class="header__shop-category--title"
@@ -159,7 +159,7 @@ export default {
 
       &-wrapper {
         width: 100%;
-        min-height: 427px;
+        height: 500px;
         z-index: 1;
         position: absolute;
         left: 0;
@@ -172,7 +172,7 @@ export default {
         background: url("~/static/images/header-shop-left.jpg");
         background-size: cover;
         width: 209px;
-        min-height: 100%;
+        height: 100%;
         flex-shrink: 0;
         display: flex;
         justify-content: center;
