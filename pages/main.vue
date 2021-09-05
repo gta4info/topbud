@@ -538,7 +538,7 @@ export default {
         margin-bottom: 20px;
         z-index: 1;
         position: relative;
-        transition: .6s;
+        transition: .5s;
         width: 0;
         text-align: center;
         white-space: nowrap;
