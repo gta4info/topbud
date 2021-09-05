@@ -29,30 +29,42 @@
       <v-container>
         <div class="title">Categories</div>
         <div class="categories__items">
-          <nuxt-link to="/category/flower" class="categories__item flower" v-ripple>
+          <div class="categories__item flower">
             <div class="categories__item-title">Flower</div>
+            <v-btn to="/category/flower" depressed outlined>Shop now</v-btn>
             <img src="@/static/images/flower-category.png" alt="Flower">
-          </nuxt-link>
-          <nuxt-link to="/category/vapes" class="categories__item vapes" v-ripple>
-            <div class="categories__item-title">Vapes</div>
-            <img src="@/static/images/vapes-category.png" alt="Vapes">
-          </nuxt-link>
-          <nuxt-link to="/category/extracts" class="categories__item extracts" v-ripple>
-            <div class="categories__item-title">Extracts</div>
-            <img src="@/static/images/extracts-category.png" alt="Extracts">
-          </nuxt-link>
-          <nuxt-link to="/category/edibles" class="categories__item edibles" v-ripple>
+            <div class="categories__item-bg"></div>
+          </div>
+          <div class="categories__item edibles">
             <div class="categories__item-title">Edibles</div>
+            <v-btn to="/category/edibles" depressed outlined>Shop now</v-btn>
             <img src="@/static/images/edibles-category.png" alt="Edibles">
-          </nuxt-link>
-          <nuxt-link to="/category/topicals" class="categories__item topicals" v-ripple>
-            <div class="categories__item-title">CBD & Topicals</div>
-            <img src="@/static/images/topicals-category.png" alt="CBD & Topicals">
-          </nuxt-link>
-          <nuxt-link to="/category/accessories" class="categories__item accessories" v-ripple>
+            <div class="categories__item-bg"></div>
+          </div>
+          <div class="categories__item vapes">
+            <div class="categories__item-title">Vapes</div>
+            <v-btn to="/category/vapes" depressed outlined>Shop now</v-btn>
+            <img src="@/static/images/vapes-category.png" alt="Vapes">
+            <div class="categories__item-bg"></div>
+          </div>
+          <div class="categories__item concentrate">
+            <div class="categories__item-title">Concentrate</div>
+            <v-btn to="/category/concentrate" depressed outlined>Shop now</v-btn>
+            <img src="@/static/images/concentrate-category.png" alt="Concentrate">
+            <div class="categories__item-bg"></div>
+          </div>
+          <div class="categories__item topicals">
+            <div class="categories__item-title">Topicals</div>
+            <v-btn to="/category/topicals" depressed outlined>Shop now</v-btn>
+            <img src="@/static/images/topicals-category.png" alt="Topicals">
+            <div class="categories__item-bg"></div>
+          </div>
+          <div class="categories__item accessories">
             <div class="categories__item-title">Accessories</div>
+            <v-btn to="/category/accessories" depressed outlined>Shop now</v-btn>
             <img src="@/static/images/accessories-category.png" alt="Accessories">
-          </nuxt-link>
+            <div class="categories__item-bg"></div>
+          </div>
         </div>
       </v-container>
     </section>
@@ -145,20 +157,20 @@
         </div>
       </v-container>
     </section>
-    <section class="seo">
-      <v-container>
-        <div class="title">SEO text</div>
-        <div class="seo__items">
-          <div class="seo__item">
-            CBD is non-intoxicating, non-addictive, and easy to use hemp supplement that is completely natural and reported to help with a number of common mind and body ailments.<br/><br/>
-            Cannabidiol (CBD) comes from the hemp plant, a highly recognizable “multipurpose” plant with numerous medicinal, industrial, textile, and remedy uses. Cannabidiol is currently legal throughout most of the United States because it is not psychoactive (unlike THC, the active component of marijuana).
-          </div>
-          <div class="seo__item">
-            CBD is non-intoxicating, non-addictive, and easy to use hemp supplement that is completely natural and reported to help with a number of common mind and body ailments.<br/><br/>
-            Cannabidiol (CBD) comes from the hemp plant, a highly recognizable “multipurpose” plant with numerous medicinal, industrial, textile, and remedy uses. Cannabidiol is currently legal throughout most of the United States because it is not psychoactive (unlike THC, the active component of marijuana).</div>
-        </div>
-      </v-container>
-    </section>
+<!--    <section class="seo">-->
+<!--      <v-container>-->
+<!--        <div class="title">SEO text</div>-->
+<!--        <div class="seo__items">-->
+<!--          <div class="seo__item">-->
+<!--            CBD is non-intoxicating, non-addictive, and easy to use hemp supplement that is completely natural and reported to help with a number of common mind and body ailments.<br/><br/>-->
+<!--            Cannabidiol (CBD) comes from the hemp plant, a highly recognizable “multipurpose” plant with numerous medicinal, industrial, textile, and remedy uses. Cannabidiol is currently legal throughout most of the United States because it is not psychoactive (unlike THC, the active component of marijuana).-->
+<!--          </div>-->
+<!--          <div class="seo__item">-->
+<!--            CBD is non-intoxicating, non-addictive, and easy to use hemp supplement that is completely natural and reported to help with a number of common mind and body ailments.<br/><br/>-->
+<!--            Cannabidiol (CBD) comes from the hemp plant, a highly recognizable “multipurpose” plant with numerous medicinal, industrial, textile, and remedy uses. Cannabidiol is currently legal throughout most of the United States because it is not psychoactive (unlike THC, the active component of marijuana).</div>-->
+<!--        </div>-->
+<!--      </v-container>-->
+<!--    </section>-->
     <v-container fluid>
       <section class="subscribe">
         <v-container>
@@ -180,9 +192,6 @@
 export default {
   async asyncData({$axios}) {
     const blog = await $axios.$get('blog');
-    Object.keys(blog).map(key => {
-      blog[key].img = `http://31.186.250.216:8000/${blog[key].img}`;
-    })
     return { blog };
   },
   layout: 'new',
@@ -424,40 +433,115 @@ export default {
       height: 100%;
       padding: 40px 50px 76px;
       border-radius: 10px;
+      position: relative;
 
       @media(max-width: 1024px) {
         padding: 30px 40px;
       }
 
+      &:hover {
+        .categories__item-bg {
+          opacity: 1;
+        }
+
+        .v-btn {
+          opacity: 1;
+          left: calc(50% - 75px);
+        }
+
+        .categories__item-title {
+          width: 100%;
+        }
+      }
+
+      .v-btn {
+        border: 2px solid #FFFFFF !important;
+        border-radius: 5px !important;
+        color: #fff !important;
+        font-size: 18px;
+        height: 45px !important;
+        width: 150px !important;
+        opacity: 0;
+        z-index: 1;
+        transition: .7s;
+        left: 0;
+
+        &:hover {
+          color: #F6C76F !important;
+          border-color: #F6C76F !important;
+        }
+      }
+
+      &-bg {
+        background-size: cover !important;
+        position: absolute;
+        top: 0;
+        right: 0;
+        bottom: 0;
+        left: 0;
+        transition: .5s;
+        opacity: 0;
+      }
+
       &.flower {
         background: #071F41;
+
+        .categories__item-bg {
+          background: url("~/static/images/flower-bg.jpg");
+        }
       }
 
       &.vapes {
         background: #00A0BB;
+
+        .categories__item-bg {
+          background: url("~/static/images/vapes-bg.jpg");
+        }
       }
 
-      &.extracts {
+      &.concentrate {
         background: #ED4534;
+
+        .categories__item-bg {
+          background: url("~/static/images/concentrate-bg.jpg");
+        }
       }
 
       &.edibles {
         background: #569871;
+
+        .categories__item-bg {
+          background: url("~/static/images/edibles-bg.jpg");
+        }
       }
 
       &.topicals {
         background:#F6C76F;
+
+        .categories__item-bg {
+          background: url("~/static/images/topicals-bg.jpg");
+        }
       }
 
       &.accessories {
         background: #004B5A;
+
+        .categories__item-bg {
+          background: url("~/static/images/accessories-bg.jpg");
+        }
       }
 
       &-title {
         font-family: Courgette, cursive;
         font-size: 48px;
         color: #FFFFFF;
-        margin-bottom: auto;
+        margin-bottom: 20px;
+        z-index: 1;
+        position: relative;
+        transition: .6s;
+        width: 0;
+        text-align: center;
+        white-space: nowrap;
 
         @media(max-width: 1024px) {
           font-size: 36px;
@@ -465,6 +549,7 @@ export default {
       }
 
       img {
+        margin-top: auto;
         @media(max-width: 1024px) {
           transform: scale(.6);
         }

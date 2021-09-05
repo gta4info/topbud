@@ -60,7 +60,7 @@
       <nuxt-link to="/about" class="mobileMenu__nav-item--title" style="margin-bottom: 20px;font-weight: 700;align-self: flex-start;">About Us</nuxt-link>
       <nuxt-link to="/delivery" class="mobileMenu__nav-item--title" style="margin-bottom: 20px;font-weight: 700;align-self: flex-start;">Delivery info</nuxt-link>
       <nuxt-link to="/blog" class="mobileMenu__nav-item--title" style="margin-bottom: 20px;font-weight: 700;align-self: flex-start;">Blog</nuxt-link>
-      <nuxt-link to="/" class="mobileMenu__nav-item--title" style="margin-bottom: 20px;font-weight: 700;align-self: flex-start;">How to order?</nuxt-link>
+<!--      <nuxt-link to="/" class="mobileMenu__nav-item&#45;&#45;title" style="margin-bottom: 20px;font-weight: 700;align-self: flex-start;">How to order?</nuxt-link>-->
     </div>
   </header>
 </template>

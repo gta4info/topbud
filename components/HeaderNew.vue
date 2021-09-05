@@ -34,13 +34,18 @@
                           >
                             {{category.name}}
                           </nuxt-link>
-                          <nuxt-link
-                            :to="{name: 'category-cslug-sslug', params: {cslug: category.slug, sslug: sub.slug}}"
-                            class="header__shop-category--sub"
-                            v-for="(sub, index) in category.subs"
-                            :key="index"
-                          >
-                            {{sub.name}}
+                          <template v-if="category.subs.length">
+                            <nuxt-link
+                              :to="{name: 'category-cslug-sslug', params: {cslug: category.slug, sslug: sub.slug}}"
+                              class="header__shop-category--sub"
+                              v-for="(sub, index) in category.subs"
+                              :key="index"
+                            >
+                              {{sub.name}}
+                            </nuxt-link>
+                          </template>
+                          <nuxt-link :to="{name: 'category-cslug', params: {cslug: category.slug}}" class="header__shop-category--sub">
+                            {{category.name}}
                           </nuxt-link>
                         </template>
                       </div>
@@ -65,9 +70,9 @@
           <li>
             <nuxt-link to="/shop/deals">OZ deals</nuxt-link>
           </li>
-          <li>
-            <nuxt-link to="/">How to order?</nuxt-link>
-          </li>
+<!--          <li>-->
+<!--            <nuxt-link to="/">How to order?</nuxt-link>-->
+<!--          </li>-->
         </ul>
       </nav>
       <div class="header__search new">
@@ -211,6 +216,11 @@ export default {
           color: #000 !important;
           font-size: 16px !important;
           margin-bottom: 10px;
+          transition: .3s;
+
+          &:hover {
+            color: #F6C76F !important;
+          }
         }
       }
     }
