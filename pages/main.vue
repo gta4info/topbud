@@ -179,7 +179,7 @@
             <div class="subscribe__text">Keep me up to date on news and exclusive offers.</div>
             <div class="subscribe__group">
               <input type="email" v-model="subscribeEmail" placeholder="Your email" @keypress.enter="subscribe">
-              <v-btn height="100%" width="218" depressed color="#F6C76F" @click="subscribe">Let’s Go!</v-btn>
+              <v-btn height="100%" width="218" depressed color="#F6C76F" @click="subscribe" :loading="subscribing">Let’s Go!</v-btn>
             </div>
           </div>
         </v-container>
@@ -208,6 +208,7 @@ export default {
   data: () => ({
     selectedMainScreen: null,
     subscribeEmail: null,
+    subscribing: false,
     facts: [
       {
         title: 'What exactly is CBD?',
@@ -235,7 +236,18 @@ export default {
         return this.$toast.error('Email address is not valid!', {duration: 1500})
       }
 
-      this.$toast.success('You\'ve subscribed successfully!', {duration: 1500})
+      this.subscribing = true;
+
+      this.$axios
+        .post('/emailsub', {
+          email: this.subscribeEmail
+        })
+        .then(res => {
+          this.subscribeEmail = null;
+          this.$toast.success('You\'ve subscribed successfully!', {duration: 1500})
+        })
+        .catch(() => this.$toast.success('Please check your email and try again!', {duration: 1500}))
+        .finally(() => this.subscribing = false)
     }
   }
 }

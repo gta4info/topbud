@@ -236,7 +236,7 @@ export default {
           }
         })
         .catch(err => {
-          alert('Something goes wrong...');
+          this.$toast.error('Something goes wrong...', {duration: 1500});
         })
         .finally(() => this.sending = false);
     }

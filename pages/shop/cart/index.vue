@@ -135,10 +135,23 @@
             <div class="table__bottom-checkout">
               <div>
                 <span>Cart Total</span>
-                <span>${{calculateCartTotal}}</span>
+                <span style="color: #000">${{calculateCartTotal}}</span>
+              </div>
+              <div class="d-flex flex-column">
+                <div>
+                  <span>Delivery fees</span>
+                  <span style="color: #000">${{calculateCartTotal >= 100 ? 0 : 10}}</span>
+                </div>
+                <div>
+                  <span style="color: #7FAD39">Order Total</span>
+                  <span style="color: #7FAD39">${{calculateTotal}}</span>
+                </div>
               </div>
 
-              <CheckOutForm :enabled="calculateCartTotal >= 60"/>
+              <div class="d-flex flex-column">
+                <div v-if="calculateCartTotal < 60" style="color: #de2b2b;font-size: 18px;font-weight: 900;margin-bottom: 6px;">Minimum total amount is 60$</div>
+                <v-btn color="#7FAD39" class="white--text" block depressed :disabled="calculateCartTotal < 60" to="/shop/cart/checkout">Checkout</v-btn>
+              </div>
 
               <div class="table__bottom-delivery">
                 <nuxt-link to="/delivery" target="_blank">Delivery information</nuxt-link>
@@ -194,6 +207,9 @@ export default {
       }
 
       return total;
+    },
+    calculateTotal() {
+      return this.calculateCartTotal + (this.calculateCartTotal >= 100 ? 0 : 10);
     }
   },
   methods: {
