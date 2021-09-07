@@ -32,10 +32,9 @@
               <div class="checkout__summary-group" v-if="mixs.cart && mixs.cart.data && mixs.cart.data.length">
                 <div class="checkout__summary-group--title">Mix'N'Match products:</div>
                 <div class="mix-group" v-for="(mix, i) in mixs.cart.data" :key="i">
-                  <div class="mix-group__title">{{mix.quantity}} x {{weights[mix.weight]}} <span>${{mix.price}}</span></div>
                   <div v-for="(mixGroup,index) in mix.products" :key="index">
                     <div class="checkout__summary-group--line" v-for="item in mixGroup" :key="item.id">
-                      {{item.quantity}} x {{ weights[item.weight_id] }} {{ item.name }} <span>${{ item.price * item.quantity }}</span>
+                      {{item.quantity * mix.quantity}} x {{ weights[item.weight_id] }} {{ item.name }} <span>${{ item.price * item.quantity * mix.quantity }}</span>
                     </div>
                     <div></div>
                   </div>
