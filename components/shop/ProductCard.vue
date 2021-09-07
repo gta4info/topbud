@@ -1,64 +1,98 @@
 <template>
-  <div class="card">
-    <nuxt-link
-      :to="{name: 'category-cslug-sslug-pslug', params: {
+  <div>
+    <div class="card">
+      <nuxt-link
+        :to="{name: 'category-cslug-sslug-pslug', params: {
         cslug: $route.params.cslug ? $route.params.cslug : product.search.cslug,
         sslug: $route.params.sslug ? $route.params.sslug : (product.search ? (product.search.sslug ? product.search.sslug : 'product') :'product'),
         pslug: product.slug
       }}"
-      class="card__header"
-    >
-      <div class="card__header-deal" v-if="product.deal"><span>Deal</span></div>
-      <div class="card__header-badges">
-        <div class="card__header-badge cbd" v-if="product.cbd">CBD: {{product.cbd}}</div>
-        <div class="card__header-badge thc" v-if="product.thc">THC: {{product.thc}}</div>
-      </div>
-      <div class="img">
-        <img :src="product.img" :alt="product.name">
-      </div>
-    </nuxt-link>
-    <div class="card__bottom">
-      <nuxt-link
-        :to="{name: 'category-cslug-sslug-pslug', params: {
+        class="card__header"
+      >
+        <div class="card__header-deal" v-if="product.deal"><span>Deal</span></div>
+        <div class="card__header-badges">
+          <div class="card__header-badge cbd" v-if="product.cbd">CBD: {{product.cbd}}</div>
+          <div class="card__header-badge thc" v-if="product.thc">THC: {{product.thc}}</div>
+        </div>
+        <div class="img">
+          <img :src="product.img" :alt="product.name">
+        </div>
+      </nuxt-link>
+      <div class="card__bottom">
+        <nuxt-link
+          :to="{name: 'category-cslug-sslug-pslug', params: {
           cslug: $route.params.cslug ? $route.params.cslug : product.search.cslug,
           sslug: $route.params.sslug ? $route.params.sslug : (product.search ? (product.search.sslug ? product.search.sslug : 'product') :'product'),
           pslug: product.slug
         }}"
-        class="card__title"
-      >
-        {{product.name}}
-      </nuxt-link>
-      <v-menu v-model="menu" content-class="card__weights" offset-y close-on-content-click>
-        <template v-slot:activator="{on}">
-          <div v-on="on" class="card__weights-input" :class="{active: menu}">
-            <template>
-              <span class="card__weights-input--weight">{{ weights[selectedWeight] }}</span>
-              <div v-if="product.prices.find(item => item.weight_id === selectedWeight)">
-                <span class="card__weights-input--oldPrice" v-if="product.prices.find(item => item.weight_id === selectedWeight).deal_price">${{ product.prices.find(item => item.weight_id === selectedWeight).price }}</span>
-                <span class="card__weights-input--price">${{ product.prices.find(item => item.weight_id === selectedWeight).deal_price ? product.prices.find(item => item.weight_id === selectedWeight).deal_price : product.prices.find(item => item.weight_id === selectedWeight).price }}</span>
+          class="card__title"
+        >
+          {{product.name}}
+        </nuxt-link>
+        <v-menu v-model="menu" content-class="card__weights" offset-y close-on-content-click>
+          <template v-slot:activator="{on}">
+            <div v-on="on" class="card__weights-input" :class="{active: menu}">
+              <template>
+                <span class="card__weights-input--weight">{{ weights[selectedWeight] }}</span>
+                <div v-if="product.prices.find(item => item.weight_id === selectedWeight)">
+                  <span class="card__weights-input--oldPrice" v-if="product.prices.find(item => item.weight_id === selectedWeight).deal_price">${{ product.prices.find(item => item.weight_id === selectedWeight).price }}</span>
+                  <span class="card__weights-input--price">${{ product.prices.find(item => item.weight_id === selectedWeight).deal_price ? product.prices.find(item => item.weight_id === selectedWeight).deal_price : product.prices.find(item => item.weight_id === selectedWeight).price }}</span>
+                </div>
+              </template>
+            </div>
+          </template>
+          <div class="card__weights-list">
+            <div
+              v-for="price in product.prices"
+              @click="selectedWeight = price.weight_id"
+              :class="{active: selectedWeight === price.weight_id}"
+            >
+              <span class="card__weights-input--weight">{{ weights[price.weight_id] }}</span>
+              <div>
+                <span class="card__weights-input--oldPrice" v-if="price.deal_price">${{ price.price }}</span>
+                <span class="card__weights-input--price">${{ price.deal_price ? price.deal_price : price.price }}</span>
               </div>
-            </template>
-          </div>
-        </template>
-        <div class="card__weights-list">
-          <div
-            v-for="price in product.prices"
-            @click="selectedWeight = price.weight_id"
-            :class="{active: selectedWeight === price.weight_id}"
-          >
-            <span class="card__weights-input--weight">{{ weights[price.weight_id] }}</span>
-            <div>
-              <span class="card__weights-input--oldPrice" v-if="price.deal_price">${{ price.price }}</span>
-              <span class="card__weights-input--price">${{ price.deal_price ? price.deal_price : price.price }}</span>
             </div>
           </div>
+        </v-menu>
+        <div class="card__bottom-line">
+          <input type="text" class="card__quantity" v-model="selectedQuantity"/>
+          <button v-ripple @click="addToCart">
+            <v-icon color="#fff">mdi-cart</v-icon>
+          </button>
         </div>
-      </v-menu>
-      <div class="card__bottom-line">
-        <input type="text" class="card__quantity" v-model="selectedQuantity"/>
-        <button v-ripple @click="addToCart">
-          <v-icon color="#fff">mdi-cart</v-icon>
-        </button>
+      </div>
+    </div>
+
+    <div class="cardMobile">
+      <div class="cardMobile__row">
+        <div class="cardMobile__content">
+          <nuxt-link
+            :to="{
+            name: 'category-cslug-sslug-pslug', params: {
+            cslug: $route.params.cslug ? $route.params.cslug : product.search.cslug,
+            sslug: $route.params.sslug ? $route.params.sslug : (product.search ? (product.search.sslug ? product.search.sslug : 'product') :'product'),
+            pslug: product.slug
+          }}"
+            class="card__title cardMobile__title"
+          >
+            {{product.name}}
+          </nuxt-link>
+          <div class="cardMobile__text">
+            <span v-if="product.deal">Deal</span>
+            <span v-if="product.cbd">CBD: {{product.cbd.replace('CBD:', '')}}</span>
+            <span v-if="product.thc">THC: {{product.thc.replace('THC:', '')}}</span>
+          </div>
+          <div class="cardMobile__text" style="font-weight: 700; margin-top: 6px;" v-if="product.prices.length > 1">
+            From ${{product.prices[0].price}} - To ${{product.prices[product.prices.length-1].price}}
+          </div>
+          <div class="cardMobile__text" style="font-weight: 700; margin-top: 6px;" v-else>
+            ${{product.prices[0].price}}
+          </div>
+        </div>
+        <div class="cardMobile__img">
+          <img :src="product.img" :alt="product.name">
+        </div>
       </div>
     </div>
   </div>
@@ -84,7 +118,8 @@ export default {
     return {
       selectedQuantity: 1,
       selectedWeight: this.product.prices[0].weight_id,
-      menu: false
+      menu: false,
+      menuMobile: false,
     }
   },
   methods: {
@@ -129,6 +164,10 @@ export default {
     border-radius: 8px;
     position: relative;
     height: 100%;
+
+    @media(max-width: 768px) {
+      display: none;
+    }
 
     &__header {
       position: relative;
@@ -363,6 +402,72 @@ export default {
           &.active {
             background: #ccc;
             color: #fff;
+          }
+        }
+      }
+    }
+  }
+
+  .cardMobile {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+
+    @media(min-width: 769px) {
+      display: none;
+    }
+
+    &__row {
+      display: flex;
+      width: 100%;
+    }
+
+    &__content {
+      display: flex;
+      flex-direction: column;
+      flex-grow: 1;
+    }
+
+    &__img {
+      width: 30%;
+      height: 90%;
+      border-radius: 10px;
+      overflow: hidden;
+      margin-left: 20px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+
+      img {
+        max-width: 100%;
+        max-height: 100%;
+      }
+    }
+
+    &__title {
+      justify-content: flex-start;
+      text-align: left;
+      width: 100%;
+    }
+
+    &__text {
+      font-size: 14px;
+      display: flex;
+      flex-wrap: wrap;
+
+      span {
+
+        &:not(:last-of-type) {
+          position: relative;
+          padding-right: 3px;
+          margin-right: 3px;
+          display: flex;
+
+          &:before {
+            content: ',';
+            position: absolute;
+            right: 0;
+            bottom: 0;
           }
         }
       }

@@ -1,364 +1,200 @@
 <template>
   <div>
-    <section class="screen main">
-      <v-container class="d-flex fill-height">
-        <div class="screen__content">
-          <h1 class="screen__title">Fast, Reliable Weed Delivery In Great Toronto Area</h1>
-          <p>From flower to concentrates, from edibles to topicals, Top Bud is the go-to weed delivery service for residents of North York, Richmond Hill, Woodbridge, Markham, Concord, Toronto and the Surrounding areas.</p>
-          <div class="screen__bottom">
-            <span>View Our Products</span>
-            <nuxt-link to="/shop" v-ripple>></nuxt-link>
+    <v-container fluid class="mainScreen" :class="selectedMainScreen === 1 ? 'sativa' : 'indica'">
+      <v-container>
+        <div class="mainScreen__content">
+          <div class="mainScreen__left" @mouseenter="selectedMainScreen = 1" :class="{active: selectedMainScreen === 1}">
+            <div class="mainScreen__image">
+              <div>
+                <img class="default" src="@/static/images/sativa-img-1.png" alt="">
+                <img class="active" src="@/static/images/sativa-img-2.png" alt="">
+              </div>
+            </div>
+            <nuxt-link to="/category/flower/sativa">Shop Sativa</nuxt-link>
+          </div>
+          <div class="mainScreen__center">Choose your side</div>
+          <div class="mainScreen__right" @mouseenter="selectedMainScreen = 2" :class="{active: selectedMainScreen === 2}">
+            <div class="mainScreen__image">
+              <div>
+                <img class="default" src="@/static/images/indica-img-1.png" alt="">
+                <img class="active" src="@/static/images/indica-img-2.png" alt="">
+              </div>
+            </div>
+            <nuxt-link to="/category/flower/indica">Shop Indica</nuxt-link>
+          </div>
+        </div>
+      </v-container>
+    </v-container>
+    <section class="categories">
+      <v-container>
+        <div class="title">Categories</div>
+        <div class="categories__items">
+          <div class="categories__item flower">
+            <div class="categories__item-title">Flower</div>
+            <v-btn to="/category/flower" depressed outlined>Shop now</v-btn>
+            <img src="@/static/images/flower-category.png" alt="Flower">
+            <div class="categories__item-bg"></div>
+          </div>
+          <div class="categories__item edibles">
+            <div class="categories__item-title">Edibles</div>
+            <v-btn to="/category/edibles" depressed outlined>Shop now</v-btn>
+            <img src="@/static/images/edibles-category.png" alt="Edibles">
+            <div class="categories__item-bg"></div>
+          </div>
+          <div class="categories__item vapes">
+            <div class="categories__item-title">Vapes</div>
+            <v-btn to="/category/vapes" depressed outlined>Shop now</v-btn>
+            <img src="@/static/images/vapes-category.png" alt="Vapes">
+            <div class="categories__item-bg"></div>
+          </div>
+          <div class="categories__item concentrate">
+            <div class="categories__item-title">Concentrate</div>
+            <v-btn to="/category/concentrate" depressed outlined>Shop now</v-btn>
+            <img src="@/static/images/concentrate-category.png" alt="Concentrate">
+            <div class="categories__item-bg"></div>
+          </div>
+          <div class="categories__item topicals">
+            <div class="categories__item-title">Topicals</div>
+            <v-btn to="/category/topicals" depressed outlined>Shop now</v-btn>
+            <img src="@/static/images/topicals-category.png" alt="Topicals">
+            <div class="categories__item-bg"></div>
+          </div>
+          <div class="categories__item accessories">
+            <div class="categories__item-title">Accessories</div>
+            <v-btn to="/category/accessories" depressed outlined>Shop now</v-btn>
+            <img src="@/static/images/accessories-category.png" alt="Accessories">
+            <div class="categories__item-bg"></div>
           </div>
         </div>
       </v-container>
     </section>
-    <v-container class="howDeliveryWorks-wrapper">
-      <section class="howDeliveryWorks">
-        <div class="howDeliveryWorks__left">
-          <img src="@/static/images/delivery-works.webp" alt="Delivery">
-        </div>
-        <div class="howDeliveryWorks__right">
-          <div class="howDeliveryWorks__title">How Does Our Weed Delivery Service Work?</div>
-          <p>Curiosity About Life In All Its Aspects, I Think, Is Still The Secret Of Great Creative People.Our Signup Process Couldn’t Be Easier. All You Have To Do Is Create A Profile And Send Us Proof Of Your Age. Within Ten Minutes, You Will Receive An Email And A Text Message Letting You Know That Your Profile Has Been Approved. Then, You Will Be Able To Place Your Order From Our Generous Selection Of Flower, Edibles, Concentrates, And Other Cannabis Products.</p>
-          <p>Reluctant To Set Up A Profile? No Problem! You Can Still Browse Our Website To Select Your Products, Then Send Us A Text To 416-388-4091 With Your Order And A Picture Of Yourself Holding A Clearly Visible ID.</p>
-          <p>Once We Have Received Your Order And Verified That You Are 19 Years Or Older, We Will Package The Products You Have Requested And Send Them Off With Our Driver. We Will Text You When The Driver Is Close By. If You Place Your Order During Regular Business Hours, You Will Receive Your Goods On The Same Day.</p>
-          <nuxt-link to="/shop" v-ripple>View Our Products</nuxt-link>
-        </div>
-      </section>
-    </v-container>
-    <v-container>
-      <section class="productsOffer">
-          <div>What Products Do We Offer?</div>
-          <p>Not everyone uses marijuana for the same reasons, and not everyone consumes it in the same way. We carry a broad selection of quality weed products to cater to a diverse range of customer needs.</p>
-      </section>
-    </v-container>
-    <v-container>
-      <section class="category">
-        <div class="category__categories">
-          <div class="category__categories-title">Flower</div>
-          <div class="category__items">
-            <v-expansion-panels v-model="panel1" multiple>
-              <v-expansion-panel class="category__item">
-                <v-expansion-panel-header>
-                  <div class="category__item-title" :class="{'active': panel1.includes(0)}">Indica</div>
-                </v-expansion-panel-header>
-                <v-expansion-panel-content>
-                  <div class="category__item-text">If you are in need of relaxation, this is the way to go. Weed from indica plants will soothe you and help you sleep. Some strains are an effective treatment for anxiety and pain.</div>
-                  <nuxt-link to="/category/flower">View Flower Products</nuxt-link>
-                </v-expansion-panel-content>
-              </v-expansion-panel>
-              <v-expansion-panel class="category__item">
-                <v-expansion-panel-header>
-                  <div class="category__item-title" :class="{'active': panel1.includes(1)}">Sativa</div>
-                </v-expansion-panel-header>
-                <v-expansion-panel-content>
-                  <div class="category__item-text">Are you looking for an energy boost? Marijuana from sativa plants will invigorate you, give you the energy you need to complete a task, and boost your creativit</div>
-                  <nuxt-link to="/category/flower">View Flower Products</nuxt-link>
-                </v-expansion-panel-content>
-              </v-expansion-panel>
-              <v-expansion-panel class="category__item">
-                <v-expansion-panel-header>
-                  <div class="category__item-title" :class="{'active': panel1.includes(2)}">Hybrid</div>
-                </v-expansion-panel-header>
-                <v-expansion-panel-content>
-                  <div class="category__item-text">Many people want the best of both the indica and sativa worlds. Maybe you want pain relief without the sedation, or maybe you want to take a slight edge off your energy without taking it away. Hybrid plants are bred to be indica-dominant, sativa-dominant, or equally balanced between the two.</div>
-                  <nuxt-link to="/category/flower">View Flower Products</nuxt-link>
-                </v-expansion-panel-content>
-              </v-expansion-panel>
-              <v-expansion-panel class="category__item">
-                <v-expansion-panel-header>
-                  <div class="category__item-title" :class="{'active': panel1.includes(3)}">Pre-Rolls</div>
-                </v-expansion-panel-header>
-                <v-expansion-panel-content>
-                  <div class="category__item-text">If you can’t be bothered to do the grinding, rolling and sealing of your own marijuana joint, you can get prerolls that have already been rolled for you.</div>
-                  <nuxt-link to="/category/flower">View Flower Products</nuxt-link>
-                </v-expansion-panel-content>
-              </v-expansion-panel>
-            </v-expansion-panels>
-            <nuxt-link to="/category/flower" v-ripple>View Our Products</nuxt-link>
+    <section class="info">
+      <v-container>
+        <div class="info__items">
+          <div class="info__item">
+            <div class="info__item-image">
+              <img src="@/static/images/our-products.png" alt="Our products">
+            </div>
+            <div class="info__item-title">Our products</div>
+            <div class="info__item-text">Satisfied with what you<br/> have seen so far</div>
           </div>
-        </div>
-        <img class="category__image" src="@/static/images/i1625427868.webp" alt="Flower"/>
-      </section>
-    </v-container>
-    <v-container>
-      <section class="category image-first">
-        <div class="category__categories">
-          <div class="category__categories-title">Edibles</div>
-          <div class="category__items">
-            <v-expansion-panels v-model="panel2" multiple>
-              <v-expansion-panel class="category__item">
-                <v-expansion-panel-header>
-                  <div class="category__item-title" :class="{'active': panel2.includes(0)}">Beverages</div>
-                </v-expansion-panel-header>
-                <v-expansion-panel-content>
-                  <div class="category__item-text">Tasty beverages that are infused with THC Distillate include a variety of hot teas, an iced tea mix, and cocoa.</div>
-                  <nuxt-link to="/category/edibles">View Edibles Products</nuxt-link>
-                </v-expansion-panel-content>
-              </v-expansion-panel>
-              <v-expansion-panel class="category__item">
-                <v-expansion-panel-header>
-                  <div class="category__item-title" :class="{'active': panel2.includes(1)}">Candy</div>
-                </v-expansion-panel-header>
-                <v-expansion-panel-content>
-                  <div class="category__item-text">Who doesn’t love a good piece of candy? Our selection of sweet treats containing marijuana include lollipops, caramel cups, and a variety of chocolate truffles.</div>
-                  <nuxt-link to="/category/edibles">View Edibles Products</nuxt-link>
-                </v-expansion-panel-content>
-              </v-expansion-panel>
-              <v-expansion-panel class="category__item">
-                <v-expansion-panel-header>
-                  <div class="category__item-title" :class="{'active': panel2.includes(2)}">Chips & Snacks</div>
-                </v-expansion-panel-header>
-                <v-expansion-panel-content>
-                  <div class="category__item-text">If you prefer savoury to sweet, why not try our tortilla chips that come in a variety of flavours? Eat them on their own or add your favourite nacho toppings.</div>
-                  <nuxt-link to="/category/edibles">View Edibles Products</nuxt-link>
-                </v-expansion-panel-content>
-              </v-expansion-panel>
-              <v-expansion-panel class="category__item">
-                <v-expansion-panel-header>
-                  <div class="category__item-title" :class="{'active': panel2.includes(3)}">Chocolate</div>
-                </v-expansion-panel-header>
-                <v-expansion-panel-content>
-                  <div class="category__item-text">You can’t go wrong with good quality chocolate, and we offer a selection of chocolate bars, peanut butter cups, and of course, chocolate brownies.</div>
-                  <nuxt-link to="/category/edibles">View Edibles Products</nuxt-link>
-                </v-expansion-panel-content>
-              </v-expansion-panel>
-              <v-expansion-panel class="category__item">
-                <v-expansion-panel-header>
-                  <div class="category__item-title" :class="{'active': panel2.includes(4)}">Cookies</div>
-                </v-expansion-panel-header>
-                <v-expansion-panel-content>
-                  <div class="category__item-text">We offer peanut butter cookies chocolate cookies, lemon drop cookies, and more. If you’re looking for Christmas-themed cookies, try our candy cane cookies or “Santa’s Oreos”</div>
-                  <nuxt-link to="/category/edibles">View Edibles Products</nuxt-link>
-                </v-expansion-panel-content>
-              </v-expansion-panel>
-              <v-expansion-panel class="category__item">
-                <v-expansion-panel-header>
-                  <div class="category__item-title" :class="{'active': panel2.includes(5)}">Gummies</div>
-                </v-expansion-panel-header>
-                <v-expansion-panel-content>
-                  <div class="category__item-text">Looking for something sweet but not a chocolate fan? Try our selection of gummies that come in different flavours and THC content.</div>
-                  <nuxt-link to="/category/edibles">View Edibles Products</nuxt-link>
-                </v-expansion-panel-content>
-              </v-expansion-panel>
-              <v-expansion-panel class="category__item">
-                <v-expansion-panel-header>
-                  <div class="category__item-title" :class="{'active': panel2.includes(6)}">Tinctures & Oils</div>
-                </v-expansion-panel-header>
-                <v-expansion-panel-content>
-                  <div class="category__item-text">If you are looking for a way to switch from smoking weed to consuming it in a smokeless manner, our tinctures are a great way to start. You can infuse them to your baked goods or simply add a few drops to your favourite beverage.</div>
-                  <nuxt-link to="/category/edibles">View Edibles Products</nuxt-link>
-                </v-expansion-panel-content>
-              </v-expansion-panel>
-            </v-expansion-panels>
-            <nuxt-link to="/category/edibles" v-ripple>View Our Products</nuxt-link>
+          <div class="info__item">
+            <div class="info__item-image">
+              <img src="@/static/images/home-delivery.png" alt="Home Delivery">
+            </div>
+            <div class="info__item-title">Home Delivery</div>
+            <div class="info__item-text">Your order will be delivered to your<br/> doorstep or right to your hands</div>
           </div>
-        </div>
-        <img class="category__image" src="@/static/images/i1613407712.webp" alt="Flower"/>
-      </section>
-    </v-container>
-    <section class="screen topicals">
-      <v-container class="d-flex fill-height">
-        <div class="screen__content">
-          <div class="screen__title">Topicals</div>
-          <p>If you are looking for relief of localized pain or inflammation but you don’t want to ingest any weed products, try our lotions and oils that are absorbed through the skin.</p>
-          <div class="screen__bottom">
-            <span>View Our Products</span>
-            <nuxt-link to="/category/topicals" v-ripple>></nuxt-link>
+          <div class="info__item">
+            <div class="info__item-image">
+              <img src="@/static/images/customer-service.png" alt="Customer Service">
+            </div>
+            <div class="info__item-title">Customer Service</div>
+            <div class="info__item-text">We have a 24/7 Live Chat<br/> service at your disposal</div>
           </div>
         </div>
       </v-container>
     </section>
-    <v-container>
-      <section class="category">
-        <div class="category__categories">
-          <div class="category__categories-title">Concentrates</div>
-          <div class="category__items">
-            <v-expansion-panels v-model="panel3" multiple>
-              <v-expansion-panel class="category__item">
-                <v-expansion-panel-header>
-                  <div class="category__item-title" :class="{'active': panel3.includes(0)}">Capsules</div>
-                </v-expansion-panel-header>
-                <v-expansion-panel-content>
-                  <div class="category__item-text">Easily get the effects you are looking for without the need to smoke or vape. Cannabis capsules come in a variety of strengths and strains.</div>
-                  <nuxt-link to="/category/concentrates">View Concentrates Products</nuxt-link>
-                </v-expansion-panel-content>
-              </v-expansion-panel>
-              <v-expansion-panel class="category__item">
-                <v-expansion-panel-header>
-                  <div class="category__item-title" :class="{'active': panel3.includes(1)}">Diamonds</div>
-                </v-expansion-panel-header>
-                <v-expansion-panel-content>
-                  <div class="category__item-text">Diamonds is a THC concentrate in its purest form. With their gem-like appearance, they are up to four times stronger than your run-of-the-mill weed. They can only be consumed via a method that uses a heat source, such as smoking.</div>
-                  <nuxt-link to="/category/concentrates">View Concentrates Products</nuxt-link>
-                </v-expansion-panel-content>
-              </v-expansion-panel>
-              <v-expansion-panel class="category__item">
-                <v-expansion-panel-header>
-                  <div class="category__item-title" :class="{'active': panel3.includes(2)}">Distillate & Oils</div>
-                </v-expansion-panel-header>
-                <v-expansion-panel-content>
-                  <div class="category__item-text">This is a concentrated form of weed that isolates THC or CBD, depending on what effects you are looking for. These products are designed to give you the benefits you need in just one or two drops.</div>
-                  <nuxt-link to="/category/concentrates">View Concentrates Products</nuxt-link>
-                </v-expansion-panel-content>
-              </v-expansion-panel>
-              <v-expansion-panel class="category__item">
-                <v-expansion-panel-header>
-                  <div class="category__item-title" :class="{'active': panel3.includes(3)}">Hash</div>
-                </v-expansion-panel-header>
-                <v-expansion-panel-content>
-                  <div class="category__item-text">When you separate trichomes from the plant matter and turn it into a brick, you end up with hash. It is a concentrated form of weed that is usually smoked in a pipe or bong.</div>
-                  <nuxt-link to="/category/concentrates">View Concentrates Products</nuxt-link>
-                </v-expansion-panel-content>
-              </v-expansion-panel>
-              <v-expansion-panel class="category__item">
-                <v-expansion-panel-header>
-                  <div class="category__item-title" :class="{'active': panel3.includes(4)}">Sauce</div>
-                </v-expansion-panel-header>
-                <v-expansion-panel-content>
-                  <div class="category__item-text">If you like intense flavours, try a marijuana sauce – an extract with a thick, sticky consistency that is consumed by dabbing.</div>
-                  <nuxt-link to="/category/concentrates">View Concentrates Products</nuxt-link>
-                </v-expansion-panel-content>
-              </v-expansion-panel>
-              <v-expansion-panel class="category__item">
-                <v-expansion-panel-header>
-                  <div class="category__item-title" :class="{'active': panel3.includes(5)}">Shatter</div>
-                </v-expansion-panel-header>
-                <v-expansion-panel-content>
-                  <div class="category__item-text">This extract has a translucent, glass-like appearance, and as its name suggests, it can shatter like glass on impact. It can be consumed by vaping, but it is usually dabbed.</div>
-                  <nuxt-link to="/category/concentrates">View Concentrates Products</nuxt-link>
-                </v-expansion-panel-content>
-              </v-expansion-panel>
-            </v-expansion-panels>
-            <nuxt-link to="/category/concentrates" v-ripple>View Our Products</nuxt-link>
+    <section class="shopping">
+      <v-container>
+        <div class="shopping__items">
+          <div class="shopping__item under">
+            <div class="shopping__item-title">Ounces<br/> Under $100</div>
+            <v-btn to="/" depressed height="45" style="background: #F6C76F!important;color: #071F41!important">Shop Now</v-btn>
           </div>
-        </div>
-        <img class="category__image" src="@/static/images/i1621638660.webp" alt="Concentrates"/>
-      </section>
-    </v-container>
-    <v-container>
-      <section class="category image-first">
-        <div class="category__categories">
-          <div class="category__categories-title">Vapes</div>
-          <div class="category__items">
-            <v-expansion-panels v-model="panel4" multiple>
-              <v-expansion-panel class="category__item">
-                <v-expansion-panel-header>
-                  <div class="category__item-title" :class="{'active': panel4.includes(0)}">Cartridges</div>
-                </v-expansion-panel-header>
-                <v-expansion-panel-content>
-                  <div class="category__item-text">Tasty beverages that are infused with THC Distillate include a variety of hot teas, an iced tea mix, and cocoa.</div>
-                  <nuxt-link to="/category/vape-pens">View Vapes Products</nuxt-link>
-                </v-expansion-panel-content>
-              </v-expansion-panel>
-              <v-expansion-panel class="category__item">
-                <v-expansion-panel-header>
-                  <div class="category__item-title" :class="{'active': panel4.includes(1)}">Disposables</div>
-                </v-expansion-panel-header>
-                <v-expansion-panel-content>
-                  <div class="category__item-text">Who doesn’t love a good piece of candy? Our selection of sweet treats containing marijuana include lollipops, caramel cups, and a variety of chocolate truffles.</div>
-                  <nuxt-link to="/category/vape-pens">View Vapes Products</nuxt-link>
-                </v-expansion-panel-content>
-              </v-expansion-panel>
-              <v-expansion-panel class="category__item">
-                <v-expansion-panel-header>
-                  <div class="category__item-title" :class="{'active': panel4.includes(2)}">Batteries</div>
-                </v-expansion-panel-header>
-                <v-expansion-panel-content>
-                  <div class="category__item-text">If you prefer savoury to sweet, why not try our tortilla chips that come in a variety of flavours? Eat them on their own or add your favourite nacho toppings.</div>
-                  <nuxt-link to="/category/vape-pens">View Vapes Products</nuxt-link>
-                </v-expansion-panel-content>
-              </v-expansion-panel>
-            </v-expansion-panels>
-            <nuxt-link to="/category/vape-pens" v-ripple>View Our Products</nuxt-link>
+          <div class="shopping__item mixnmatch">
+            <div class="shopping__item-title">Mix And Match</div>
+            <div class="shopping__item-text">An excellent option for sampling AAAA and AAA flowers at a low price</div>
+            <v-btn to="/shop/mix" depressed height="45" style="background: #071F41!important;color: #fff!important">Shop Now</v-btn>
           </div>
-        </div>
-        <img class="category__image" src="@/static/images/Buy-CO2-Oil-Cartridg.webp" alt="Vapes"/>
-      </section>
-    </v-container>
-    <section class="screen accessories">
-      <v-container class="d-flex fill-height">
-        <div class="screen__content">
-          <div class="screen__title">Accessories</div>
-          <p>We carry a selection of lighters, bongs, pipes, rolling trays and grinders that will make your consumption of our products easier and more enjoyable.</p>
-          <div class="screen__bottom">
-            <span>View Our Products</span>
-            <nuxt-link to="/category/accessories" v-ripple>></nuxt-link>
+          <div class="shopping__item newdibles">
+            <div class="shopping__item-title">What's new in edibles</div>
+            <v-btn to="/category/edibles" depressed height="45" style="background: #F6C76F!important;color: #071F41!important">Shop Now</v-btn>
           </div>
-          <img src="@/static/images/Homepage_Content3_2x.webp" alt="" class="screen__image">
         </div>
       </v-container>
     </section>
-    <v-container>
-      <section class="safety">
-        <div>A Word About Safety</div>
-        <p>When used responsibly, our weed products can be both enjoyable and beneficial. To ensure that you have the best possible experience with our products, follow these simple safety guidelines:</p>
-      </section>
-    </v-container>
-    <v-container>
-      <section class="steps">
-        <div class="steps__item">
-          <img src="@/static/images/icons8---100.png" alt="Age Restriction">
-          <div class="steps__item-title">Age Restriction</div>
-          <p>Do not consume weed in any form without the close supervision of a doctor if you have not reached the minimum legal age for consumption. That minimum age is there for a reason.</p>
+    <section class="blog">
+      <v-container>
+        <div class="title">Our blog</div>
+        <div class="blog__items">
+          <div class="blog__item" v-for="(article, index) in blog" :key="article.id">
+            <div class="blog__item-image" :style="{backgroundImage: `url(${article.img})`}"></div>
+            <div class="blog__item-body">
+              <div class="blog__item-title">{{article.name}}</div>
+              <p class="blog__item-text">{{article.description}}. <nuxt-link class="blog__item-link" :to="{name: 'blog-slug', params: {slug: article.slug}}">Read more</nuxt-link></p>
+            </div>
+          </div>
         </div>
-        <div class="steps__item">
-          <img src="@/static/images/icons8----100.webp" alt="Age Restriction">
-          <div class="steps__item-title">Good Support</div>
-          <p>Ensure that your weed products are kept in a place where children and pets cannot get to them. Edibles in particular can be tempting to kids who are looking for a sweet treat..</p>
+      </v-container>
+    </section>
+    <section class="facts">
+      <v-container>
+        <div class="facts__wrapper">
+          <div class="facts__content">
+            <div class="title">Get the facts</div>
+            <v-list>
+              <v-list-group
+                v-for="(fact, i) in facts"
+                :key="i"
+                v-model="fact.active"
+              >
+                <template v-slot:activator>
+                  <v-list-item-content>
+                    <v-list-item-title v-text="fact.title"></v-list-item-title>
+                  </v-list-item-content>
+                </template>
+
+                <v-list-item>
+                  <v-list-item-content>
+                    <v-list-item-title v-html="fact.text"/>
+                  </v-list-item-content>
+                </v-list-item>
+              </v-list-group>
+            </v-list>
+          </div>
+          <img src="@/static/images/facts-img.png" alt="Get the facts">
         </div>
-        <div class="steps__item">
-          <img src="@/static/images/icons8----100.png" alt="Age Restriction">
-          <div class="steps__item-title">Individual Approach</div>
-          <p>If you have a history of addiction, or if you are pregnant and/or breastfeeding, talk to your doctor before you consume.</p>
-        </div>
-        <div class="steps__item">
-          <img src="@/static/images/icons8---100.webp" alt="Age Restriction">
-          <div class="steps__item-title">Don't risk your health</div>
-          <p>If you feel ill following the consumption of any weed products, stop use immediately and talk to your doctor.</p>
-        </div>
-        <div class="steps__line">
-          <div>1</div>
-          <div>2</div>
-          <div>3</div>
-          <div>4</div>
-        </div>
-      </section>
-    </v-container>
-<!--    <v-container>-->
-<!--      <section class="signup">-->
-<!--        <div class="signup__title">Sign Up Your Profile Today!</div>-->
-<!--        <div class="signup__text">-->
-<!--          <div>-->
-<!--            <p>If you are ready to start ordering high quality products from our weed delivery service, take a few minutes to create a profile.</p>-->
-<!--            <p>Delivery is FREE for orders over $100, and a modest $10 delivery fee is applied for orders below that. Please note that we can only accept cash payments at this time. Payment should be placed in an envelope and handed to your driver, who will verify the amount upon delivery of your order. Our minimum order amount is based on the area of delivery. You can text us to find out the minimum order requirements based on your area of residence.</p>-->
-<!--            <p>For more information, contact us by phone or via chat, and our friendly, knowledgeable weed experts will be happy to answer all of your questions.</p>-->
-<!--            <nuxt-link to="/">Sign Up Today</nuxt-link>-->
-<!--            <div class="signup__bottom">-->
-<!--              <div v-for="i of 5" :key="i">-->
-<!--                <img :src="require(`@/static/images/${i}.webp`)" alt="Image" v-if="i > 2">-->
-<!--              </div>-->
-<!--            </div>-->
+      </v-container>
+    </section>
+<!--    <section class="seo">-->
+<!--      <v-container>-->
+<!--        <div class="title">SEO text</div>-->
+<!--        <div class="seo__items">-->
+<!--          <div class="seo__item">-->
+<!--            CBD is non-intoxicating, non-addictive, and easy to use hemp supplement that is completely natural and reported to help with a number of common mind and body ailments.<br/><br/>-->
+<!--            Cannabidiol (CBD) comes from the hemp plant, a highly recognizable “multipurpose” plant with numerous medicinal, industrial, textile, and remedy uses. Cannabidiol is currently legal throughout most of the United States because it is not psychoactive (unlike THC, the active component of marijuana).-->
 <!--          </div>-->
-<!--          <div class="signup__text-images">-->
-<!--            <img :src="require(`@/static/images/${i}.webp`)" alt="Image" v-for="i of 2" :key="i">-->
-<!--          </div>-->
+<!--          <div class="seo__item">-->
+<!--            CBD is non-intoxicating, non-addictive, and easy to use hemp supplement that is completely natural and reported to help with a number of common mind and body ailments.<br/><br/>-->
+<!--            Cannabidiol (CBD) comes from the hemp plant, a highly recognizable “multipurpose” plant with numerous medicinal, industrial, textile, and remedy uses. Cannabidiol is currently legal throughout most of the United States because it is not psychoactive (unlike THC, the active component of marijuana).</div>-->
 <!--        </div>-->
-<!--      </section>-->
-<!--    </v-container>-->
-    <v-container>
-      <div class="viewProducts-wrapper">
-        <nuxt-link class="viewProducts" to="/shop">
-          <span>View Our Products</span>
-          <div class="viewProducts__btn">></div>
-        </nuxt-link>
-      </div>
+<!--      </v-container>-->
+<!--    </section>-->
+    <v-container fluid>
+      <section class="subscribe">
+        <v-container>
+          <div class="subscribe__content">
+            <div class="subscribe__title">STAY TUNED</div>
+            <div class="subscribe__text">Keep me up to date on news and exclusive offers.</div>
+            <div class="subscribe__group">
+              <input type="email" v-model="subscribeEmail" placeholder="Your email" @keypress.enter="subscribe">
+              <v-btn height="100%" width="218" depressed color="#F6C76F" @click="subscribe" :loading="subscribing">Let’s Go!</v-btn>
+            </div>
+          </div>
+        </v-container>
+      </section>
     </v-container>
   </div>
 </template>
 
 <script>
 export default {
+  async asyncData({$axios}) {
+    const blog = await $axios.$get('blog');
+    return { blog };
+  },
+  layout: 'new',
   head: {
     title: 'Best weed in Vaughan | TOPBUD store',
     meta: [
@@ -370,625 +206,679 @@ export default {
     ]
   },
   data: () => ({
-    panel1: [0],
-    panel2: [0],
-    panel3: [0],
-    panel4: [0],
-  })
+    selectedMainScreen: null,
+    subscribeEmail: null,
+    subscribing: false,
+    facts: [
+      {
+        title: 'What exactly is CBD?',
+        text: 'CBD is non-intoxicating, non-addictive, and easy to use hemp supplement that is completely natural and reported to help with a number of common mind and body ailments.<br/> Cannabidiol (CBD) comes from the hemp plant, a highly recognizable “multipurpose” plant with numerous medicinal, industrial, textile, and remedy uses. Cannabidiol is currently legal throughout most of the United States because it is not psychoactive (unlike THC, the active component of marijuana).'
+      },
+      {
+        title: 'What are the differences between Sativa, Indica, and Hybrid strains?',
+        text: 'What are the differences between Sativa, Indica, and Hybrid strains?'
+      },
+      {
+        title: 'How does THC help treat illness or pain? Is More THC “better”?',
+        text: 'How does THC help treat illness or pain? Is More THC “better”?'
+      },
+    ]
+  }),
+  methods: {
+    subscribe() {
+      if(!this.subscribeEmail || this.subscribeEmail.length < 5) {
+        return this.$toast.error('Please fill your email to subscribe!', {duration: 1500})
+      }
+
+      const re = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+
+      if(!re.test(String(this.subscribeEmail).toLowerCase())) {
+        return this.$toast.error('Email address is not valid!', {duration: 1500})
+      }
+
+      this.subscribing = true;
+
+      this.$axios
+        .post('/emailsub', {
+          email: this.subscribeEmail
+        })
+        .then(res => {
+          this.subscribeEmail = null;
+          this.$toast.success('You\'ve subscribed successfully!', {duration: 1500})
+        })
+        .catch(() => this.$toast.success('Please check your email and try again!', {duration: 1500}))
+        .finally(() => this.subscribing = false)
+    }
+  }
 }
 </script>
 
 <style lang="scss" scoped>
-  .screen {
-    background-attachment: scroll;
+  @media (min-width: 1904px) {
+    .container:not(.container--fluid) {
+      max-width: 1400px !important;
+    }
+    .container--fluid {
+      padding: 0 !important;
+    }
+  }
+  .mainScreen {
+    background: url("~/static/images/stars-bg.png"), #202536;
     background-size: cover;
-    background-repeat: no-repeat;
-    position: relative;
-    height: 550px;
+    height: 745px;
+    margin-top: -180px;
+    display: flex;
+    padding-bottom: 40px !important;
+    transition: 2s;
+
+    @media(max-width: 1024px) {
+      height: 600px;
+    }
+
+    @media (max-width: 768px) {
+      margin-top: 0;
+      display: none;
+    }
+
+    &.sativa {
+      background: url("~/static/images/stars-bg.png"), linear-gradient(to left, rgba(0, 0, 0, 0) 26.35%, rgba(255, 97, 75, 0.192) 65.42%, rgba(255, 97, 75, 0.8) 100%), #202536;
+      background-size: cover;
+    }
+
+    &.indica {
+      background: url("~/static/images/stars-bg.png"), linear-gradient(to right, rgba(0, 0, 0, 0) 26.35%, rgba(52, 166, 100, 0.32) 65.42%, #34A664 100%), #202536;
+      background-size: cover;
+    }
 
     .container {
-      position: relative;
-    }
-
-    &__image {
-      max-height: 70%;
-      position: absolute;
-      right: 0;
-      align-self: center;
-    }
-
-    &.main {
-      height: 700px;
-      background-image: url('@/static/images/Marijuana_anankkml_A.webp');
-      background-position: right center;
-      margin-top: -85px;
-
-      @media(max-width: 768px) {
-        height: auto;
-        padding-top: 100px;
-      }
-
-      .screen__content {
-        width: 65%;
-
-        @media(max-width: 768px) {
-          width: 100%;
-        }
-
-        p {
-          font-size: 16px;
-          line-height: 1.6;
-        }
-      }
-
-      .screen__title {
-        margin-bottom: 50px;
-      }
-    }
-
-    &.topicals {
-      background-image: url('@/static/images/Vape-Lung-454.webp');
-      background-position: left center;
-    }
-
-    &.accessories {
-      background-image: url('@/static/images/2aad7e38111feff06a07.webp');
-      background-position: left center;
-    }
-
-    &:before {
-      content: '';
-      position: absolute;
-      top: 0;
-      left: 0;
-      right: 0;
-      bottom: 0;
-      background-image: linear-gradient(to bottom, rgba(0,0,0,0.1), rgba(0,0,0,0.8));
+      margin-top: auto;
     }
 
     &__content {
-      height: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    img {
+      transition: .3s;
+
+      &.default {
+        opacity: 1;
+      }
+      &.active {
+        opacity: 0;
+      }
+    }
+
+    &__center {
+      font-weight: 700;
+      color: #F6C76F;
+      font-size: 24px;
+      text-transform: uppercase;
+      width: 195px;
+      text-align: center;
+      align-self: flex-start;
+      margin-top: 110px;
+    }
+
+    &__left, &__right {
+      flex-grow: 1;
       display: flex;
       flex-direction: column;
-      justify-content: flex-end;
-      padding-bottom: 100px;
-      width: 50%;
-      z-index: 1;
+      align-items: center;
+      max-width: 50%;
 
-      @media(max-width: 768px) {
-        width: 100%;
-      }
-    }
+      .mainScreen__image {
+        div {
+          width: 500px;
+          height: 385px;
+          position: relative;
 
-    &__title, p, &__bottom {
-      color: #cbe1be;
-    }
+          @media(max-width: 1024px) {
+            width: 350px;
+            height: 270px;
+          }
 
-    &__title {
-      font-size: 39px;
-      line-height: 1.2;
-      font-weight: 900;
-      letter-spacing: 1px;
-      margin-bottom: 80px;
+          img {
+            position: absolute;
+            top: 0;
+            right: 0;
+            left: 0;
+            bottom: 0;
 
-      @media(max-width: 768px) {
-        z-index: 1;
-      }
-    }
-
-    p {
-      font-size: 14px;
-      line-height: 1.5;
-      margin-bottom: 80px;
-
-      @media(max-width: 768px) {
-        z-index: 1;
-      }
-    }
-
-    &__bottom {
-      display: flex;
-
-      @media(max-width: 768px) {
-        justify-content: center;
-        z-index: 1;
-      }
-
-      span {
-        font-size: 20px;
-        margin-right: 25px;
+            @media(max-width: 1024px) {
+              max-width: 100%;
+              max-height: 100%;
+            }
+          }
+        }
       }
 
       a {
-        border-radius: 50%;
-        width: 35px;
-        height: 35px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        border: 1px solid #cbe1be;
-        color: #cbe1be !important;
-        animation: scale 3s infinite;
+        opacity: 0;
         transition: .3s;
-
-        &:hover {
-          background: #cbe1be;
-          color: #000 !important;
-        }
+        background: #D41B27;
+        border-radius: 50px;
+        color: #ffffff;
+        padding: 12px 22px;
+        font-size: 18px;
+        margin-top: 40px;
+        margin-right: 30px;
       }
-    }
-  }
-
-  @keyframes scale {
-    0% {
-      transform: scale(1);
-    }
-    50% {
-      transform: scale(1.25);
-    }
-    100% {
-      transform: scale(1);
-    }
-  }
-
-  .howDeliveryWorks {
-    display: flex;
-    position: relative;
-    margin-top: 10px;
-    width: 90%;
-
-    @media(max-width: 768px) {
-      width: 100%;
-      flex-direction: column;
-    }
-
-    &-wrapper {
-      display: flex;
-      justify-content: center;
     }
 
     &__left {
-      box-shadow: 0 0 10px 0 rgb(0 138 28);
-      z-index: 1;
-      align-self: flex-start;
-      height: 485px;
 
-      @media(max-width: 768px) {
-        height: auto;
+      &.active {
+
         img {
-          width: 100%;
-          height: 100%;
+          transition: .3s;
+
+          &.default {
+            opacity: 0;
+          }
+          &.active {
+            opacity: 1;
+          }
+        }
+
+        a {
+          opacity: 1;
         }
       }
     }
 
     &__right {
-      margin-top: 60px;
-      background: #E9F5EC;
-      padding: 20px 15px 20px 30px;
-      display: flex;
-      flex-direction: column;
-      align-items: flex-start;
-    }
 
-    &__title {
-      font-size: 32px;
-      font-weight: 900;
-      line-height: 1.55;
-      margin-bottom: 20px;
-      width: 90%;
-    }
+      &.active {
 
-    p {
-      font-size: 12px;
-      font-weight: 500;
-      line-height: 1.8;
-      margin-bottom: 20px;
-    }
+        img {
+          transition: .3s;
 
-    a {
-      height: 30px;
-      padding: 0 20px;
-      display: flex;
-      align-items: center;
-      background: #71C778;
-      color: #fff;
-      font-weight: 500;
-      font-size: 14px;
-    }
-  }
+          &.default {
+            opacity: 0;
+          }
+          &.active {
+            opacity: 1;
+          }
+        }
 
-  .productsOffer {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-
-    div {
-      font-size: 50px;
-      font-weight: 900;
-      margin-bottom: 10px;
-
-      @media(max-width: 768px) {
-        font-size: 30px;
-        text-align: center;
-      }
-    }
-
-    p {
-      text-align: center;
-      width: 80%;
-
-      @media(max-width: 768px) {
-        width: 100%;
+        a {
+          opacity: 1;
+        }
       }
     }
   }
 
-  .category {
-    display: flex;
-    margin-bottom: 20px;
+  .title {
+    margin: 60px 0;
+    font-size: 48px;
+    font-weight: 700;
+    font-family: 'Montserrat', sans-serif;
+    color: #333333;
 
     @media(max-width: 768px) {
-      flex-direction: column-reverse;
+      margin: 30px 0;
     }
+  }
 
-    &.image-first {
-      flex-direction: row-reverse;
-
-      @media(max-width: 768px) {
-        flex-direction: column-reverse;
-      }
-    }
-
-    &__categories {
-      display: flex;
-      flex-direction: column;
-      margin-right: 60px;
-
-      @media(max-width: 768px) {
-        margin-right: 0;
-      }
-
-      &-title {
-        background: #72b84a;
-        color: #ffffff;
-        font-size: 42px;
-        padding: 5px 40px 5px 10px;
-        line-height: 1;
-        align-self: flex-start;
-        margin-bottom: 40px;
-
-        @media(max-width: 768px) {
-          font-size: 36px;
-          padding-right: 10px;
-          align-self: center;
-        }
-      }
-    }
+  .categories {
 
     &__items {
-      display: flex;
-      flex-direction: column;
-      width: 365px;
-      margin-left: 60px;
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      grid-template-rows: 1fr 1fr;
+      grid-gap: 40px;
 
       @media(max-width: 768px) {
-        margin-left: 0;
-        width: 100%;
-      }
-
-      & > a {
-        color: #63B03A;
-        font-weight: 900;
-        font-size: 14px;
-        height: 52px;
         display: flex;
-        align-items: center;
-        padding: 0 20px;
-        border: 2px solid #63B03A;
-        align-self: flex-start;
-        margin-top: 20px;
-
-        @media(max-width: 768px) {
-          align-self: center;
-        }
+        flex-direction: column;
       }
     }
 
     &__item {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      width: 100%;
+      height: 100%;
+      padding: 40px 50px 76px;
+      border-radius: 10px;
+      position: relative;
 
-      .v-expansion-panel-header {
-        padding: 0;
+      @media(max-width: 1024px) {
+        padding: 30px 40px;
       }
 
-      &:before {
-        box-shadow: none;
+      &:hover {
+        .categories__item-bg {
+          opacity: 1;
+        }
+
+        .v-btn {
+          opacity: 1;
+          left: calc(50% - 75px);
+        }
+
+        .categories__item-title {
+          width: 100%;
+        }
       }
 
-      &:not(:last-child) {
-        margin-bottom: 10px;
+      .v-btn {
+        border: 2px solid #FFFFFF !important;
+        border-radius: 5px !important;
+        color: #fff !important;
+        font-size: 18px;
+        height: 45px !important;
+        width: 150px !important;
+        opacity: 0;
+        z-index: 1;
+        transition: .7s;
+        left: 0;
+
+        &:hover {
+          color: #F6C76F !important;
+          border-color: #F6C76F !important;
+        }
+      }
+
+      &-bg {
+        background-size: cover !important;
+        position: absolute;
+        top: 0;
+        right: 0;
+        bottom: 0;
+        left: 0;
+        transition: .5s;
+        opacity: 0;
+      }
+
+      &.flower {
+        background: #071F41;
+
+        .categories__item-bg {
+          background: url("~/static/images/flower-bg.jpg");
+        }
+      }
+
+      &.vapes {
+        background: #00A0BB;
+
+        .categories__item-bg {
+          background: url("~/static/images/vapes-bg.jpg");
+        }
+      }
+
+      &.concentrate {
+        background: #ED4534;
+
+        .categories__item-bg {
+          background: url("~/static/images/concentrate-bg.jpg");
+        }
+      }
+
+      &.edibles {
+        background: #569871;
+
+        .categories__item-bg {
+          background: url("~/static/images/edibles-bg.jpg");
+        }
+      }
+
+      &.topicals {
+        background:#F6C76F;
+
+        .categories__item-bg {
+          background: url("~/static/images/topicals-bg.jpg");
+        }
+      }
+
+      &.accessories {
+        background: #004B5A;
+
+        .categories__item-bg {
+          background: url("~/static/images/accessories-bg.jpg");
+        }
       }
 
       &-title {
-        font-size: 22px;
-        padding-bottom: 5px;
-        border-bottom: 1px solid #72b84a;
+        font-family: Courgette, cursive;
+        font-size: 48px;
+        color: #FFFFFF;
         margin-bottom: 20px;
-        line-height: 1;
-        font-weight: 500;
+        z-index: 1;
         position: relative;
-        display: flex;
-        align-items: center;
-        cursor: pointer;
+        transition: .5s;
+        width: 0;
+        text-align: center;
+        white-space: nowrap;
 
-        &:before {
-          content: '❮';
-          position: absolute;
-          right: 5px;
-          transform: rotate(-90deg);
-          font-weight: 900;
-          font-size: 30px;
-          transition: .3s;
-        }
-
-        &:hover, &.active {
-          &:before {
-            transform: rotate(90deg);
-          }
+        @media(max-width: 1024px) {
+          font-size: 36px;
         }
       }
 
-      &-text {
-        font-size: 12px;
-        line-height: 1.8;
-      }
-
-      a {
-        font-size: 12px;
-        color: #72b84a;
-      }
-    }
-
-    &__image {
-      align-self: flex-start;
-      margin-left: auto;
-      margin-right: auto;
-
-      @media(max-width: 768px) {
-        margin-bottom: 40px;
-        max-width: 100%;
+      img {
+        margin-top: auto;
+        @media(max-width: 1024px) {
+          transform: scale(.6);
+        }
       }
     }
   }
 
-  .safety {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
+  .info {
+    margin-top: 130px;
+    margin-bottom: 176px;
 
-    div {
-      font-size: 40px;
-      font-weight: 900;
-      margin-bottom: 35px;
-      margin-top: 50px;
+    @media(max-width: 768px) {
+      margin: 60px 0;
+    }
+
+    &__items {
+      display: flex;
+      justify-content: space-evenly;
 
       @media(max-width: 768px) {
-        font-size: 36px;
+        flex-direction: column;
       }
     }
 
-    p {
-      text-align: center;
+    &__item {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+
+      @media(max-width: 768px) {
+        &:not(:last-of-type) {
+          margin-bottom: 40px;
+        }
+      }
+
+      &-image {
+        height: 140px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-bottom: 57px;
+      }
+
+      &-title {
+        font-size: 24px;
+        margin-bottom: 35px;
+        font-weight: 700;
+      }
+
+      &-text {
+        font-size: 18px;
+        text-align: center;
+      }
+    }
+  }
+
+  .shopping {
+
+    &__items {
+      display: flex;
+
+      @media(max-width: 768px) {
+        flex-direction: column;
+      }
+    }
+
+    &__item {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      background-size: cover;
+      height: 260px;
+      padding: 40px;
+      width: 100%;
+
+      @media(max-width: 1024px) {
+        min-height: 260px;
+        height: auto;
+      }
+
+      @media(max-width: 768px) {
+        height: auto;
+        background-size: cover !important;
+
+        &:not(:last-of-type) {
+          margin-bottom: 20px;
+        }
+      }
+
+      &:not(:last-of-type) {
+        margin-right: 40px;
+      }
+
+      &.under {
+        background: url("~/static/images/under100.png");
+      }
+
+      &.mixnmatch {
+        background: url("~/static/images/mixnmatch.png");
+      }
+
+      &.newdibles {
+        background: url("~/static/images/newedibles.png");
+      }
+
+      &-title {
+        font-family: "Montserrat", sans-serif;
+        font-weight: 700;
+        font-size: 30px;
+        color: #fff;
+        margin-bottom: 15px;
+      }
+
+      &-text {
+        font-weight: 700;
+        font-size: 18px;
+        color: #071F41;
+        margin-bottom: 30px;
+      }
+
+      .v-btn {
+        margin-top: auto;
+      }
+    }
+  }
+
+  .blog {
+    margin-bottom: 100px;
+
+    @media(max-width: 768px) {
+      margin-bottom: 40px;
+    }
+
+    &__items {
+      display: flex;
+
+      @media(max-width: 768px) {
+        flex-direction: column;
+      }
+    }
+
+    &__item {
       width: 50%;
 
       @media(max-width: 768px) {
         width: 100%;
       }
+
+      &:not(:last-of-type) {
+        margin-right: 40px;
+      }
+
+      &-image {
+        width: 100%;
+        height: 387px;
+        margin-bottom: 25px;
+        border-radius: 5px;
+        overflow: hidden;
+
+        img {
+          width: 100%;
+          height: 100%;
+        }
+      }
+
+      &-title {
+        font-size: 24px;
+        font-weight: 700;
+        color: #333333;
+        margin-bottom: 23px;
+      }
+
+      &-text {
+        font-size: 18px;
+      }
+
+      &-link {
+        color: #008DE3 !important;
+      }
     }
   }
 
-  .steps {
-    display: flex;
-    flex-direction: column;
-    width: 80%;
-    margin-left: auto;
-    margin-right: auto;
-    position: relative;
+  .facts {
 
-    @media(max-width: 768px) {
-      width: 100%;
-    }
-
-    &__line {
-      position: absolute;
-      height: 80%;
-      margin-top: 120px;
-      display: flex;
-      flex-direction: column;
-      justify-content: space-between;
-      width: 30px;
-      left: 0;
-      right: 0;
-      margin-left: auto;
-      margin-right: auto;
-
-      @media(max-width: 768px) {
+    @media(max-width: 1024px) {
+      img {
         display: none;
       }
+    }
 
-      &:before {
-        content: '';
-        position: absolute;
-        top: 30px;
-        bottom: 30px;
-        left: 0;
-        right: 0;
-        margin-left: auto;
-        margin-right: auto;
-        width: 2px;
-        height: calc(100% - 60px);
-        background: #000;
+    &__wrapper {
+      display: flex;
+    }
+
+    .title {
+      margin-bottom: 44px;
+    }
+
+    &__content {
+      width: 700px;
+      flex-shrink: 0;
+
+      @media(max-width: 1024px) {
+        width: 100%;
       }
+    }
+  }
 
-      div {
-        width: 30px;
-        height: 30px;
-        background: #000;
-        border-radius: 50%;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        color: #fff;
-        font-weight: 900;
-        padding-right: 2px;
-        z-index: 1;
-        box-shadow: 0 0 0 2px #fff;
+  .seo {
+    margin-bottom: 142px;
+
+    @media(max-width: 768px) {
+      margin-bottom: 40px;
+    }
+
+    &__items {
+      display: flex;
+
+      @media(max-width: 1024px) {
+        flex-direction: column;
       }
     }
 
     &__item {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      width: 374px;
 
-      @media(max-width: 768px) {
-        width: 100%;
-      }
+      &:not(:last-of-type) {
+        margin-right: 50px;
 
-      &:nth-child(2n + 1) {
-        margin-right: auto;
-      }
-
-      &:nth-child(2n) {
-        margin-left: auto;
-      }
-
-      img {
-        margin-bottom: 15px;
-      }
-
-      &-title {
-        font-weight: 900;
-        font-size: 22px;
-        margin-bottom: 15px;
-      }
-
-      p {
-        line-height: 1.8;
-        text-align: center;
+        @media(max-width: 1024px) {
+          margin-right: 0;
+          margin-bottom: 50px;
+        }
       }
     }
   }
 
-  .signup {
-    display: flex;
-    flex-direction: column;
+  .subscribe {
+    background: url("~/static/images/subscribe.jpg");
+    height: 387px;
 
     @media(max-width: 768px) {
-      display: none;
+      height: auto;
+      padding: 40px 0 50px;
+      background-size: cover;
+    }
+
+    &__content {
+      width: 100%;
+      max-width: 1000px;
+      display: flex;
+      flex-direction: column;
+      margin: 0 auto;
+      padding-top: 10px;
     }
 
     &__title {
-      font-size: 38px;
-      font-weight: 900;
-      background: #CBE1BE;
-      line-height: 1.2;
-      padding: 5px 20px 5px 5px;
-      align-self: flex-start;
-      margin-bottom: 20px;
-    }
-
-    a {
-      color: #63B03A;
-      font-weight: 900;
-      font-size: 14px;
-      height: 52px;
-      display: flex;
-      align-items: center;
-      padding: 0 20px;
-      border: 2px solid #63B03A;
-      align-self: flex-start;
-    }
-
-    p {
-      margin-bottom: 20px;
-      line-height: 1.8;
+      font-size: 48px;
+      color: #fff;
+      font-weight: 700;
+      margin-bottom: 12px;
     }
 
     &__text {
-      display: flex;
-      justify-content: flex-start;
-
-      & > div {
-        display: flex;
-        flex-direction: column;
-
-        a {
-          align-self: flex-start;
-          margin-bottom: 20px;
-        }
-      }
-
-      &-images {
-        display: flex;
-        flex-wrap: wrap;
-
-        img {
-          margin: 5px;
-          align-self: flex-start;
-        }
-      }
+      font-weight: 700;
+      font-size: 24px;
+      color: #fff;
+      margin-bottom: 22px;
     }
 
-    &__bottom {
-      display: flex;
-      justify-content: flex-start;
-    }
-  }
-
-  .viewProducts {
-    display: flex;
-    margin: 60px auto;
-    align-items: center;
-    color: #000;
-
-    @media(max-width: 768px) {
-      justify-content: center;
-      z-index: 1;
-    }
-
-    &:hover {
-      .viewProducts__btn {
-        background: #cbe1be;
-        color: #000 !important;
-        border-color: #cbe1be;
-      }
-    }
-
-    &-wrapper {
+    &__group {
       width: 100%;
-      display: flex;
-      justify-content: center;
-    }
-
-    span {
-      margin-right: 25px;
-      font-size: 40px;
-      font-weight: 900;
-    }
-
-    &__btn {
-      border-radius: 50%;
-      width: 35px;
-      height: 35px;
+      height: 100px;
+      padding: 12px;
       display: flex;
       align-items: center;
-      justify-content: center;
-      border: 1px solid #000;
-      color: #000 !important;
-      animation: scale 3s infinite;
-      transition: .3s;
+      background: #fff;
+      border-radius: 5px;
+
+      @media(max-width: 768px) {
+        flex-direction: column;
+        background: transparent;
+        height: auto;
+      }
+
+      input {
+        padding: 0 28px;
+        font-size: 24px;
+        font-weight: 700;
+        color: #333;
+        outline: none;
+        width: 100%;
+
+        @media(max-width: 768px) {
+          background: #ffffff;
+          height: 60px;
+          padding: 0 20px;
+          display: flex;
+          font-size: 18px;
+          border-radius: 5px;
+          margin-bottom: 20px;
+        }
+
+        &::placeholder {
+          color: #333;
+        }
+      }
+
+      .v-btn {
+        color: #fff;
+        text-transform: none;
+        font-size: 24px;
+
+        @media(max-width: 768px) {
+          height: 60px !important;
+          width: 100% !important;
+        }
+      }
     }
   }
 </style>

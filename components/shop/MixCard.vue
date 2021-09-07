@@ -38,6 +38,9 @@ export default {
       width: 100%;
       height: 230px;
       border-radius: 8px 8px 0 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
 
       img {
         height: 100%;
