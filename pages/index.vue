@@ -119,7 +119,7 @@
         <div class="title">Our blog</div>
         <div class="blog__items">
           <div class="blog__item" v-for="(article, index) in blog" :key="article.id">
-            <div class="blog__item-image" :style="{backgroundImage: `url(${article.img})`}"></div>
+            <div class="blog__item-image" :style="{backgroundImage: `url(/${article.img})`}"></div>
             <div class="blog__item-body">
               <div class="blog__item-title">{{article.name}}</div>
               <p class="blog__item-text">{{article.description}}. <nuxt-link class="blog__item-link" :to="{name: 'blog-slug', params: {slug: article.slug}}">Read more</nuxt-link></p>
