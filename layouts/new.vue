@@ -31,9 +31,6 @@ export default {
 
 <style lang="scss" scoped>
 @media (min-width: 1904px) {
-  .container:not(.container--fluid) {
-    max-width: 1400px !important;
-  }
   .container--fluid {
     padding: 0 !important;
   }

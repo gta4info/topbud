@@ -27,7 +27,7 @@
                     </div>
                     <div class="header__shop-content">
                       <div class="header__shop-category" v-for="(category, i) in categories" :key="i">
-                        <template v-if="i < 6">
+                        <template v-if="i < (windowWidth > 1264 ? 6 : 5)">
                           <nuxt-link
                             :to="{name: 'category-cslug', params: {cslug: category.slug}}"
                             class="header__shop-category--title"
@@ -84,6 +84,7 @@
           solo
           hide-details
           @keydown.enter="submitSearch"
+          @click:prepend-inner="submitSearch"
         />
       </div>
       <nuxt-link to="/shop/cart" class="header__cart">
@@ -111,6 +112,7 @@ export default {
   data: () => ({
     showShop: false,
     search: '',
+    windowWidth: null,
   }),
   computed: {
     ...mapGetters({
@@ -127,6 +129,15 @@ export default {
       if(this.search.length) {
         this.$router.push({name: 'shop-search', query: {q: this.search}})
       }
+    },
+    setWindowWidth() {
+      this.windowWidth = window.outerWidth;
+    }
+  },
+  created () {
+    if (process.browser) {
+      this.windowWidth = window.outerWidth;
+      window.addEventListener("resize", this.setWindowWidth);
     }
   }
 }
@@ -137,12 +148,13 @@ export default {
     display: flex;
     align-items: center;
     position: relative;
-    padding-top: 20px;
     z-index: 1;
+    height: 100px;
+    padding-top: 10px;
 
     &__logo {
-      width: 200px;
-      height: 135px;
+      width: auto;
+      height: 100%;
       flex-shrink: 0;
 
       @media(max-width: 1024px) {
@@ -195,6 +207,10 @@ export default {
       &-content {
         padding: 54px 51px;
         display: flex;
+
+        @media(max-width: 1264px) {
+          padding: 30px;
+        }
       }
 
       &-category {
@@ -202,7 +218,7 @@ export default {
         flex-direction: column;
 
         &:not(:last-of-type) {
-          margin-right: 50px;
+          margin-right: 30px;
         }
 
         &--title {
@@ -249,7 +265,7 @@ export default {
             display: none;
           }
 
-          @media (min-width: 1904px) {
+          @media (min-width: 1264px) {
             &.lg {
               display: flex;
             }
@@ -353,7 +369,7 @@ export default {
     &__contacts {
       position: absolute;
       right: 0;
-      top: 10px;
+      top: 5px;
       display: flex;
       align-items: center;
 

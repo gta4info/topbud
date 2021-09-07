@@ -171,7 +171,7 @@
 <!--        </div>-->
 <!--      </v-container>-->
 <!--    </section>-->
-    <v-container fluid>
+    <v-container fluid style="padding-left: 0;padding-right: 0;">
       <section class="subscribe">
         <v-container>
           <div class="subscribe__content">
@@ -255,9 +255,6 @@ export default {
 
 <style lang="scss" scoped>
   @media (min-width: 1904px) {
-    .container:not(.container--fluid) {
-      max-width: 1400px !important;
-    }
     .container--fluid {
       padding: 0 !important;
     }
@@ -271,8 +268,8 @@ export default {
     padding-bottom: 40px !important;
     transition: 2s;
 
-    @media(max-width: 1024px) {
-      height: 600px;
+    @media(max-width: 1264px) {
+      height: 700px;
     }
 
     @media (max-width: 768px) {
@@ -320,6 +317,13 @@ export default {
       text-align: center;
       align-self: flex-start;
       margin-top: 110px;
+
+      @media(max-width: 1264px) {
+        display: flex;
+        font-size: 18px;
+        flex-shrink: 0;
+        width: 150px;
+      }
     }
 
     &__left, &__right {
@@ -329,11 +333,26 @@ export default {
       align-items: center;
       max-width: 50%;
 
+      @media(max-width: 1264px) {
+        width: calc(100% - 75px);
+        height: 385px;
+      }
+
       .mainScreen__image {
+
+        @media(max-width: 1264px) {
+          width: 100%;
+        }
+
         div {
           width: 500px;
           height: 385px;
           position: relative;
+
+          @media(max-width: 1264px) {
+            width: 100%;
+            height: 346px;
+          }
 
           @media(max-width: 1024px) {
             width: 350px;
@@ -346,6 +365,15 @@ export default {
             right: 0;
             left: 0;
             bottom: 0;
+
+            @media(max-width: 1264px) {
+              top: auto;
+              right: auto;
+              bottom: auto;
+              left: auto;
+              max-width: 100%;
+              height: auto;
+            }
 
             @media(max-width: 1024px) {
               max-width: 100%;
@@ -365,6 +393,11 @@ export default {
         font-size: 18px;
         margin-top: 40px;
         margin-right: 30px;
+
+        @media(max-width: 1264px) {
+          margin-right: 13px;
+          margin-top: 0;
+        }
       }
     }
 
@@ -429,7 +462,11 @@ export default {
       display: grid;
       grid-template-columns: 1fr 1fr 1fr;
       grid-template-rows: 1fr 1fr;
-      grid-gap: 40px;
+      grid-gap: 60px;
+
+      @media(max-width: 1264px) {
+        grid-gap: 20px;
+      }
 
       @media(max-width: 768px) {
         display: flex;
@@ -443,12 +480,13 @@ export default {
       align-items: flex-start;
       width: 100%;
       height: 100%;
-      padding: 40px 50px 76px;
+      padding: 20px 25px 20px;
       border-radius: 10px;
       position: relative;
+      overflow: hidden;
 
-      @media(max-width: 1024px) {
-        padding: 30px 40px;
+      @media(max-width: 1264px) {
+        padding: 25px 15px 15px;
       }
 
       &:hover {
@@ -555,14 +593,18 @@ export default {
         text-align: center;
         white-space: nowrap;
 
+        @media(max-width: 1264px) {
+          font-size: 32px;
+        }
+
         @media(max-width: 1024px) {
-          font-size: 36px;
+          font-size: 28px;
         }
       }
 
       img {
         margin-top: auto;
-        @media(max-width: 1024px) {
+        @media(max-width: 1264px) {
           transform: scale(.6);
         }
       }
@@ -745,6 +787,13 @@ export default {
   }
 
   .facts {
+    margin-left: auto;
+    margin-bottom: 80px;
+
+    img {
+      width: 40%;
+      margin-left: 60px;
+    }
 
     @media(max-width: 1024px) {
       img {
@@ -761,8 +810,8 @@ export default {
     }
 
     &__content {
-      width: 700px;
       flex-shrink: 0;
+      flex-grow: 1;
 
       @media(max-width: 1024px) {
         width: 100%;
