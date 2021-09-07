@@ -342,6 +342,7 @@ export default {
       display: flex;
       align-items: center;
       margin-left: 36px;
+      height: 32px;
 
       &:hover {
 
@@ -358,6 +359,8 @@ export default {
 
       &-icon {
         position: relative;
+        width: 23px;
+        height: 28px;
 
         svg path {
           transition: .3s;
@@ -403,6 +406,8 @@ export default {
         font-size: 18px;
         color: #fff;
         transition: .3s;
+        height: 22px;
+        line-height: 1;
 
         @media(max-width: 1024px) {
           font-size: 14px;
