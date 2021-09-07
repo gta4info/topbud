@@ -1,6 +1,6 @@
 <template>
   <div>
-    <v-container fluid class="mainScreen" :class="selectedMainScreen === 1 ? 'sativa' : 'indica'">
+    <v-container fluid class="mainScreen" :class="selectedMainScreen > 0 ? selectedMainScreen === 1 ? 'sativa' : 'indica' : ''">
       <v-container>
         <div class="mainScreen__content">
           <div class="mainScreen__left" @mouseenter="selectedMainScreen = 1" :class="{active: selectedMainScreen === 1}">
@@ -249,6 +249,26 @@ export default {
         .catch(() => this.$toast.success('Please check your email and try again!', {duration: 1500}))
         .finally(() => this.subscribing = false)
     }
+  },
+  created () {
+    if (process.browser) {
+      window.addEventListener("scroll", () => {
+        let scroll = window.scrollY;
+        let mainScreen = document.querySelector('.mainScreen');
+        let mainScreenHeight = mainScreen.offsetHeight;
+        let header = document.querySelector('.header__wrapper .bg');
+
+        if(mainScreenHeight / 2 - scroll < 0) {
+          header.style.opacity = ((1 - (mainScreenHeight - 300 - scroll) / mainScreenHeight) * 0.8);
+        } else if(mainScreenHeight / 2 - scroll > 0) {
+          header.style.opacity = ((1 - (mainScreenHeight - 300 - scroll) / mainScreenHeight) * 0.8);
+        }
+
+        if(scroll === 0) {
+          header.style.opacity = 0;
+        }
+      });
+    }
   }
 }
 </script>
@@ -263,7 +283,6 @@ export default {
     background: url("~/static/images/stars-bg.png"), #202536;
     background-size: cover;
     height: 745px;
-    margin-top: -180px;
     display: flex;
     padding-bottom: 40px !important;
     transition: 2s;
@@ -273,7 +292,6 @@ export default {
     }
 
     @media (max-width: 768px) {
-      margin-top: 0;
       display: none;
     }
 

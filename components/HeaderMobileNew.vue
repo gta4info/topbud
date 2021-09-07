@@ -3,9 +3,9 @@
     <v-btn icon @click="dialog = true">
       <v-icon color="#fff" size="24">mdi-menu</v-icon>
     </v-btn>
-    <div class="header__logo">
+    <nuxt-link to="/" class="header__logo">
       <img src="@/static/images/logo.png" alt="TOPBUD Store">
-    </div>
+    </nuxt-link>
     <nuxt-link to="/shop/cart" class="header__cart">
       <div class="header__cart-icon">
         <svg width="23" height="28" viewBox="0 0 23 28" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -57,9 +57,9 @@
           </v-expansion-panel-content>
         </v-expansion-panel>
       </v-expansion-panels>
-      <nuxt-link to="/about" class="mobileMenu__nav-item--title" style="margin-bottom: 20px;font-weight: 700;align-self: flex-start;">About Us</nuxt-link>
-      <nuxt-link to="/delivery" class="mobileMenu__nav-item--title" style="margin-bottom: 20px;font-weight: 700;align-self: flex-start;">Delivery info</nuxt-link>
-      <nuxt-link to="/blog" class="mobileMenu__nav-item--title" style="margin-bottom: 20px;font-weight: 700;align-self: flex-start;">Blog</nuxt-link>
+      <nuxt-link to="/about" class="mobileMenu__nav-item--title" style="margin-bottom: 20px;font-weight: 700;align-self: flex-start;" @click.native="dialog = false">About Us</nuxt-link>
+      <nuxt-link to="/delivery" class="mobileMenu__nav-item--title" style="margin-bottom: 20px;font-weight: 700;align-self: flex-start;" @click.native="dialog = false">Delivery info</nuxt-link>
+      <nuxt-link to="/blog" class="mobileMenu__nav-item--title" style="margin-bottom: 20px;font-weight: 700;align-self: flex-start;" @click.native="dialog = false">Blog</nuxt-link>
 <!--      <nuxt-link to="/" class="mobileMenu__nav-item&#45;&#45;title" style="margin-bottom: 20px;font-weight: 700;align-self: flex-start;">How to order?</nuxt-link>-->
     </div>
   </header>
@@ -133,7 +133,7 @@ export default {
   .header {
     background: url("~/static/images/header-mobile-bg.jpg"), #202536;
     background-size: cover;
-    height: 113px;
+    height: 85px;
     display: flex;
     align-items: center;
     justify-content: space-between;
@@ -145,8 +145,8 @@ export default {
     z-index: 2;
 
     &__logo {
-      width: 113px;
-      height: 76px;
+      width: auto;
+      height: 70px;
 
       img {
         width: 100%;
@@ -218,7 +218,7 @@ export default {
     }
 
     &__header {
-      height: 100px;
+      height: 56px;
       display: flex;
       align-items: center;
       width: 100%;

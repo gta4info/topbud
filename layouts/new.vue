@@ -30,7 +30,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@media (min-width: 1904px) {
+@media (min-width: 1264px) {
   .container--fluid {
     padding: 0 !important;
   }

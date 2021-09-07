@@ -1,11 +1,11 @@
 <template>
   <v-app app>
-    <Header v-if="windowWidth > 600"/>
-    <HeaderMobile v-else/>
+    <HeaderNew v-if="windowWidth > 600"/>
+    <HeaderMobileNew v-else/>
     <v-main app>
       <nuxt />
     </v-main>
-    <Footer />
+    <FooterNew />
     <MiniCart />
     <ProductAddedToCart :dialog="dialogProductAdded" />
     <DialogRestrictions v-if="dialogRestrictions" />
