@@ -8,7 +8,7 @@
         </nuxt-link>
         <nav class="header__nav">
           <ul>
-            <v-hover v-slot="{ hover }" close-delay="200">
+            <v-hover v-slot="{ hover }" close-delay="200" v-model="showShop">
               <li style="cursor:default;">
                 <div style="display:flex;align-items:center;">
                   <v-icon color="#fff">mdi-menu</v-icon>Shop
@@ -33,6 +33,7 @@
                             <nuxt-link
                               :to="{name: 'category-cslug', params: {cslug: category.slug}}"
                               class="header__shop-category--title"
+                              @click.native="showShop = false"
                             >
                               {{category.name}}
                             </nuxt-link>
@@ -42,11 +43,12 @@
                                 class="header__shop-category--sub"
                                 v-for="(sub, index) in category.subs"
                                 :key="index"
+                                @click.native="showShop = false"
                               >
                                 {{sub.name}}
                               </nuxt-link>
                             </template>
-                            <nuxt-link :to="{name: 'category-cslug', params: {cslug: category.slug}}" class="header__shop-category--sub">
+                            <nuxt-link :to="{name: 'category-cslug', params: {cslug: category.slug}}" class="header__shop-category--sub" @click.native="showShop = false">
                               {{category.name}}
                             </nuxt-link>
                           </template>
@@ -72,9 +74,6 @@
             <li>
               <nuxt-link to="/shop/deals">OZ deals</nuxt-link>
             </li>
-            <!--          <li>-->
-            <!--            <nuxt-link to="/">How to order?</nuxt-link>-->
-            <!--          </li>-->
           </ul>
         </nav>
         <div class="header__search new">
@@ -373,11 +372,14 @@ export default {
           color: #fff;
           text-align: center;
           font-weight: 700;
-          display: inline-block;
           border-radius: 5px;
           position: absolute;
           top: -4px;
           right: -14px;
+          height: 17px !important;
+          line-height: 17px !important;
+          display: flex;
+          align-items: center;
         }
       }
 

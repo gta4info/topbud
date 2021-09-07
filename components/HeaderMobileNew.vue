@@ -24,8 +24,8 @@
       </div>
       <a href="tel:14163884091" class="mobileMenu__phone">1 (416) 388 - 4091</a>
       <div class="mobileMenu__buttons">
-        <v-btn depressed to="/shop/mix">Mix'N'Match</v-btn>
-        <v-btn depressed to="/shop/deals">OZ deals</v-btn>
+        <v-btn depressed to="/shop/mix" @click="dialog = false">Mix'N'Match</v-btn>
+        <v-btn depressed to="/shop/deals" @click="dialog = false">OZ deals</v-btn>
       </div>
       <v-expansion-panels class="mobileMenu__nav">
         <v-expansion-panel class="mobileMenu__nav-item" v-for="category in computedCategories.filter(item => item.subs && item.subs.length)" :key="category.slug">
@@ -145,7 +145,7 @@ export default {
     z-index: 2;
 
     &__logo {
-      width: auto;
+      width: 103px;
       height: 70px;
 
       img {
@@ -158,6 +158,10 @@ export default {
       display: flex;
       align-items: center;
       margin-left: 36px;
+
+      @media(max-width: 768px) {
+        height: 28px;
+      }
 
       &:hover {
 
@@ -175,6 +179,10 @@ export default {
       &-icon {
         position: relative;
 
+        @media(max-width: 768px) {
+          height: 28px;
+        }
+
         svg path {
           transition: .3s;
         }
@@ -186,11 +194,14 @@ export default {
           color: #fff;
           text-align: center;
           font-weight: 700;
-          display: inline-block;
           border-radius: 5px;
           position: absolute;
           top: -4px;
           right: -14px;
+          height: 17px !important;
+          line-height: 17px !important;
+          display: flex;
+          align-items: center;
         }
       }
     }
@@ -218,7 +229,7 @@ export default {
     }
 
     &__header {
-      height: 56px;
+      height: 85px;
       display: flex;
       align-items: center;
       width: 100%;

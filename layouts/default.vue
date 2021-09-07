@@ -1,13 +1,13 @@
 <template>
   <v-app app>
-    <HeaderNew v-if="windowWidth > 600"/>
-    <HeaderMobileNew v-else/>
+    <template>
+      <HeaderNew v-if="windowWidth > 600"/>
+      <HeaderMobileNew v-else/>
+    </template>
     <v-main app>
       <nuxt />
     </v-main>
     <FooterNew />
-    <MiniCart />
-    <ProductAddedToCart :dialog="dialogProductAdded" />
     <DialogRestrictions v-if="dialogRestrictions" />
   </v-app>
 </template>
@@ -20,9 +20,6 @@ export default {
     dialogRestrictions: false
   }),
   components: {
-    'MiniCart': () => import('@/components/shop/MiniCart'),
-    'HeaderMobile': () => import('@/components/HeaderMobile'),
-    'ProductAddedToCart': () => import('@/components/shop/ProductAddedToCart'),
     'DialogRestrictions': () => import('@/components/DialogRestrictions'),
   },
   methods: {

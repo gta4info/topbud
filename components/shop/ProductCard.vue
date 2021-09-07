@@ -64,20 +64,18 @@
       </div>
     </div>
 
-    <div class="cardMobile">
+    <nuxt-link
+      :to="{
+          name: 'category-cslug-sslug-pslug', params: {
+          cslug: $route.params.cslug ? $route.params.cslug : product.search.cslug,
+          sslug: $route.params.sslug ? $route.params.sslug : (product.search ? (product.search.sslug ? product.search.sslug : 'product') :'product'),
+          pslug: product.slug
+        }}"
+       class="cardMobile"
+    >
       <div class="cardMobile__row">
         <div class="cardMobile__content">
-          <nuxt-link
-            :to="{
-            name: 'category-cslug-sslug-pslug', params: {
-            cslug: $route.params.cslug ? $route.params.cslug : product.search.cslug,
-            sslug: $route.params.sslug ? $route.params.sslug : (product.search ? (product.search.sslug ? product.search.sslug : 'product') :'product'),
-            pslug: product.slug
-          }}"
-            class="card__title cardMobile__title"
-          >
-            {{product.name}}
-          </nuxt-link>
+          <div class="card__title cardMobile__title">{{product.name}}</div>
           <div class="cardMobile__text">
             <span v-if="product.deal">Deal</span>
             <span v-if="product.cbd">CBD: {{product.cbd.replace('CBD:', '')}}</span>
@@ -94,7 +92,7 @@
           <img :src="product.img" :alt="product.name">
         </div>
       </div>
-    </div>
+    </nuxt-link>
   </div>
 </template>
 
@@ -412,6 +410,7 @@ export default {
     display: flex;
     flex-direction: column;
     width: 100%;
+    color: #000 !important;
 
     @media(min-width: 769px) {
       display: none;

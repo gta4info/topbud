@@ -149,7 +149,7 @@
               </div>
 
               <div class="d-flex flex-column">
-                <div v-if="calculateCartTotal < 60" style="color: #de2b2b;font-size: 18px;font-weight: 900;margin-bottom: 6px;">Minimum total amount is 60$</div>
+                <div v-if="calculateCartTotal < 60" style="color: #de2b2b;font-size: 18px;font-weight: 900;margin-bottom: 6px;">Minimal cart total is 60$</div>
                 <v-btn color="#7FAD39" class="white--text" block depressed :disabled="calculateCartTotal < 60" to="/shop/cart/checkout">Checkout</v-btn>
               </div>
 
@@ -389,7 +389,16 @@ h1 {
     margin-top: 50px;
     margin-bottom: 50px;
 
+    @media(max-width: 768px) {
+      flex-direction: column;
+    }
+
     &-continue {
+      @media(max-width: 768px) {
+        display: flex;
+        justify-content: center;
+        margin-bottom: 20px;
+      }
       a {
         color: #6f6f6f;
         text-transform: uppercase;
@@ -432,6 +441,11 @@ h1 {
       font-weight: 900;
       text-decoration: underline;
       margin-top: 10px;
+
+      @media(max-width: 768px) {
+        display: flex;
+        justify-content: center !important;
+      }
     }
   }
 }
