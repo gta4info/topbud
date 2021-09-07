@@ -261,7 +261,7 @@ export default {
 
             this.$toast.success('Promocode has been applied successfully!', {duration: 1500})
           } else {
-            this.$toast.error(res.data.message, {duration: 1500})
+            this.$toast.error(res.data.message, {duration: 5000})
           }
         })
         .finally(() => this.applyingPromocode = false);
