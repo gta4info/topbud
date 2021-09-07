@@ -10,9 +10,9 @@
           <ul>
             <v-hover v-slot="{ hover }" close-delay="200" v-model="showShop">
               <li style="cursor:default;">
-                <div style="display:flex;align-items:center;">
+                <nuxt-link to="/shop" style="display:flex;align-items:center;" @click.native="showShop = false">
                   <v-icon color="#fff">mdi-menu</v-icon>Shop
-                </div>
+                </nuxt-link>
                 <v-expand-transition>
                   <div class="header__shop-wrapper" v-if="hover">
                     <div class="header__shop">
