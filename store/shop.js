@@ -178,6 +178,7 @@ export const mutations = {
       return;
     }
     state.mixs.cart.data[data.key].quantity = data.quantity;
+    this.$cookies.set('mixs', state.mixs.cart)
   },
   DELETE_MIX_FROM_MIXS_CART(state, data) {
     state.mixs.cart.data.splice(data.key, 1);

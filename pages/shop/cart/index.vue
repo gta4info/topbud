@@ -139,7 +139,7 @@
               </div>
               <div class="d-flex flex-column">
                 <div>
-                  <span>Delivery fees</span>
+                  <span>Delivery</span>
                   <span style="color: #000">${{calculateCartTotal >= 100 ? 0 : 10}}</span>
                 </div>
                 <div>

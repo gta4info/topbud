@@ -50,7 +50,7 @@
                 </div>
               </div>
               <div class="checkout__summary-total" v-else>Cart total: <div>${{calculateCartTotal}}</div></div>
-              <div class="checkout__summary-total">Delivery fees: <div>${{calculateCartTotal >= 100 ? 0 : 10}}</div></div>
+              <div class="checkout__summary-total">Delivery: <div>${{calculateCartTotal >= 100 ? 0 : 10}}</div></div>
               <div class="checkout__summary-totals">Order total: <div>${{calculateTotal}}</div></div>
             </div>
           </v-col>
