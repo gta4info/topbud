@@ -22,36 +22,52 @@
                   </v-row>
                   <v-row>
                     <v-col cols="12" class="mobileTop">
-                      <div class="pack__title">Choose products</div>
-                      <div class="pack__options-weights--items pack__options-weightsMobile">
-                        <div
-                          class="pack__options-weights--item"
-                          :class="{active: selectedWeight === 2}"
-                          @click="selectedWeight = 2"
-                        >
-                          1 oz
+                      <div>
+                        <div class="pack__title">Choose products</div>
+                        <div class="pack__options-weights--items pack__options-weightsMobile">
+                          <div
+                            class="pack__options-weights--item"
+                            :class="{active: selectedWeight === 2}"
+                            @click="selectedWeight = 2"
+                          >
+                            1 oz
+                          </div>
+                          <div
+                            class="pack__options-weights--item"
+                            :class="{active: selectedWeight === 4}"
+                            @click="selectedWeight = 4"
+                          >
+                            1/2 oz
+                          </div>
                         </div>
-                        <div
-                          class="pack__options-weights--item"
-                          :class="{active: selectedWeight === 4}"
-                          @click="selectedWeight = 4"
-                        >
-                          1/2 oz
-                        </div>
+                      </div>
+                      <div>
+                        <v-text-field
+                          v-model="search"
+                          solo
+                          dense
+                          hide-details
+                          clearable
+                          height="40"
+                          label="Search"
+                          class="filter__name"
+                        />
                       </div>
                     </v-col>
                   </v-row>
-                  <v-row class="pack__products">
-                    <v-col
-                      md="4"
-                      sm="12"
-                      cols="6"
-                      v-for="product in productsFiltered"
-                      :key="product.id"
-                    >
-                      <PackProductCard :product="product" :key="product.id" :selectedWeight="selectedWeight" :selected="product.selected"/>
-                    </v-col>
-                  </v-row>
+                  <div class="pack__products">
+                    <v-row>
+                      <v-col
+                        md="4"
+                        sm="12"
+                        cols="6"
+                        v-for="product in productsFiltered"
+                        :key="product.id"
+                      >
+                        <PackProductCard :product="product" :key="product.id" :selectedWeight="selectedWeight" :selected="product.selected"/>
+                      </v-col>
+                    </v-row>
+                  </div>
                 </v-container>
               </div>
             </v-col>
@@ -397,35 +413,62 @@ export default {
 
 <style lang="scss" scoped>
   @media(max-width: 768px) {
+    .page > .container {
+      height: calc(100% - 12px);
+      padding-bottom: 0;
+    }
+
     .title, .breadcrumbs {
       display: none;
     }
 
     .mobileTop {
       display: flex;
-      align-items: center;
-      justify-content: space-between;
+      flex-direction: column;
       margin-bottom: 15px;
       padding: 0 12px !important;
+      height: auto !important;
+
+      > div:first-of-type {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        margin-bottom: 15px;
+      }
     }
   }
 
   .pack {
 
     @media(max-width: 768px) {
-      margin: 0 -12px;
-      height: calc(100vh - 110px);
+      margin: -12px -12px 0;
+      height: calc(100vh - 85px);
       overflow: hidden;
 
       .container {
-        padding-top: 0;
-        padding-bottom: 0;
+        height: 100%;
 
         > .row {
 
-          .col {
-            padding: 0;
+          .col-12 {
+
+            &:first-of-type {
+              height: calc(100% - 85px);
+              display: flex;
+
+              > div {
+                height: 100%;
+                width: 100%;
+              }
+            }
           }
+        }
+      }
+
+      > .container {
+
+        > .row {
+          height: calc(100vh - 85px);
         }
       }
 
@@ -443,9 +486,15 @@ export default {
 
     &__products {
       @media(max-width: 768px) {
-        height: calc(100vh - 85px - 60px - 110px);
+        margin-top: 10px;
+        height: calc(100vh - 85px - 60px - 174px);
+        overflow-x: hidden;
         overflow-y: auto;
-        padding-top: 7px;
+        align-items: flex-start;
+
+        > .row {
+          padding-top: 19px;
+        }
       }
     }
 
@@ -684,7 +733,6 @@ export default {
         &-btn {
           color: #fff !important;
           border-radius: 30px;
-          margin-top: 10px;
           display: none;
           font-size: 18px;
 

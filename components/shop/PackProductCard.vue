@@ -122,6 +122,10 @@ export default {
       justify-content: center;
       flex-direction: column;
       color: #000;
+
+      @media(max-width: 768px) {
+        font-size: 14px;
+      }
     }
 
     &__bottom {
@@ -132,6 +136,10 @@ export default {
       flex-direction: column;
       justify-content: space-between;
       align-items: center;
+
+      @media(max-width: 768px) {
+        padding: 0 10px 10px;
+      }
     }
 
     &__prices {
