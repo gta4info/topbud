@@ -209,6 +209,7 @@ export default {
     selectedMainScreen: null,
     subscribeEmail: null,
     subscribing: false,
+    windowWidth: null,
     facts: [
       {
         title: 'What exactly is CBD?',
@@ -248,28 +249,36 @@ export default {
         })
         .catch(() => this.$toast.success('Please check your email and try again!', {duration: 1500}))
         .finally(() => this.subscribing = false)
+    },
+    setWindowWidth() {
+      this.windowWidth = window.outerWidth;
     }
   },
-  created () {
+  mounted () {
     if (process.browser) {
-      window.addEventListener("scroll", () => {
-        let scroll = window.scrollY;
-        let mainScreen = document.querySelector('.mainScreen');
-        let mainScreenHeight = mainScreen.offsetHeight;
-        let header = document.querySelector('.header__wrapper .bg');
+      this.windowWidth = window.outerWidth;
+      window.addEventListener("resize", this.setWindowWidth);
+      if(this.windowWidth > 768) {
+        window.addEventListener("scroll", () => {
+          let scroll = window.scrollY;
+          let mainScreen = document.querySelector('.mainScreen');
 
-        if(mainScreenHeight / 2 - scroll < 0) {
-          header.style.opacity = ((1 - (mainScreenHeight - 300 - scroll) / mainScreenHeight) * 0.8);
-        } else if(mainScreenHeight / 2 - scroll > 0) {
-          header.style.opacity = ((1 - (mainScreenHeight - 300 - scroll) / mainScreenHeight) * 0.8);
-        }
+          let mainScreenHeight = mainScreen.offsetHeight;
+          let header = document.querySelector('.header__wrapper .bg');
 
-        if(scroll === 0) {
-          header.style.opacity = 0;
-        }
-      });
+          if (mainScreenHeight / 2 - scroll < 0) {
+            header.style.opacity = ((1 - (mainScreenHeight - 300 - scroll) / mainScreenHeight) * 0.8);
+          } else if (mainScreenHeight / 2 - scroll > 0) {
+            header.style.opacity = ((1 - (mainScreenHeight - 300 - scroll) / mainScreenHeight) * 0.8);
+          }
+
+          if (scroll === 0) {
+            header.style.opacity = 0;
+          }
+        });
+      }
     }
-  }
+  },
 }
 </script>
 

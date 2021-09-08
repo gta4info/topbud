@@ -16,8 +16,8 @@
           <v-row class="d-flex flex-wrap">
             <v-col cols="12" sm="12" md="7">
               <div>
-                <v-container>
-                  <v-row>
+                <v-container class="pack__content">
+                  <v-row class="md">
                     <Filters :min="min" :max="max" :range="[]" :search="search" inline/>
                   </v-row>
                   <v-row>
@@ -40,139 +40,147 @@
               </div>
             </v-col>
             <v-col cols="12" sm="12" md="5">
-              <div class="pack__options">
-                <div class="pack__options-content">
-                  <div class="pack__options-group">
-                    <div class="pack__title">Combine options</div>
-                    <div class="pack__options-weights">
-                      <div class="pack__options-title">Choose weight</div>
-                      <div class="pack__options-weights--items">
-                        <div
-                          class="pack__options-weights--item"
-                          :class="{active: selectedWeight === 2}"
-                          @click="selectedWeight = 2"
-                        >
-                          1 oz
-                        </div>
-                        <div
-                          class="pack__options-weights--item"
-                          :class="{active: selectedWeight === 4}"
-                          @click="selectedWeight = 4"
-                        >
-                          1/2 oz
+              <div class="pack__options-wrapper">
+
+                <v-btn class="pack__optionsMobile-btn" depressed height="60" block color="#7FAD39" @click="showCombineOptions = true">Combine options</v-btn>
+
+                <div class="pack__options" :class="{active: showCombineOptions}">
+                  <div class="pack__options-content">
+                    <div class="pack__options-group">
+                      <v-btn icon class="pack__optionsMobile-close" @click="showCombineOptions = false">
+                        <v-icon>mdi-close</v-icon>
+                      </v-btn>
+                      <div class="pack__title">Combine options</div>
+                      <div class="pack__options-weights">
+                        <div class="pack__options-title">Choose weight</div>
+                        <div class="pack__options-weights--items">
+                          <div
+                            class="pack__options-weights--item"
+                            :class="{active: selectedWeight === 2}"
+                            @click="selectedWeight = 2"
+                          >
+                            1 oz
+                          </div>
+                          <div
+                            class="pack__options-weights--item"
+                            :class="{active: selectedWeight === 4}"
+                            @click="selectedWeight = 4"
+                          >
+                            1/2 oz
+                          </div>
                         </div>
                       </div>
                     </div>
-                  </div>
-                  <div class="pack__options-group">
-                    <div class="pack__options-title">Fill slots with products</div>
-                    <div class="pack__options-slots">
-                      <template v-if="selectedWeight === 2">
-                        <div
-                          class="pack__options-slot"
-                          v-for="(product, i) of mixsSelected[2]"
-                          :key="product.id"
-                        >
-                          <template v-if="Object.keys(product).length">
-                            <div class="pack__options-slot--image">
-                              <img :src="product.img" :alt="product.name">
-                            </div>
-                            <div class="pack__options-slot--content">
-                              <div class="pack__options-slot--name">{{product.name}}</div>
-                              <div class="pack__options-slot--price">${{product.deal_price}} x{{product.quantity}} = ${{product.deal_price * product.quantity}}</div>
-
-                              <div class="pack__options-slot--quantity">
-                                <v-btn
-                                  width="20"
-                                  height="20"
-                                  x-small
-                                  depressed
-                                  @click="changeAmountForProduct(i, product, product.quantity - 1)"
-                                >
-                                  <v-icon small>mdi-minus</v-icon>
-                                </v-btn>
-                                <div class="mx-2">{{product.quantity}}</div>
-                                <v-btn
-                                  width="20"
-                                  height="20"
-                                  x-small
-                                  depressed
-                                  @click="changeAmountForProduct(i, product, product.quantity + 1)"
-                                >
-                                  <v-icon small>mdi-plus</v-icon>
-                                </v-btn>
+                    <div class="pack__options-group">
+                      <div class="pack__options-title">Fill slots with products</div>
+                      <div class="pack__options-slots">
+                        <template v-if="selectedWeight === 2">
+                          <div
+                            class="pack__options-slot"
+                            v-for="(product, i) of mixsSelected[2]"
+                            :key="product.id"
+                          >
+                            <template v-if="Object.keys(product).length">
+                              <div class="pack__options-slot--image">
+                                <img :src="product.img" :alt="product.name">
                               </div>
+                              <div class="pack__options-slot--content">
+                                <div class="pack__options-slot--name">{{product.name}}</div>
+                                <div class="pack__options-slot--price">${{product.deal_price}} x{{product.quantity}} = ${{product.deal_price * product.quantity}}</div>
 
-                            </div>
-                            <div class="pack__options-slot--remove">
-                              <v-btn icon @click="removeFromSelected(i, product.id)"><v-icon>mdi-close</v-icon></v-btn>
-                            </div>
-                          </template>
-                          <div class="pack__options-slot--empty" v-else>
-                            <div>1/2 oz</div>
-                            <span>Empty slot</span>
-                          </div>
-                        </div>
-                      </template>
-                      <template v-if="selectedWeight === 4">
-                        <div
-                          class="pack__options-slot"
-                          v-for="(product, i) of mixsSelected[4]"
-                          :key="i"
-                        >
-                          <template v-if="Object.keys(product).length">
-                            <div class="pack__options-slot--image">
-                              <img :src="product.img" :alt="product.name">
-                            </div>
-                            <div class="pack__options-slot--content">
-                              <div class="pack__options-slot--name">{{product.name}}</div>
-                              <div class="pack__options-slot--price">${{product.deal_price}} x{{product.quantity}} = ${{product.deal_price * product.quantity}}</div>
+                                <div class="pack__options-slot--quantity">
+                                  <v-btn
+                                    width="20"
+                                    height="20"
+                                    x-small
+                                    depressed
+                                    @click="changeAmountForProduct(i, product, product.quantity - 1)"
+                                  >
+                                    <v-icon small>mdi-minus</v-icon>
+                                  </v-btn>
+                                  <div class="mx-2">{{product.quantity}}</div>
+                                  <v-btn
+                                    width="20"
+                                    height="20"
+                                    x-small
+                                    depressed
+                                    @click="changeAmountForProduct(i, product, product.quantity + 1)"
+                                  >
+                                    <v-icon small>mdi-plus</v-icon>
+                                  </v-btn>
+                                </div>
 
-                              <div class="pack__options-slot--quantity">
-                                <v-btn
-                                  x-small
-                                  depressed
-                                  @click="changeAmountForProduct(i, product, product.quantity - 1)"
-                                >
-                                  <v-icon small>mdi-minus</v-icon>
-                                </v-btn>
-                                <div class="mx-2">{{product.quantity}}</div>
-                                <v-btn
-                                  x-small
-                                  depressed
-                                  @click="changeAmountForProduct(i, product, product.quantity + 1)"
-                                >
-                                  <v-icon small>mdi-plus</v-icon>
-                                </v-btn>
                               </div>
-
+                              <div class="pack__options-slot--remove">
+                                <v-btn icon @click="removeFromSelected(i, product.id)"><v-icon>mdi-close</v-icon></v-btn>
+                              </div>
+                            </template>
+                            <div class="pack__options-slot--empty" v-else>
+                              <div>1/2 oz</div>
+                              <span>Empty slot</span>
                             </div>
-                            <div class="pack__options-slot--remove">
-                              <v-btn icon @click="removeFromSelected(i, product.id)"><v-icon>mdi-close</v-icon></v-btn>
-                            </div>
-                          </template>
-                          <div class="pack__options-slot--empty" v-else>
-                            <div>1/4 oz</div>
-                            <span>Empty slot</span>
                           </div>
-                        </div>
-                      </template>
+                        </template>
+                        <template v-if="selectedWeight === 4">
+                          <div
+                            class="pack__options-slot"
+                            v-for="(product, i) of mixsSelected[4]"
+                            :key="i"
+                          >
+                            <template v-if="Object.keys(product).length">
+                              <div class="pack__options-slot--image">
+                                <img :src="product.img" :alt="product.name">
+                              </div>
+                              <div class="pack__options-slot--content">
+                                <div class="pack__options-slot--name">{{product.name}}</div>
+                                <div class="pack__options-slot--price">${{product.deal_price}} x{{product.quantity}} = ${{product.deal_price * product.quantity}}</div>
+
+                                <div class="pack__options-slot--quantity">
+                                  <v-btn
+                                    x-small
+                                    depressed
+                                    @click="changeAmountForProduct(i, product, product.quantity - 1)"
+                                  >
+                                    <v-icon small>mdi-minus</v-icon>
+                                  </v-btn>
+                                  <div class="mx-2">{{product.quantity}}</div>
+                                  <v-btn
+                                    x-small
+                                    depressed
+                                    @click="changeAmountForProduct(i, product, product.quantity + 1)"
+                                  >
+                                    <v-icon small>mdi-plus</v-icon>
+                                  </v-btn>
+                                </div>
+
+                              </div>
+                              <div class="pack__options-slot--remove">
+                                <v-btn icon @click="removeFromSelected(i, product.id)"><v-icon>mdi-close</v-icon></v-btn>
+                              </div>
+                            </template>
+                            <div class="pack__options-slot--empty" v-else>
+                              <div>1/4 oz</div>
+                              <span>Empty slot</span>
+                            </div>
+                          </div>
+                        </template>
+                      </div>
                     </div>
-                  </div>
-                  <div class="pack__options-group">
-                    <div class="pack__options-title">Mix'N'Match total</div>
-                    <div class="pack__cart">
-                      <div class="pack__cart-saved"><span>${{calculateMixPrice.sum}}</span></div>
-                      <v-btn
-                        depressed
-                        color="#7FAD39"
-                        class="pack__cart-btn"
-                        :disabled="mixs.selected[selectedWeight].filter(item => Object.keys(item).length).length < 2"
-                        @click="addToCart"
-                      >
-                        Add to cart
-                      </v-btn>
-                      <div class="pack__cart-saved mt-5">You've just saved with Mix'N'Match: <span style="font-size: 18px;">${{calculateMixPrice.saved}}</span></div>
+                    <div class="pack__options-group">
+                      <div class="pack__options-title">Mix'N'Match total</div>
+                      <div class="pack__cart">
+                        <div class="pack__cart-saved"><span>${{calculateMixPrice.sum}}</span></div>
+                        <v-btn
+                          depressed
+                          color="#7FAD39"
+                          class="pack__cart-btn"
+                          :disabled="mixs.selected[selectedWeight].filter(item => Object.keys(item).length).length < 2"
+                          @click="addToCart"
+                        >
+                          Add to cart
+                        </v-btn>
+                        <div class="pack__cart-saved mt-5">You've just saved with Mix'N'Match: <span style="font-size: 18px;">${{calculateMixPrice.saved}}</span></div>
+                      </div>
                     </div>
                   </div>
                 </div>
@@ -240,7 +248,8 @@ export default {
   },
   data: () => ({
     selectedWeight: 2,
-    search: ''
+    search: '',
+    showCombineOptions: false
   }),
   watch: {
     min() {
@@ -374,6 +383,17 @@ export default {
 
     @media(max-width: 768px) {
       margin: 0 -12px;
+
+      &__content {
+        display: flex;
+        flex-direction: column;
+        padding-top: 0;
+
+        .pack__title {
+          margin-bottom: 10px;
+          text-align: center;
+        }
+      }
     }
 
     &__products {
@@ -394,6 +414,25 @@ export default {
       padding-left: 10px;
       border-left: 1px solid #E9E9E9;
       height: 100%;
+
+      @media(max-width: 768px) {
+        position: fixed;
+        top: 105vh;
+        left: 0;
+        right: 0;
+        background: #fff;
+        border-radius: 20px 20px 0 0;
+        box-shadow: 0px -3px 6px 0px rgba(0,0,0,0.25);
+        z-index: 1;
+        transition: .5s ease-in-out;
+        padding-left: 0;
+        overflow-y: scroll;
+        padding-bottom: 25vh;
+
+        &.active {
+          top: 25vh;
+        }
+      }
 
       .pack__title {
         text-align: center;
@@ -420,6 +459,17 @@ export default {
 
       &-group {
         margin-top: 20px;
+
+        @media(max-width: 768px) {
+          &:first-of-type {
+            position: sticky;
+            top: 0;
+            background: #fff;
+            z-index: 1;
+            margin-top: 0;
+            padding-top: 20px;
+          }
+        }
       }
 
       &-weights {
@@ -561,6 +611,27 @@ export default {
           }
         }
       }
+
+      &Mobile {
+
+        &-btn {
+          color: #fff !important;
+          border-radius: 30px;
+          margin-top: 10px;
+          display: none;
+          font-size: 18px;
+
+          @media(max-width: 768px) {
+            display: flex;
+          }
+        }
+
+        &-close {
+          position: absolute;
+          top: 18px;
+          right: 20px;
+        }
+      }
     }
 
     &__cart {
@@ -568,6 +639,10 @@ export default {
       flex-direction: column;
       align-items: center;
       justify-content: center;
+
+      @media(max-width: 768px) {
+        padding-bottom: 20px;
+      }
 
       &-totals {
         font-weight: 600;
@@ -598,6 +673,14 @@ export default {
         color: #fff;
         font-weight: 900;
       }
+    }
+  }
+
+  .md {
+    display: flex;
+
+    @media(max-width: 768px) {
+      display: none;
     }
   }
 </style>
