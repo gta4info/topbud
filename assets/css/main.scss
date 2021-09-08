@@ -187,6 +187,13 @@ input[type="number"]::-webkit-outer-spin-button {
 .toasted-container.top-right {
   right: 2% !important;
   top: 2% !important;
+
+  @media(max-width: 768px) {
+    top: 90px !important;
+    left: 2%;
+    width: 96%;
+    min-width: 96%;
+  }
 }
 
 .header__search.new {

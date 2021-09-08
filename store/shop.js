@@ -185,7 +185,11 @@ export const mutations = {
     this.$cookies.set('mixs', state.mixs.cart)
   },
   CLEAR_SELECTED_MIXS(state, data) {
-    state.mixs.selected[data.type] = [];
+    state.mixs.selected[data.type] = [{}, {}];
+    state.mixs[data.type].map(item => {
+      item.selected = false;
+      return item;
+    })
   },
   UPDATE_MIXS_PRICES(state, data) {
     if(state.mixs.cart.data) {

@@ -376,9 +376,10 @@ export default {
       });
 
       this.$store.commit('shop/CLEAR_SELECTED_MIXS', {type: this.selectedWeight});
-
       this.$store.commit('shop/SET_MIXS_CART');
-      // this.$root.$emit('show-product-added-to-cart-dialog');
+
+      this.showCombineOptions = false;
+
       this.$toast.success("Mix'N'Match was added to cart!", {duration: 1500})
     }
   },
