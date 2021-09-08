@@ -630,6 +630,11 @@ export default {
           position: absolute;
           top: 18px;
           right: 20px;
+          display: none;
+
+          @media(max-width: 768px) {
+            display: flex;
+          }
         }
       }
     }
