@@ -444,6 +444,7 @@ export default {
       @media(max-width: 768px) {
         height: calc(100vh - 85px - 60px - 110px);
         overflow-y: auto;
+        padding-top: 7px;
       }
     }
 
@@ -590,6 +591,10 @@ export default {
         border-radius: 16px;
         box-shadow: rgb(6 5 50 / 24%) 0 1px 2px;
         position: relative;
+
+        @media(max-width: 768px) {
+          min-height: auto;
+        }
 
         &--image {
           min-width: 68px;
