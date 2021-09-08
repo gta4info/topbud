@@ -1,7 +1,7 @@
 <template>
   <div class="page">
     <v-container>
-      <h1>Mix'N'Match</h1>
+      <h1 class="title">Mix'N'Match</h1>
       <nav class="breadcrumbs">
         <ul>
           <li><nuxt-link to="/">Home</nuxt-link></li>
@@ -21,8 +21,24 @@
                     <Filters :min="min" :max="max" :range="[]" :search="search" inline/>
                   </v-row>
                   <v-row>
-                    <v-col cols="12">
+                    <v-col cols="12" class="mobileTop">
                       <div class="pack__title">Choose products</div>
+                      <div class="pack__options-weights--items pack__options-weightsMobile">
+                        <div
+                          class="pack__options-weights--item"
+                          :class="{active: selectedWeight === 2}"
+                          @click="selectedWeight = 2"
+                        >
+                          1 oz
+                        </div>
+                        <div
+                          class="pack__options-weights--item"
+                          :class="{active: selectedWeight === 4}"
+                          @click="selectedWeight = 4"
+                        >
+                          1/2 oz
+                        </div>
+                      </div>
                     </v-col>
                   </v-row>
                   <v-row class="pack__products">
@@ -379,26 +395,54 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+  @media(max-width: 768px) {
+    .title, .breadcrumbs {
+      display: none;
+    }
+
+    .mobileTop {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 15px;
+      padding: 0 12px !important;
+    }
+  }
+
   .pack {
 
     @media(max-width: 768px) {
       margin: 0 -12px;
+      height: calc(100vh - 110px);
+      overflow: hidden;
+
+      .container {
+        padding-top: 0;
+        padding-bottom: 0;
+
+        > .row {
+
+          .col {
+            padding: 0;
+          }
+        }
+      }
 
       &__content {
         display: flex;
         flex-direction: column;
         padding-top: 0;
 
-        .pack__title {
-          margin-bottom: 10px;
-          text-align: center;
+        @media(max-width: 768px) {
+          padding-left: 0;
+          padding-right: 0;
         }
       }
     }
 
     &__products {
       @media(max-width: 768px) {
-        max-height: 568px;
+        height: calc(100vh - 85px - 60px - 110px);
         overflow-y: auto;
       }
     }
@@ -469,6 +513,10 @@ export default {
             margin-top: 0;
             padding-top: 20px;
           }
+
+          .pack__options-weights {
+            display: none;
+          }
         }
       }
 
@@ -476,6 +524,14 @@ export default {
         display: flex;
         flex-direction: column;
         align-items: center;
+
+        &Mobile {
+          margin-bottom: 0 !important;
+
+          @media(min-width: 769px) {
+            display: none !important;
+          }
+        }
 
         &--items {
           display: flex;
@@ -493,6 +549,11 @@ export default {
           align-items: center;
           transition: .3s;
           cursor: pointer;
+
+          @media(max-width: 768px) {
+            height: 30px;
+            padding: 0 10px;
+          }
 
           &.active {
             background: #7FAD39;

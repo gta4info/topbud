@@ -1,5 +1,5 @@
 <template>
-  <footer class="footer">
+  <footer class="footer" :class="{'d-none': $route.name === 'shop-mix'}">
     <v-container class="pb-10">
       <v-row>
         <v-col cols="12" sm="12" md="4" lg="2">

@@ -641,6 +641,7 @@ export default {
   .info {
     margin-top: 130px;
     margin-bottom: 176px;
+    background: none !important;
 
     @media(max-width: 768px) {
       margin: 60px 0;
