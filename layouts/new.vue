@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <v-app app>
     <HeaderNew v-if="windowWidth > 600"/>
     <HeaderMobileNew v-else/>
     <v-main app :style="windowWidth < 768 ? 'margin-top: 85px !important;' : 'margin-top: 0 !important;'">
@@ -7,7 +7,7 @@
     </v-main>
     <FooterNew/>
     <DialogRestrictions v-if="dialogRestrictions" />
-  </div>
+  </v-app>
 </template>
 
 <script>
