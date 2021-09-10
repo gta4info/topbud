@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div style="height: 100%;">
     <div class="card">
       <nuxt-link
         :to="{name: 'category-cslug-sslug-pslug', params: {

@@ -1,6 +1,18 @@
 <template>
   <div class="filters" :class="{inline: inline}">
     <div class="filter__group">
+      <div class="filter__title">Search by name</div>
+      <v-text-field
+        v-model="searchQuery"
+        solo
+        dense
+        hide-details
+        clearable
+        label="Type something"
+        class="filter__name"
+      />
+    </div>
+    <div class="filter__group">
       <div class="filter__title">Price range</div>
       <div class="filter__slider">
         <div class="filter__slider-inputs">
@@ -54,18 +66,6 @@
           </div>
         </div>
       </div>
-    </div>
-    <div class="filter__group">
-      <div class="filter__title">Search by name</div>
-      <v-text-field
-        v-model="searchQuery"
-        solo
-        dense
-        hide-details
-        clearable
-        label="Type something"
-        class="filter__name"
-      />
     </div>
   </div>
 </template>

@@ -286,6 +286,10 @@ h1 {
           width: 70px;
           margin-right: 20px;
 
+          @media(max-width: 768px) {
+            display: none;
+          }
+
           img {
             margin-right: 0;
             width: 50%;
@@ -316,6 +320,10 @@ h1 {
         width: 50px;
         height: 50px;
         margin-right: 20px;
+
+        @media(max-width: 768px) {
+          display: none;
+        }
       }
 
       div {

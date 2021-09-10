@@ -4,7 +4,7 @@
       <HeaderNew v-if="windowWidth > 600"/>
       <HeaderMobileNew v-else/>
     </template>
-    <v-main app>
+    <v-main app :style="windowWidth < 600 ? 'margin-top: 85px !important;' : 'margin-top: 0 !important;'">
       <nuxt />
     </v-main>
     <FooterNew />

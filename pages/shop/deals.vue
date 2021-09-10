@@ -111,7 +111,7 @@ export default {
             name: category.name,
             selected: true,
             subs: subs,
-            showSubs: false
+            showSubs: true
           });
         }
       } else {
@@ -120,7 +120,7 @@ export default {
           name: category.name,
           selected: true,
           subs: subs,
-          showSubs: false
+          showSubs: true
         });
       }
 
@@ -265,7 +265,7 @@ export default {
                     name: category.name,
                     selected: true,
                     subs: subs,
-                    showSubs: false
+                    showSubs: true
                   });
                 }
               } else {
@@ -274,7 +274,7 @@ export default {
                   name: category.name,
                   selected: true,
                   subs: subs,
-                  showSubs: false
+                  showSubs: true
                 });
               }
 

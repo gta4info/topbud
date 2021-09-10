@@ -48,7 +48,7 @@
                                 {{sub.name}}
                               </nuxt-link>
                             </template>
-                            <nuxt-link :to="{name: 'category-cslug', params: {cslug: category.slug}}" class="header__shop-category--sub" @click.native="showShop = false">
+                            <nuxt-link :to="{name: 'category-cslug', params: {cslug: category.slug}}" class="header__shop-category--sub" @click.native="showShop = false" v-else>
                               {{category.name}}
                             </nuxt-link>
                           </template>

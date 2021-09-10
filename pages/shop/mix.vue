@@ -445,7 +445,7 @@ export default {
       height: calc(100vh - 85px);
       overflow: hidden;
 
-      .container {
+      > .container {
         height: 100%;
 
         > .row {
@@ -468,7 +468,7 @@ export default {
       > .container {
 
         > .row {
-          height: calc(100vh - 85px);
+          height: calc(100vh - 140px);
         }
       }
 
@@ -476,18 +476,16 @@ export default {
         display: flex;
         flex-direction: column;
         padding-top: 0;
-
-        @media(max-width: 768px) {
-          padding-left: 0;
-          padding-right: 0;
-        }
+        padding-left: 0;
+        padding-right: 0;
+        height: calc(100% + 25px);
       }
     }
 
     &__products {
       @media(max-width: 768px) {
         margin-top: 10px;
-        height: calc(100vh - 85px - 60px - 174px);
+        height: calc(100vh - 85px - 60px);
         overflow-x: hidden;
         overflow-y: auto;
         align-items: flex-start;
@@ -516,16 +514,14 @@ export default {
         left: 0;
         right: 0;
         background: #fff;
-        border-radius: 20px 20px 0 0;
-        box-shadow: 0px -3px 6px 0px rgba(0,0,0,0.25);
-        z-index: 1;
+        z-index: 2;
         transition: .5s ease-in-out;
         padding-left: 0;
         overflow-y: scroll;
-        padding-bottom: 25vh;
+        height: calc(100% - 85px);
 
         &.active {
-          top: 25vh;
+          top: 85px;
         }
       }
 

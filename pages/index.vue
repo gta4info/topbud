@@ -28,7 +28,7 @@
     <section class="categories">
       <v-container>
         <div class="title">Categories</div>
-        <div class="categories__items">
+        <div class="categories__items" v-if="windowWidth > 768">
           <div class="categories__item flower">
             <div class="categories__item-title">Flower</div>
             <v-btn to="/category/flower" depressed outlined>Shop now</v-btn>
@@ -65,6 +65,32 @@
             <img src="@/static/images/accessories-category.png" alt="Accessories">
             <div class="categories__item-bg"></div>
           </div>
+        </div>
+        <div class="categories__items" v-else>
+          <nuxt-link to="/category/flower" class="categories__item flower" v-ripple>
+            <div class="categories__item-title">Flower</div>
+            <img src="@/static/images/flower-category.png" alt="Flower">
+          </nuxt-link>
+          <nuxt-link to="/category/edibles" class="categories__item edibles" v-ripple>
+            <div class="categories__item-title">Edibles</div>
+            <img src="@/static/images/edibles-category.png" alt="Edibles">
+          </nuxt-link>
+          <nuxt-link to="/category/vapes" class="categories__item vapes" v-ripple>
+            <div class="categories__item-title">Vapes</div>
+            <img src="@/static/images/vapes-category.png" alt="Vapes">
+          </nuxt-link>
+          <nuxt-link to="/category/concentrate" class="categories__item concentrate" v-ripple>
+            <div class="categories__item-title">Concentrate</div>
+            <img src="@/static/images/concentrate-category.png" alt="Concentrate">
+          </nuxt-link>
+          <nuxt-link to="/category/topicals" class="categories__item topicals" v-ripple>
+            <div class="categories__item-title">Topicals</div>
+            <img src="@/static/images/topicals-category.png" alt="Topicals">
+          </nuxt-link>
+          <nuxt-link to="/category/accessories" class="categories__item accessories" v-ripple>
+            <div class="categories__item-title">Accessories</div>
+            <img src="@/static/images/accessories-category.png" alt="Accessories">
+          </nuxt-link>
         </div>
       </v-container>
     </section>
@@ -263,17 +289,19 @@ export default {
           let scroll = window.scrollY;
           let mainScreen = document.querySelector('.mainScreen');
 
-          let mainScreenHeight = mainScreen.offsetHeight;
-          let header = document.querySelector('.header__wrapper .bg');
+          if(mainScreen) {
+            let mainScreenHeight = mainScreen.offsetHeight;
+            let header = document.querySelector('.header__wrapper .bg');
 
-          if (mainScreenHeight / 2 - scroll < 0) {
-            header.style.opacity = ((1 - (mainScreenHeight - 300 - scroll) / mainScreenHeight) * 0.8);
-          } else if (mainScreenHeight / 2 - scroll > 0) {
-            header.style.opacity = ((1 - (mainScreenHeight - 300 - scroll) / mainScreenHeight) * 0.8);
-          }
+            if (mainScreenHeight / 2 - scroll < 0) {
+              header.style.opacity = ((1 - (mainScreenHeight - 300 - scroll) / mainScreenHeight) * 0.8);
+            } else if (mainScreenHeight / 2 - scroll > 0) {
+              header.style.opacity = ((1 - (mainScreenHeight - 300 - scroll) / mainScreenHeight) * 0.8);
+            }
 
-          if (scroll === 0) {
-            header.style.opacity = 0;
+            if (scroll === 0) {
+              header.style.opacity = 0;
+            }
           }
         });
       }
@@ -473,13 +501,15 @@ export default {
 
   .title {
     margin: 60px 0;
-    font-size: 48px;
+    font-size: 48px !important;
     font-weight: 700;
-    font-family: 'Montserrat', sans-serif;
+    font-family: 'Montserrat', sans-serif !important;
     color: #333333;
 
     @media(max-width: 768px) {
-      margin: 30px 0;
+      margin: 30px 0 40px;
+      font-size: 36px !important;
+      line-height: 1.2;
     }
   }
 
@@ -496,8 +526,8 @@ export default {
       }
 
       @media(max-width: 768px) {
-        display: flex;
-        flex-direction: column;
+        grid-template-columns: 1fr 1fr;
+        grid-template-rows: 1fr 1fr;
       }
     }
 
@@ -513,7 +543,8 @@ export default {
       overflow: hidden;
 
       @media(max-width: 1264px) {
-        padding: 25px 15px 15px;
+        padding: 17px 0;
+        height: 170px;
       }
 
       &:hover {
@@ -627,12 +658,27 @@ export default {
         @media(max-width: 1024px) {
           font-size: 28px;
         }
+
+        @media(max-width: 768px) {
+          font-size: 24px;
+          width: 100%;
+          text-align: center;
+        }
       }
 
       img {
         margin-top: auto;
+
         @media(max-width: 1264px) {
           transform: scale(.6);
+        }
+
+        @media(max-width: 768px) {
+          transform: scale(1);
+          max-width: 90px;
+          max-height: 84px;
+          align-self: center;
+          margin-bottom: auto;
         }
       }
     }
@@ -740,16 +786,18 @@ export default {
       &-title {
         font-family: "Montserrat", sans-serif;
         font-weight: 700;
-        font-size: 30px;
+        font-size: 26px;
         color: #fff;
         margin-bottom: 15px;
+        line-height: 1.2;
       }
 
       &-text {
         font-weight: 700;
-        font-size: 18px;
+        font-size: 16px;
         color: #071F41;
         margin-bottom: 30px;
+        line-height: 1.2;
       }
 
       .v-btn {
