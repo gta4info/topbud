@@ -71,15 +71,4 @@ export default {
   gtm: {
     id: 'GTM-NVKV4NH'
   },
-
-  robots: [
-    {
-      UserAgent: 'Googlebot',
-      Disallow: '/'
-    },
-    {
-      UserAgent: '*',
-      Disallow: '/'
-    },
-  ]
 }
