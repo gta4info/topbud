@@ -47,7 +47,6 @@ export default {
     '@nuxtjs/toast',
     '@nuxtjs/gtm',
     '@nuxtjs/sitemap',
-    '@nuxtjs/robots',
   ],
 
   // Axios module configuration: https://go.nuxtjs.dev/config-axios
