@@ -46,6 +46,10 @@ a {
 .page {
   height: 100%;
 
+  @media(min-width: 601px) {
+    padding-top: 124px;
+  }
+
   .loading {
     display: flex;
     align-items: center;

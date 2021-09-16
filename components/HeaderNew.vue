@@ -99,7 +99,7 @@
           <span>CART</span>
         </nuxt-link>
         <div class="header__contacts">
-          <a href="tel:+14163884091" class="header__contacts-phone">+1 (416) 388 - 4091</a>
+          <a href="tel:+14373884091" class="header__contacts-phone">+1 (437) 388 - 4091</a>
         </div>
       </div>
     </v-container>

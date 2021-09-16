@@ -22,7 +22,7 @@
           <v-icon color="#000000" size="24">mdi-close</v-icon>
         </v-btn>
       </div>
-      <a href="tel:14163884091" class="mobileMenu__phone">1 (416) 388 - 4091</a>
+      <a href="tel:14373884091" class="mobileMenu__phone">1 (437) 388 - 4091</a>
       <div class="mobileMenu__buttons">
         <v-btn depressed to="/shop/mix" @click="dialog = false">Mix'N'Match</v-btn>
         <v-btn depressed to="/shop/deals" @click="dialog = false">OZ deals</v-btn>
