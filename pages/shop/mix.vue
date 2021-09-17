@@ -304,6 +304,17 @@ export default {
     max() {
       this.getFilteredProducts();
     },
+    showCombineOptions() {
+      if(process.browser && this.$vuetify.breakpoint.smAndDown) {
+        let header = document.querySelector('.header');
+        if(this.showCombineOptions === true) {
+          console.log(header.classList)
+          header.classList.add("hidden")
+        } else {
+          header.classList.remove("hidden")
+        }
+      }
+    }
   },
   computed: {
     ...mapGetters({

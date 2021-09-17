@@ -143,6 +143,11 @@ export default {
     left: 0;
     right: 0;
     z-index: 2;
+    transition: top .3s;
+
+    &.hidden {
+      top: -85px;
+    }
 
     &__logo {
       width: 103px;
