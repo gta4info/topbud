@@ -28,11 +28,12 @@
             <v-col md="10" sm="12">
               <v-container>
                 <v-row v-if="productsFiltered.length">
-                  <v-col md="3" sm="12">
+                  <v-col md="3" sm="6">
                     <MixCard/>
                   </v-col>
-                  <v-col md="3" sm="12">
-                    <DealCard/>
+                  <v-col md="3" sm="6">
+                    <DealCard v-if="$vuetify.breakpoint.mdAndUp"/>
+                    <DealCardMobile v-else/>
                   </v-col>
                   <v-col
                     md="3"
@@ -69,6 +70,7 @@ export default {
   },
   components: {
     'DealCard': () => import('@/components/shop/DealCard'),
+    'DealCardMobile': () => import('@/components/shop/DealCardMobile'),
     'MixCard': () => import('@/components/shop/MixCard'),
     'ProductCard': () => import('@/components/shop/ProductCard'),
     'Filters': () => import('@/components/shop/Filters'),
@@ -319,8 +321,14 @@ export default {
     .container {
 
       .row {
-        display: flex;
-        flex-direction: column;
+      }
+
+      .col-sm-6 {
+        max-width: 50%;
+      }
+
+      .col-sm-12 {
+        flex: 1 0 100%;
       }
     }
   }

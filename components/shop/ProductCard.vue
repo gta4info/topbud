@@ -9,7 +9,7 @@
       }}"
         class="card__header"
       >
-        <div class="card__header-deal" v-if="product.deal"><span>Deal</span></div>
+<!--        <div class="card__header-deal" v-if="product.deal"><span>Deal</span></div>-->
         <div class="card__header-badges">
           <div class="card__header-badge cbd" v-if="product.cbd">CBD: {{product.cbd}}</div>
           <div class="card__header-badge thc" v-if="product.thc">THC: {{product.thc}}</div>
@@ -77,7 +77,6 @@
         <div class="cardMobile__content">
           <div class="card__title cardMobile__title">{{product.name}}</div>
           <div class="cardMobile__text">
-            <span v-if="product.deal">Deal</span>
             <span v-if="product.cbd">CBD: {{product.cbd.replace('CBD:', '')}}</span>
             <span v-if="product.thc">THC: {{product.thc.replace('THC:', '')}}</span>
           </div>

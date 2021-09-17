@@ -8,7 +8,7 @@
       />
     </div>
     <template v-else>
-      <v-container>
+      <v-container class="breadcrumbs-wrapper">
         <h1>{{category.name}} products</h1>
         <nav class="breadcrumbs">
           <ul>
@@ -26,15 +26,15 @@
       <div class="products">
         <v-container>
           <v-row v-if="category.subs.length">
-            <v-col md="3" sm="12" v-for="(item, i) in category.subs" :key="i">
+            <v-col cols="12" md="3" sm="6" v-for="(item, i) in category.subs" :key="i">
               <SubCategoryCard :category="category" :sub="item"/>
             </v-col>
           </v-row>
           <v-row v-else>
-            <v-col md="2" sm="12">
+            <v-col cols="12" md="2" sm="12">
               <Filters :min="min" :max="max" :range="range" :search="search"/>
             </v-col>
-            <v-col md="10" sm="12">
+            <v-col cols="12" md="10" sm="12">
               <v-container>
                 <v-row v-if="productsFiltered.length">
                   <v-col md="3" sm="12" v-for="product in productsFiltered" :key="product.slug">
@@ -259,12 +259,8 @@ export default {
   @media(max-width: 768px) {
     margin-top: 0;
 
-    .container {
-
-      .row {
-        display: flex;
-        flex-direction: column;
-      }
+    .col-sm-6 {
+      max-width: 50%;
     }
   }
 }

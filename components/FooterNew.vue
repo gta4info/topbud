@@ -1,5 +1,5 @@
 <template>
-  <footer class="footer" :class="{'d-none': $route.name === 'shop-mix'}">
+  <footer class="footer" :class="{'d-none': $route.name === 'shop-mix' && $vuetify.breakpoint.smAndDown}">
     <v-container class="pb-10">
       <v-row>
         <v-col cols="12" sm="12" md="4" lg="2">

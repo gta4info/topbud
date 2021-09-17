@@ -1,7 +1,7 @@
 <template>
   <div class="page">
     <v-container>
-      <h1 class="title">Mix'N'Match</h1>
+      <h1>Mix'N'Match</h1>
       <nav class="breadcrumbs">
         <ul>
           <li><nuxt-link to="/">Home</nuxt-link></li>
@@ -60,7 +60,7 @@
                       <v-col
                         md="4"
                         sm="12"
-                        cols="6"
+                        cols="12"
                         v-for="product in productsFiltered"
                         :key="product.id"
                       >
@@ -74,7 +74,19 @@
             <v-col cols="12" sm="12" md="5">
               <div class="pack__options-wrapper">
 
-                <v-btn class="pack__optionsMobile-btn" depressed height="60" block color="#7FAD39" @click="showCombineOptions = true">Combine options</v-btn>
+                <div class="pack__optionsMobile-btn--wrapper">
+                  <v-btn
+                    class="pack__optionsMobile-btn"
+                    depressed
+                    height="60"
+                    block
+                    color="#7FAD39"
+                    @click="showCombineOptions = true"
+                    :disabled="!mixsSelected[selectedWeight].filter(item => Object.keys(item).length).length"
+                  >
+                    Combine options ({{mixsSelected[selectedWeight].filter(item => Object.keys(item).length).length}})
+                  </v-btn>
+                </div>
 
                 <div class="pack__options" :class="{active: showCombineOptions}">
                   <div class="pack__options-content">
@@ -199,9 +211,9 @@
                       </div>
                     </div>
                     <div class="pack__options-group">
-                      <div class="pack__options-title">Mix'N'Match total</div>
+                      <div class="pack__options-title md">Mix'N'Match total</div>
                       <div class="pack__cart">
-                        <div class="pack__cart-saved"><span>${{calculateMixPrice.sum}}</span></div>
+                        <div class="pack__cart-saved md"><span>${{calculateMixPrice.sum}}</span></div>
                         <v-btn
                           depressed
                           color="#7FAD39"
@@ -209,9 +221,11 @@
                           :disabled="mixs.selected[selectedWeight].filter(item => Object.keys(item).length).length < 2"
                           @click="addToCart"
                         >
-                          Add to cart
+                          <template v-if="$vuetify.breakpoint.mdAndUp">Add to cart</template>
+                          <template v-else-if="calculateMixPrice.sum > 0">Add to cart (${{calculateMixPrice.sum}})</template>
+                          <template v-else>Add to cart</template>
                         </v-btn>
-                        <div class="pack__cart-saved mt-5">You've just saved with Mix'N'Match: <span style="font-size: 18px;">${{calculateMixPrice.saved}}</span></div>
+                        <div class="pack__cart-saved mt-5 md">You've just saved with Mix'N'Match: <span style="font-size: 18px;">${{calculateMixPrice.saved}}</span></div>
                       </div>
                     </div>
                   </div>
@@ -412,391 +426,415 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-  @media(max-width: 768px) {
-    .page > .container {
-      height: calc(100% - 12px);
-      padding-bottom: 0;
-    }
 
-    .title, .breadcrumbs {
-      display: none;
-    }
+@media(max-width: 768px) {
+  .page {
+    overflow: hidden !important;
+    min-height: auto;
+    max-height: 100%;
 
-    .mobileTop {
+    > .container {
+      height: 100%;
       display: flex;
       flex-direction: column;
-      margin-bottom: 15px;
-      padding: 0 12px !important;
-      height: auto !important;
-
-      > div:first-of-type {
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        margin-bottom: 15px;
-      }
     }
   }
 
-  .pack {
+  .title {
+    display: none;
+  }
 
-    @media(max-width: 768px) {
-      margin: -12px -12px 0;
-      height: calc(100vh - 85px);
-      overflow: hidden;
+  .mobileTop {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 15px;
+    padding: 0 12px !important;
+    height: auto !important;
 
-      > .container {
-        height: 100%;
+    > div:first-of-type {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 15px;
+    }
+  }
+}
 
-        > .row {
+.pack {
 
-          .col-12 {
+  @media(max-width: 768px) {
+    margin: -12px -12px 0;
+    overflow: hidden;
+    flex-grow: 1;
 
-            &:first-of-type {
-              height: calc(100% - 85px);
-              display: flex;
+    > .container {
+      height: 100%;
 
-              > div {
-                height: 100%;
-                width: 100%;
-              }
+      > .row {
+
+        .col-12 {
+
+          &:first-of-type {
+            height: calc(100% - 85px);
+            display: flex;
+
+            > div {
+              height: 100%;
+              width: 100%;
             }
           }
         }
       }
+    }
 
-      > .container {
+    > .container {
 
-        > .row {
-          height: calc(100vh - 140px);
-        }
-      }
-
-      &__content {
-        display: flex;
-        flex-direction: column;
-        padding-top: 0;
-        padding-left: 0;
-        padding-right: 0;
-        height: calc(100% + 25px);
+      > .row {
+        height: 100%;
       }
     }
 
-    &__products {
-      @media(max-width: 768px) {
-        margin-top: 10px;
-        height: calc(100vh - 85px - 60px);
-        overflow-x: hidden;
-        overflow-y: auto;
-        align-items: flex-start;
-
-        > .row {
-          padding-top: 19px;
-        }
-      }
-    }
-
-    &__title {
-      font-size: 22px;
-      font-weight: 900;
-    }
-
-    &__options {
+    &__content {
       display: flex;
       flex-direction: column;
-      padding-left: 10px;
-      border-left: 1px solid #E9E9E9;
+      padding-top: 0;
+      padding-left: 0;
+      padding-right: 0;
+      height: calc(100% + 25px);
+    }
+  }
+
+  &__products {
+    @media(max-width: 768px) {
+      margin-top: 10px;
+      height: calc(100vh - 85px - 60px);
+      overflow-x: hidden;
+      overflow-y: auto;
+      align-items: flex-start;
+
+      > .row {
+        padding-top: 19px;
+      }
+    }
+  }
+
+  &__title {
+    font-size: 22px;
+    font-weight: 900;
+  }
+
+  &__options {
+    display: flex;
+    flex-direction: column;
+    padding-left: 10px;
+    border-left: 1px solid #E9E9E9;
+    height: 100%;
+
+    @media(max-width: 768px) {
+      position: fixed;
+      top: 105vh;
+      left: 0;
+      right: 0;
+      background: #fff;
+      z-index: 2;
+      transition: .5s ease-in-out;
+      padding-left: 0;
+      overflow: hidden !important;
       height: 100%;
 
+      &.active {
+        top: 0;
+        bottom: 0;
+      }
+    }
+
+    .pack__title {
+      text-align: center;
+    }
+
+    &-content {
+      position: sticky;
+      top: 100px;
+      max-height: calc(100vh - 100px);
+      overflow: hidden !important;
+
       @media(max-width: 768px) {
-        position: fixed;
-        top: 105vh;
-        left: 0;
-        right: 0;
-        background: #fff;
-        z-index: 2;
-        transition: .5s ease-in-out;
-        padding-left: 0;
-        overflow-y: scroll;
-        height: calc(100% - 85px);
+        max-height: 100%;
+        top: 0;
+        position: relative;
+      }
+    }
+
+    &-title {
+      margin-bottom: 10px;
+      font-weight: 900;
+      text-align: center;
+    }
+
+    &-group {
+      margin-top: 20px;
+
+      @media(max-width: 768px) {
+        &:first-of-type {
+          position: sticky;
+          top: 0;
+          background: #fff;
+          z-index: 1;
+          margin-top: 0;
+          padding-top: 20px;
+        }
+
+        .pack__options-weights {
+          display: none;
+        }
+      }
+
+      .md {
+        @media(max-width: 768px) {
+          display: none;
+        }
+      }
+    }
+
+    &-weights {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+
+      &Mobile {
+        margin-bottom: 0 !important;
+
+        @media(min-width: 769px) {
+          display: none !important;
+        }
+      }
+
+      &--items {
+        display: flex;
+        align-items: center;
+        background: #e9e9e9;
+        border-radius: 30px;
+        margin-bottom: 20px;
+      }
+
+      &--item {
+        height: 40px;
+        padding: 0 30px;
+        font-weight: 900;
+        display: flex;
+        align-items: center;
+        transition: .3s;
+        cursor: pointer;
+
+        @media(max-width: 768px) {
+          height: 30px;
+          padding: 0 10px;
+        }
 
         &.active {
-          top: 85px;
-        }
-      }
-
-      .pack__title {
-        text-align: center;
-      }
-
-      &-content {
-        position: sticky;
-        top: 100px;
-        max-height: calc(100vh - 100px);
-        overflow-y: auto;
-
-        @media(max-width: 768px) {
-          max-height: 100%;
-          top: 0;
-          position: relative;
-        }
-      }
-
-      &-title {
-        margin-bottom: 10px;
-        font-weight: 900;
-        text-align: center;
-      }
-
-      &-group {
-        margin-top: 20px;
-
-        @media(max-width: 768px) {
-          &:first-of-type {
-            position: sticky;
-            top: 0;
-            background: #fff;
-            z-index: 1;
-            margin-top: 0;
-            padding-top: 20px;
-          }
-
-          .pack__options-weights {
-            display: none;
-          }
-        }
-      }
-
-      &-weights {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-
-        &Mobile {
-          margin-bottom: 0 !important;
-
-          @media(min-width: 769px) {
-            display: none !important;
-          }
+          background: #7FAD39;
+          cursor: default;
+          color: #fff;
         }
 
-        &--items {
-          display: flex;
-          align-items: center;
-          background: #e9e9e9;
-          border-radius: 30px;
-          margin-bottom: 20px;
+        &:first-child {
+          border-radius: 30px 0 0 30px;
         }
 
-        &--item {
-          height: 40px;
-          padding: 0 30px;
-          font-weight: 900;
-          display: flex;
-          align-items: center;
-          transition: .3s;
-          cursor: pointer;
-
-          @media(max-width: 768px) {
-            height: 30px;
-            padding: 0 10px;
-          }
-
-          &.active {
-            background: #7FAD39;
-            cursor: default;
-            color: #fff;
-          }
-
-          &:first-child {
-            border-radius: 30px 0 0 30px;
-          }
-
-          &:last-child {
-            border-radius: 0 30px 30px 0;
-          }
+        &:last-child {
+          border-radius: 0 30px 30px 0;
         }
       }
+    }
 
-      &-slots {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        max-height: 404px;
-        overflow-y: auto;
-        padding-bottom: 4px;
+    &-slots {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      max-height: 404px;
+      overflow-y: auto;
+      padding-bottom: 4px;
+    }
+
+    &-slot {
+      width: 300px;
+      display: flex;
+      align-items: center;
+      min-height: 92px;
+      margin: 8px 0 0;
+      padding: 12px;
+      border-radius: 16px;
+      box-shadow: rgb(6 5 50 / 24%) 0 1px 2px;
+      position: relative;
+
+      @media(max-width: 768px) {
+        min-height: auto;
       }
 
-      &-slot {
-        width: 300px;
-        display: flex;
-        align-items: center;
-        min-height: 92px;
-        margin: 8px 0 0;
-        padding: 12px;
+      &--image {
+        min-width: 68px;
+        width: 68px;
+        height: 68px;
+        margin-right: 8px;
         border-radius: 16px;
-        box-shadow: rgb(6 5 50 / 24%) 0 1px 2px;
-        position: relative;
+        overflow: hidden;
 
-        @media(max-width: 768px) {
-          min-height: auto;
+        img {
+          width: 100%;
+          height: 100%;
+          object-fit: contain;
         }
+      }
 
-        &--image {
-          min-width: 68px;
+      &--name {
+        font-weight: 900;
+      }
+
+      &--price {
+        font-weight: 900;
+        color: #7FAD39;
+      }
+
+      &--content {
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+      }
+
+      &--quantity {
+        display: flex;
+        align-items: center;
+        border: 1px solid #7FAD39;
+        border-radius: 4px;
+        margin-top: 6px;
+        padding: 4px;
+
+        .v-btn {
+          min-width: 20px !important;
+        }
+      }
+
+      &--remove {
+        position: absolute;
+        top: 0;
+        bottom: 0;
+        right: -18px;
+        margin: auto 0;
+        display: flex;
+        align-items: center;
+
+        .v-btn {
+          background: #eeeeee !important;
+        }
+      }
+
+      &--empty {
+        display: flex;
+        align-items: center;
+        width: 100%;
+        height: 100%;
+
+        div {
           width: 68px;
           height: 68px;
           margin-right: 8px;
           border-radius: 16px;
-          overflow: hidden;
-
-          img {
-            width: 100%;
-            height: 100%;
-            object-fit: contain;
-          }
-        }
-
-        &--name {
+          display: flex;
+          align-items: center;
+          justify-content: center;
           font-weight: 900;
+          font-size: 16px;
+          background: #eeeeee;
         }
 
-        &--price {
+        span {
           font-weight: 900;
-          color: #7FAD39;
-        }
-
-        &--content {
-          display: flex;
-          flex-direction: column;
-          align-items: flex-start;
-        }
-
-        &--quantity {
-          display: flex;
-          align-items: center;
-          border: 1px solid #7FAD39;
-          border-radius: 4px;
-          margin-top: 6px;
-          padding: 4px;
-
-          .v-btn {
-            min-width: 20px !important;
-          }
-        }
-
-        &--remove {
-          position: absolute;
-          top: 0;
-          bottom: 0;
-          right: -18px;
-          margin: auto 0;
-          display: flex;
-          align-items: center;
-
-          .v-btn {
-            background: #eeeeee !important;
-          }
-        }
-
-        &--empty {
-          display: flex;
-          align-items: center;
-          width: 100%;
-          height: 100%;
-
-          div {
-            width: 68px;
-            height: 68px;
-            margin-right: 8px;
-            border-radius: 16px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-weight: 900;
-            font-size: 16px;
-            background: #eeeeee;
-          }
-
-          span {
-            font-weight: 900;
-          }
-        }
-      }
-
-      &Mobile {
-
-        &-btn {
-          color: #fff !important;
-          border-radius: 30px;
-          display: none;
-          font-size: 18px;
-
-          @media(max-width: 768px) {
-            display: flex;
-          }
-        }
-
-        &-close {
-          position: absolute;
-          top: 18px;
-          right: 20px;
-          display: none;
-
-          @media(max-width: 768px) {
-            display: flex;
-          }
         }
       }
     }
 
-    &__cart {
+    &Mobile {
+
+      &-btn {
+        color: #fff !important;
+        border-radius: 30px;
+        font-size: 18px;
+
+        &--wrapper {
+          position: fixed;
+          bottom: 0;
+          left: 0;
+          right: 0;
+          background: #fff;
+          padding: 10px;
+          display: none;
+
+          @media(max-width: 768px) {
+            display: flex;
+          }
+        }
+      }
+
+      &-close {
+        position: absolute;
+        top: 18px;
+        right: 20px;
+        display: none;
+
+        @media(max-width: 768px) {
+          display: flex;
+        }
+      }
+    }
+  }
+
+  &__cart {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+
+    @media(max-width: 768px) {
+      padding-bottom: 20px;
+    }
+
+    &-totals {
+      font-weight: 600;
+
+      span {
+        font-weight: 900;
+        color: #7FAD39;
+      }
+    }
+
+    &-saved {
+      font-weight: 600;
       display: flex;
       flex-direction: column;
       align-items: center;
-      justify-content: center;
 
-      @media(max-width: 768px) {
-        padding-bottom: 20px;
-      }
-
-      &-totals {
-        font-weight: 600;
-
-        span {
-          font-weight: 900;
-          color: #7FAD39;
-        }
-      }
-
-      &-saved {
-        font-weight: 600;
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-
-        span {
-          font-size: 22px;
-          font-weight: 900;
-          color: #7FAD39;
-        }
-      }
-
-      &-btn {
-        margin-top: 10px;
-        width: 300px;
-        height: 60px !important;
-        color: #fff;
+      span {
+        font-size: 22px;
         font-weight: 900;
+        color: #7FAD39;
       }
     }
-  }
 
-  .md {
-    display: flex;
-
-    @media(max-width: 768px) {
-      display: none;
+    &-btn {
+      margin-top: 10px;
+      width: 300px;
+      height: 60px !important;
+      color: #fff;
+      font-weight: 900;
     }
   }
+}
+
+.md {
+  display: flex;
+
+  @media(max-width: 768px) {
+    display: none;
+  }
+}
 </style>

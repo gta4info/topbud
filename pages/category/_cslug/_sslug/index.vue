@@ -8,7 +8,7 @@
       />
     </div>
     <template v-else>
-      <v-container>
+      <v-container class="breadcrumbs-wrapper">
         <h1>{{category.name}} {{sub.name}} products</h1>
         <nav class="breadcrumbs">
           <ul>

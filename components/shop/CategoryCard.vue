@@ -47,6 +47,12 @@ export default {
     border-bottom: 1px solid #E9E9E9;
     flex-grow: 1;
 
+    @media(max-width: 768px) {
+      min-height: auto;
+      height: 162px;
+      flex-grow: 0;
+    }
+
     img {
       width: 100%;
       transition: .3s;

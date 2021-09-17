@@ -2,10 +2,10 @@
   <v-app app>
     <HeaderNew v-if="windowWidth > 600"/>
     <HeaderMobileNew v-else/>
-    <v-main app :style="windowWidth < 600 ? 'margin-top: 85px !important;' : 'margin-top: 0 !important;'">
+    <v-main app>
       <nuxt/>
+      <FooterNew/>
     </v-main>
-    <FooterNew/>
     <DialogRestrictions v-if="dialogRestrictions" />
   </v-app>
 </template>

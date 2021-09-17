@@ -1,32 +1,32 @@
 <template>
   <div class="filters" :class="{inline: inline}">
     <div class="filter__group">
-      <div class="filter__title">Search by name</div>
+      <div class="filter__title md">Search by name</div>
       <v-text-field
         v-model="searchQuery"
         solo
         dense
         hide-details
         clearable
-        label="Type something"
+        label="Search by name"
         class="filter__name"
       />
     </div>
     <div class="filter__group">
-      <div class="filter__title">Price range</div>
+      <div class="filter__title">Price range <span class="sm">(from - to)</span></div>
       <div class="filter__slider">
         <div class="filter__slider-inputs">
-          <div class="mr-6">
-            <span class="mb-2 d-block">From</span>
+          <div class="mr-3">
             <v-text-field v-model="minData" placeholder="From" solo dense class="filter__name" hide-details type="number" @keypress.enter="updatePrices"/>
           </div>
           <div>
-            <span class="mb-2 d-block">To</span>
             <v-text-field v-model="maxData" placeholder="To" solo dense class="filter__name" hide-details type="number" @keypress.enter="updatePrices"/>
           </div>
+          <v-btn @click="updatePrices" color="#7FAD39" height="30" width="30" max-width="30" depressed>
+            <v-icon color="#fff" small>mdi-check</v-icon>
+          </v-btn>
         </div>
       </div>
-      <v-btn @click="updatePrices" color="#7FAD39" class="mt-4 white--text" depressed>Apply</v-btn>
     </div>
     <div class="filter__group" v-if="categories && categories.length">
       <div class="filter__title">Categories</div>
@@ -137,7 +137,11 @@ export default {
     border: 1px solid #E9E9E9;
     border-radius: 8px;
     padding: 20px 12px;
-    margin-top: 24px;
+    margin-top: 12px;
+
+    @media(max-width: 768px) {
+      margin-top: 0;
+    }
 
     &.inline {
       flex-direction: row;
@@ -150,6 +154,7 @@ export default {
         flex-direction: row;
         flex-wrap: wrap;
         margin-bottom: 0;
+        margin-right: 30px;
 
         .v-btn {
           margin-top: auto !important;
@@ -161,6 +166,7 @@ export default {
             width: 100%;
             margin-top: 10px !important;
             margin-bottom: 15px;
+            margin-right: 0;
           }
         }
       }
@@ -178,6 +184,13 @@ export default {
 
       .filter__title {
         width: 100%;
+
+        &.md {
+
+          @media(max-width: 768px) {
+            display: none;
+          }
+        }
       }
 
       .filter__name {
@@ -197,6 +210,11 @@ export default {
 
       &:not(:last-child) {
         margin-bottom: 30px;
+
+        @media(max-width: 768px) {
+          margin-bottom: 15px;
+          margin-right: 0;
+        }
       }
     }
 
@@ -204,18 +222,71 @@ export default {
       font-size: 18px;
       font-weight: 900;
       margin-bottom: 10px;
+      display: flex;
+      align-items: center;
+
+      .sm {
+        display: none;
+
+        @media(max-width: 768px) {
+          display: block;
+          margin-left: 4px;
+        }
+      }
+
+      &.md {
+        @media(max-width: 768px) {
+          display: none;
+        }
+      }
     }
 
     &__slider {
       display: flex;
       flex-direction: column;
 
+      @media(max-width: 768px) {
+        .md {
+          display: none !important;
+        }
+      }
+
       &-inputs {
         display: flex;
         justify-content: space-between;
+        align-items: center;
 
         span {
           font-weight: 900;
+        }
+
+        .v-btn {
+          min-width: 30px !important;
+          height: 30px !important;
+          max-height: 30px !important;
+          max-width: 30px !important;
+          margin-left: 12px;
+          border-radius: 50%;
+          flex-shrink: 0;
+          padding: 0 !important;
+          margin-top: auto !important;
+          margin-bottom: auto !important;
+        }
+
+        @media(min-width: 769px) {
+          .sm {
+            display: none;
+          }
+        }
+
+        @media(max-width: 768px) {
+          > div {
+            margin-right: 8px;
+          }
+
+          .v-btn {
+            margin-left: 4px;
+          }
         }
       }
     }
@@ -275,6 +346,11 @@ export default {
         transition: .3s;
         height: 1px;
 
+        @media(max-width: 768px) {
+          flex-wrap: wrap;
+          display: flex;
+        }
+
         &.active {
           height: auto;
         }
@@ -282,6 +358,10 @@ export default {
 
       &-sub {
         font-size: 13px;
+
+        @media(max-width: 768px) {
+          margin-right: 12px;
+        }
 
         input, label {
           cursor: pointer;

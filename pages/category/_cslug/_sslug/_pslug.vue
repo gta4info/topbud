@@ -8,7 +8,7 @@
       />
     </div>
     <template v-else>
-      <v-container>
+      <v-container class="breadcrumbs-wrapper">
         <nav class="breadcrumbs">
           <ul>
             <li><nuxt-link to="/">Home</nuxt-link></li>
@@ -19,6 +19,28 @@
           </ul>
         </nav>
         <div class="product">
+
+
+          <div class="cardMobile__row" v-if="$vuetify.breakpoint.smAndDown">
+            <div class="cardMobile__content">
+              <div class="card__title cardMobile__title">{{product.name}}</div>
+              <div class="cardMobile__text">
+                <span v-if="product.cbd">CBD: {{product.cbd.replace('CBD:', '')}}</span>
+                <span v-if="product.thc">THC: {{product.thc.replace('THC:', '')}}</span>
+              </div>
+              <div class="cardMobile__text" style="font-weight: 700; margin-top: 6px;" v-if="product.prices.length > 1">
+                From ${{product.prices[0].price}} - To ${{product.prices[product.prices.length-1].price}}
+              </div>
+              <div class="cardMobile__text" style="font-weight: 700; margin-top: 6px;" v-else>
+                ${{product.prices[0].price}}
+              </div>
+            </div>
+            <div class="cardMobile__img">
+              <img :src="product.img" :alt="product.name">
+            </div>
+          </div>
+
+
           <div class="product__left">
             <img :src="product.img" :alt="product.name">
           </div>
@@ -161,7 +183,7 @@ export default {
       return error({ statusCode: 404 })
     }
 
-    product.img = `/${product.img}`;
+    product.img = `https://topbudstore.com/${product.img}`;
     let selectedWeight = product.prices[0].weight_id;
     let loading = false;
 
@@ -259,7 +281,7 @@ export default {
       width: 300px;
       height: 300px;
       @media(max-width: 768px) {
-        margin-right: 0;
+        display: none;
       }
 
       img {
@@ -529,6 +551,67 @@ export default {
     &__price {
       font-size: 20px;
       font-weight: 900;
+    }
+  }
+
+  .cardMobile {
+    &__row {
+      display: flex;
+      width: 100%;
+      margin: 15px 0;
+      align-items: center;
+    }
+
+    &__content {
+      display: flex;
+      flex-direction: column;
+      flex-grow: 1;
+    }
+
+    &__img {
+      width: 30%;
+      height: 90%;
+      border-radius: 10px;
+      overflow: hidden;
+      margin-left: 20px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+
+      img {
+        max-width: 100%;
+        max-height: 100%;
+      }
+    }
+
+    &__title {
+      justify-content: flex-start;
+      text-align: left;
+      width: 100%;
+      font-weight: 700;
+    }
+
+    &__text {
+      font-size: 14px;
+      display: flex;
+      flex-wrap: wrap;
+
+      span {
+
+        &:not(:last-of-type) {
+          position: relative;
+          padding-right: 3px;
+          margin-right: 3px;
+          display: flex;
+
+          &:before {
+            content: ',';
+            position: absolute;
+            right: 0;
+            bottom: 0;
+          }
+        }
+      }
     }
   }
 </style>
