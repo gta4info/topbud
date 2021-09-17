@@ -157,6 +157,7 @@
 import { mapGetters } from 'vuex'
 
 export default {
+  scrollToTop: true,
   head: {
     title: 'Order summary | TOPBUD store',
     meta: [

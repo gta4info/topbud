@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div class="card" :class="{selected: selected}" @click="pushToSelected" v-if="$vuetify.breakpoint.mdAndUp">
+    <div class="card" :class="{selected: selected}" @click="changeSelected" v-if="$vuetify.breakpoint.mdAndUp">
       <div class="card__header">
         <div class="img">
           <img :src="product.img" :alt="product.name">
@@ -14,7 +14,7 @@
         </div>
       </div>
     </div>
-    <div class="cardMobile" :class="{selected: selected}" @click="pushToSelected" v-else>
+    <div class="cardMobile" :class="{selected: selected}" @click="changeSelected" v-else>
       <div class="cardMobile__row">
         <div class="cardMobile__content">
           <div class="card__title cardMobile__title">{{product.name}}</div>
@@ -49,11 +49,18 @@ export default {
     selected: Boolean
   },
   methods: {
-    pushToSelected() {
-      this.$store.commit('shop/PUSH_PRODUCT_TO_SELECTED_MIXS', {
-        type: this.selectedWeight,
-        product: this.product
-      })
+    changeSelected() {
+      if(this.selected) {
+        this.$store.commit('shop/DELETE_PRODUCT_FROM_SELECTED_MIXS', {
+          type: this.selectedWeight,
+          id: this.product.id
+        })
+      } else {
+        this.$store.commit('shop/PUSH_PRODUCT_TO_SELECTED_MIXS', {
+          type: this.selectedWeight,
+          product: this.product
+        })
+      }
     }
   },
 }

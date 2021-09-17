@@ -91,7 +91,11 @@ export const mutations = {
   },
   DELETE_PRODUCT_FROM_SELECTED_MIXS(state, data) {
     state.mixs[data.type].find(item => item.id === data.id).selected = false;
+    if(!data.key) {
+      data.key = state.mixs.selected[data.type].indexOf(state.mixs.selected[data.type].find(item => item.id === data.id))
+    }
     state.mixs.selected[data.type].splice(data.key, 1)
+
     if(state.mixs.selected[data.type].length === 1) {
       state.mixs.selected[data.type].push({});
     }
@@ -108,8 +112,12 @@ export const mutations = {
       if (firstEmpty >= 0) {
         state.mixs.selected[data.type].splice(firstEmpty, 1)
       }
-      if (!state.mixs.selected[data.type].find(item => !item.id)) {
-        state.mixs.selected[data.type].unshift({});
+      if(process.browser) {
+        if(window.outerWidth > 600) {
+          if (!state.mixs.selected[data.type].find(item => !item.id)) {
+            state.mixs.selected[data.type].unshift({});
+          }
+        }
       }
     }
   },

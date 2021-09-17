@@ -34,6 +34,7 @@
 
 <script>
 export default {
+  scrollToTop: true,
   head: {
     title: 'About | TOPBUD store',
     meta: [

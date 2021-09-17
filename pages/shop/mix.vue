@@ -243,6 +243,7 @@
 import { mapGetters } from 'vuex'
 
 export default {
+  scrollToTop: true,
   name: 'pack',
   head: {
     title: "Weed delivery 🚬 in Toronto, Mix'N'Match, best prices — TOPBUD store",
@@ -439,6 +440,10 @@ export default {
 <style lang="scss" scoped>
 
 @media(max-width: 768px) {
+  .breadcrumbs {
+    display: none;
+  }
+
   .page {
     overflow: hidden !important;
     min-height: auto;
@@ -512,6 +517,12 @@ export default {
       padding-left: 0;
       padding-right: 0;
       height: calc(100% + 25px);
+
+      @media(max-width: 768px) {
+        .row + .row {
+          margin-top: 0;
+        }
+      }
     }
   }
 
@@ -580,6 +591,10 @@ export default {
       margin-bottom: 10px;
       font-weight: 900;
       text-align: center;
+
+      @media(max-width: 768px) {
+        display: none;
+      }
     }
 
     &-group {
@@ -843,6 +858,7 @@ export default {
 
 .md {
   display: flex;
+  justify-content: center;
 
   @media(max-width: 768px) {
     display: none;

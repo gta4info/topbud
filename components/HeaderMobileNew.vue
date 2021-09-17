@@ -133,7 +133,7 @@ export default {
   .header {
     background: url("~/static/images/header-mobile-bg.jpg"), #202536;
     background-size: cover;
-    height: 85px;
+    height: 56px;
     display: flex;
     align-items: center;
     justify-content: space-between;
@@ -150,8 +150,8 @@ export default {
     }
 
     &__logo {
-      width: 103px;
-      height: 70px;
+      width: 72px;
+      height: 49px;
 
       img {
         width: 100%;

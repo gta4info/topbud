@@ -216,6 +216,7 @@
 
 <script>
 export default {
+  scrollToTop: true,
   async asyncData({$axios}) {
     const blog = await $axios.$get('blog');
     return { blog };

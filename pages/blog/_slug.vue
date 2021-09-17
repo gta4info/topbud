@@ -39,6 +39,7 @@
 
 <script>
 export default {
+  scrollToTop: true,
   head() {
     return {
       title: `${this.blog.name} | TOPBUD store`,

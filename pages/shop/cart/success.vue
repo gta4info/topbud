@@ -31,6 +31,7 @@
 <script>
 
 export default {
+  scrollToTop: true,
   head: {
     title: 'Order number | TOPBUD store',
     meta: [

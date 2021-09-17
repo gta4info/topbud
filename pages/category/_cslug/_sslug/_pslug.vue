@@ -148,6 +148,7 @@
 import { mapGetters } from 'vuex'
 
 export default {
+  scrollToTop: true,
   head() {
     return {
       title: `Weed delivery 🚬 ${this.product.name} in Toronto, best prices — TOPBUD store`,
