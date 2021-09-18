@@ -245,6 +245,7 @@ export default {
       display: flex;
       align-items: center;
       justify-content: center;
+      flex-shrink: 0;
 
       img {
         max-width: 100%;
