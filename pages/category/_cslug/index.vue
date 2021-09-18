@@ -94,7 +94,7 @@ export default {
         cslug: category.slug,
         sslug: sub ? sub.slug : null,
       }
-      data.products[key].img = `/${data.products[key].img}`
+      data.products[key].img = `https://topbudstore.com/${data.products[key].img}`
       products.push(data.products[key])
 
       data.products[key].prices.map(price => {
@@ -262,6 +262,12 @@ export default {
 
     .col-sm-6 {
       max-width: 50%;
+    }
+
+    .col-sm-12 {
+      max-width: 100%;
+      width: 100%;
+      flex: 1 0 100%;
     }
   }
 }
