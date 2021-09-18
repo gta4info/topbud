@@ -20,7 +20,6 @@
         </nav>
         <div class="product">
 
-
           <div class="cardMobile__row" v-if="$vuetify.breakpoint.smAndDown">
             <div class="cardMobile__content">
               <div class="card__title cardMobile__title">{{product.name}}</div>
@@ -39,7 +38,6 @@
               <img :src="product.img" :alt="product.name">
             </div>
           </div>
-
 
           <div class="product__left">
             <img :src="product.img" :alt="product.name">
@@ -570,8 +568,8 @@ export default {
     }
 
     &__img {
-      width: 30%;
-      height: 90%;
+      width: 75px;
+      height: 75px;
       border-radius: 10px;
       overflow: hidden;
       margin-left: 20px;

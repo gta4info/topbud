@@ -417,6 +417,7 @@ export default {
 
     &__row {
       display: flex;
+      align-items: center;
       width: 100%;
     }
 
@@ -427,8 +428,8 @@ export default {
     }
 
     &__img {
-      width: 30%;
-      height: 90%;
+      width: 75px;
+      height: 75px;
       border-radius: 10px;
       overflow: hidden;
       margin-left: 20px;

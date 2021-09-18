@@ -82,7 +82,7 @@ export default {
         cslug: category.slug,
         sslug: sub.slug,
       }
-      // data.products[key].img = `/${data.products[key].img}`
+
       data.products[key].img = `/${data.products[key].img}`
       products.push(data.products[key])
 
