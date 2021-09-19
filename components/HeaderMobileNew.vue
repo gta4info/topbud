@@ -128,6 +128,9 @@ export default {
       }
     },
   },
+  created () {
+    this.$root.$on('close-mobile-header', () => this.dialog = false);
+  }
 }
 </script>
 
