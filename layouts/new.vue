@@ -12,7 +12,6 @@
 
 <script>
 export default {
-  scrollToTop: true,
   name: 'new',
   components: {
     'DialogRestrictions': () => import('@/components/DialogRestrictions'),
@@ -21,17 +20,21 @@ export default {
     windowWidth: null,
     dialogRestrictions: false
   }),
+  watch: {
+    $route (to, from){
+      let all = Array.prototype.slice.call(document.querySelectorAll('*')).filter(function(el){return el.offsetHeight !== el.scrollHeight})
+
+      for (let i=0, max=all.length; i < max; i++) {
+        all[i].scroll(0,0);
+      }
+    }
+  },
   methods: {
     setWindowWidth() {
       this.windowWidth = window.outerWidth;
     },
-    scrollFix: function(hashbang) {
-      location.hash = hashbang;
-    }
   },
   mounted() {
-    setTimeout(() => this.scrollFix(this.$route.hash), 1);
-
     if(this.$cookies.get('age_confirmed') !== undefined && this.$cookies.get('age_confirmed')) {
       this.dialogRestrictions = false;
     } else {
