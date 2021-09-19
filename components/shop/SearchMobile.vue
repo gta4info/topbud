@@ -46,27 +46,6 @@ export default {
     margin-bottom: 30px;
     flex-shrink: 0;
 
-    &:after {
-      content: '';
-      position: absolute;
-      right: 0;
-      bottom: 0;
-      top: 0;
-      width: 24px;
-      background: #262626;
-    }
-
-    &:before {
-      content: '';
-      position: absolute;
-      top: 0;
-      bottom: 0;
-      right: 0;
-      width: 24px;
-      height: 100%;
-      background: #262626;
-    }
-
     input {
       width: 100%;
       height: 100%;
