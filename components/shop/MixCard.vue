@@ -25,6 +25,10 @@ export default {
     height: 100%;
     cursor: pointer;
 
+    @media(max-width: 768px) {
+      height: calc(50vw - 20px);
+    }
+
     &:hover {
       .card__img {
         img {
