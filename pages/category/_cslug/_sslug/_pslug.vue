@@ -28,7 +28,12 @@
                 <span v-if="product.thc">THC: {{product.thc.replace('THC:', '')}}</span>
               </div>
               <div class="cardMobile__text" style="font-weight: 700; margin-top: 6px;" v-if="product.prices.length > 1">
-                From ${{product.prices[0].price}} - To ${{product.prices[product.prices.length-1].price}}
+                From
+                <template v-if="product.prices[0].deal_price">${{ product.prices[0].deal_price }}</template>
+                <template v-else>${{ product.prices[0].price }}</template>
+                - To
+                <template v-if="product.prices[product.prices.length-1].deal_price">${{ product.prices[product.prices.length - 1].deal_price }}</template>
+                <template v-else>${{ product.prices[product.prices.length-1].price }}</template>
               </div>
               <div class="cardMobile__text" style="font-weight: 700; margin-top: 6px;" v-else>
                 ${{product.prices[0].price}}

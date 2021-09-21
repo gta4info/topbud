@@ -39,6 +39,13 @@ export default {
       display: flex;
       flex-direction: column;
       align-items: center;
+
+      img {
+
+        @media(max-width: 768px) {
+          max-width: 100%;
+        }
+      }
     }
 
     &__title {
@@ -50,6 +57,10 @@ export default {
       @media(max-width: 768px) {
         font-size: 26px;
         text-align: center;
+      }
+
+      @media(max-width: 320px) {
+        font-size: 18px;
       }
     }
 

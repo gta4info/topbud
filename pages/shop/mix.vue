@@ -41,7 +41,7 @@
                           </div>
                         </div>
                       </div>
-                      <div>
+                      <div v-if="$vuetify.breakpoint.smAndDown">
                         <v-text-field
                           v-model="search"
                           solo
