@@ -51,6 +51,8 @@
                           height="40"
                           label="Search"
                           class="filter__name"
+                          @focusin="showCombineOptionsButton = false"
+                          @focusout="showCombineOptionsButton = true"
                         />
                       </div>
                     </v-col>
@@ -74,11 +76,10 @@
             <v-col cols="12" sm="12" md="5">
               <div class="pack__options-wrapper">
 
-                <div class="pack__optionsMobile-btn--wrapper">
+                <div class="pack__optionsMobile-btn--wrapper" :class="{active: showCombineOptionsButton}">
                   <v-btn
                     class="pack__optionsMobile-btn"
                     depressed
-                    height="60"
                     block
                     color="#7FAD39"
                     @click="showCombineOptions = true"
@@ -296,7 +297,8 @@ export default {
   data: () => ({
     selectedWeight: 2,
     search: '',
-    showCombineOptions: false
+    showCombineOptions: false,
+    showCombineOptionsButton: true,
   }),
   watch: {
     min() {
@@ -784,19 +786,25 @@ export default {
       &-btn {
         color: #fff !important;
         border-radius: 30px;
-        font-size: 18px;
+        font-size: 14px;
+        height: 40px !important;
 
         &--wrapper {
           position: fixed;
-          bottom: 0;
+          bottom: -80px;
           left: 0;
           right: 0;
           background: #fff;
           padding: 10px;
           display: none;
+          transition: .5s;
 
           @media(max-width: 768px) {
             display: flex;
+          }
+
+          &.active {
+            bottom: 0;
           }
         }
       }
