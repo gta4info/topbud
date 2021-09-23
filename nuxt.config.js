@@ -18,7 +18,7 @@ export default {
       { href: 'https://api.tiles.mapbox.com/mapbox-gl-js/v0.53.0/mapbox-gl.css', rel: 'stylesheet' },
       { href: 'https://fonts.googleapis.com', rel: 'preconnect' },
       { href: 'https://fonts.gstatic.com', rel: 'preconnect' },
-      { href: 'https://fonts.googleapis.com/css2?family=Courgette&family=Montserrat:wght@700&display=swap', rel: 'stylesheet' },
+      { href: 'https://fonts.googleapis.com/css2?family=Courgette&family=Montserrat:wght@500;700&display=swap', rel: 'stylesheet' },
     ]
   },
 

@@ -1,30 +1,47 @@
 <template>
-  <div>
-    <v-container fluid class="mainScreen" :class="selectedMainScreen > 0 ? selectedMainScreen === 1 ? 'sativa' : 'indica' : ''">
+  <div class="page">
+<!--    <v-container fluid class="mainScreen" :class="selectedMainScreen > 0 ? selectedMainScreen === 1 ? 'sativa' : 'indica' : ''">-->
+<!--      <v-container>-->
+<!--        <div class="mainScreen__content">-->
+<!--          <div class="mainScreen__left" @mouseenter="selectedMainScreen = 1" :class="{active: selectedMainScreen === 1}">-->
+<!--            <div class="mainScreen__image">-->
+<!--              <div>-->
+<!--                <img class="default" src="@/static/images/sativa-img-1.png" alt="">-->
+<!--                <img class="active" src="@/static/images/sativa-img-2.png" alt="">-->
+<!--              </div>-->
+<!--            </div>-->
+<!--            <nuxt-link to="/category/flower/sativa">Shop Sativa</nuxt-link>-->
+<!--          </div>-->
+<!--          <div class="mainScreen__center">Choose your side</div>-->
+<!--          <div class="mainScreen__right" @mouseenter="selectedMainScreen = 2" :class="{active: selectedMainScreen === 2}">-->
+<!--            <div class="mainScreen__image">-->
+<!--              <div>-->
+<!--                <img class="default" src="@/static/images/indica-img-1.png" alt="">-->
+<!--                <img class="active" src="@/static/images/indica-img-2.png" alt="">-->
+<!--              </div>-->
+<!--            </div>-->
+<!--            <nuxt-link to="/category/flower/indica">Shop Indica</nuxt-link>-->
+<!--          </div>-->
+<!--        </div>-->
+<!--      </v-container>-->
+<!--    </v-container>-->
+    <section class="buttons">
       <v-container>
-        <div class="mainScreen__content">
-          <div class="mainScreen__left" @mouseenter="selectedMainScreen = 1" :class="{active: selectedMainScreen === 1}">
-            <div class="mainScreen__image">
-              <div>
-                <img class="default" src="@/static/images/sativa-img-1.png" alt="">
-                <img class="active" src="@/static/images/sativa-img-2.png" alt="">
-              </div>
-            </div>
-            <nuxt-link to="/category/flower/sativa">Shop Sativa</nuxt-link>
-          </div>
-          <div class="mainScreen__center">Choose your side</div>
-          <div class="mainScreen__right" @mouseenter="selectedMainScreen = 2" :class="{active: selectedMainScreen === 2}">
-            <div class="mainScreen__image">
-              <div>
-                <img class="default" src="@/static/images/indica-img-1.png" alt="">
-                <img class="active" src="@/static/images/indica-img-2.png" alt="">
-              </div>
-            </div>
-            <nuxt-link to="/category/flower/indica">Shop Indica</nuxt-link>
-          </div>
-        </div>
+        <v-row>
+          <v-col sm="12" md="6">
+            <nuxt-link to="/shop/mix" class="buttons__item mnm" v-ripple>
+              <div class="buttons__item-title">Mix’n’Match</div>
+              <div class="buttons__item-text">add a lot of buds with <span>lower</span> price</div>
+            </nuxt-link>
+          </v-col>
+          <v-col sm="12" md="6">
+            <nuxt-link to="/shop/deals" class="buttons__item deals" v-ripple>
+              <div class="buttons__item-title">Oz Deals</div>
+            </nuxt-link>
+          </v-col>
+        </v-row>
       </v-container>
-    </v-container>
+    </section>
     <section class="categories">
       <v-container>
         <div class="title">Categories</div>
@@ -317,6 +334,125 @@ export default {
       padding: 0 !important;
     }
   }
+
+  @media(max-width: 768px) {
+    .page .title, .page h1 {
+      display: flex !important;
+    }
+  }
+
+  .buttons {
+    margin-top: 60px;
+
+    @media(max-width: 768px) {
+      margin-top: 20px;
+    }
+
+    &__content {
+      display: flex;
+      justify-content: space-between;
+    }
+
+    &__item {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      height: 160px;
+      background-size: cover;
+      background-position: top left;
+      border-radius: 5px;
+      overflow-x: hidden;
+      position: relative;
+
+      &-title {
+        font-size: 48px;
+        font-family: "Courgette", serif;
+        line-height: 1;
+      }
+
+      &-text {
+        font-family: "Montserrat", sans-serif;
+        font-size: 15px;
+        font-weight: 500;
+
+        span {
+          font-weight: 700;
+          margin: 0 5px;
+        }
+      }
+
+      &.mnm {
+        background-image: url("~/static/images/mnm-button-bg.jpg");
+        color: #202536 !important;
+        text-decoration: none;
+        padding-left: 223px;
+
+        &:before {
+          content: '';
+          position: absolute;
+          background-image: url("~/static/images/mnm-button-img.png");
+          background-repeat: no-repeat;
+          background-position: top 28px left 29px;
+          top: 0;
+          left: 0;
+          right: 0;
+          bottom: 0;
+
+          @media(max-width: 768px) {
+            background-size: 110px;
+            background-position: top 0 left 0;
+          }
+        }
+
+        @media(max-width: 768px) {
+          padding-left: 0;
+          align-items: center;
+        }
+
+        &:hover {
+          color: #202536 !important;
+        }
+
+        .buttons__item-title {
+          margin-top: 20px;
+        }
+      }
+
+      &.deals {
+        background-image: url("~/static/images/deals-button-bg.jpg");
+        color: #fff !important;
+        text-decoration: none;
+        padding-left: 194px;
+
+        &:before {
+          content: '';
+          position: absolute;
+          background-image: url("~/static/images/deals-button-img.png");
+          background-repeat: no-repeat;
+          background-position: top 31px left 73px;
+          top: 0;
+          left: 0;
+          right: 0;
+          bottom: 0;
+
+          @media(max-width: 768px) {
+            background-size: contain;
+            background-position: top 50px left 0;
+          }
+        }
+
+        @media(max-width: 768px) {
+          padding-left: 0;
+          align-items: center;
+        }
+
+        &:hover {
+          color: #fff !important;
+        }
+      }
+    }
+  }
+
   .mainScreen {
     background: url("~/static/images/stars-bg.png"), #202536;
     background-size: cover;

@@ -1,6 +1,7 @@
 <template>
   <div class="header__wrapper">
-    <div class="bg" :class="{hide: $route.name === 'index'}"></div>
+<!--    <div class="bg" :class="{hide: $route.name === 'index'}"></div>-->
+    <div class="bg"></div>
     <v-container>
       <div class="header">
         <nuxt-link to="/" class="header__logo">
