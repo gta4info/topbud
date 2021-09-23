@@ -795,7 +795,7 @@ export default {
           left: 0;
           right: 0;
           background: #fff;
-          padding: 10px;
+          padding: 6px 10px;
           display: none;
           transition: .5s;
 
