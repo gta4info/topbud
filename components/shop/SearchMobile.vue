@@ -42,8 +42,8 @@ export default {
     overflow: hidden;
     margin-left: auto;
     padding-right: 24px;
-    margin-top: 30px;
-    margin-bottom: 30px;
+    margin-top: 20px;
+    margin-bottom: 20px;
     flex-shrink: 0;
 
     input {

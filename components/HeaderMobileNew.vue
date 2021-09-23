@@ -27,6 +27,9 @@
         <v-btn depressed to="/shop/mix" @click="dialog = false">Mix'N'Match</v-btn>
         <v-btn depressed to="/shop/deals" @click="dialog = false">OZ deals</v-btn>
       </div>
+
+      <SearchMobile/>
+
       <v-expansion-panels class="mobileMenu__nav">
         <v-expansion-panel class="mobileMenu__nav-item" v-for="category in computedCategories.filter(item => item.subs && item.subs.length)" :key="category.slug">
           <v-expansion-panel-header>
@@ -61,8 +64,6 @@
       <nuxt-link to="/delivery" class="mobileMenu__nav-item--title" style="margin-bottom: 20px;font-weight: 700;align-self: flex-start;" @click.native="dialog = false">Delivery info</nuxt-link>
       <nuxt-link to="/blog" class="mobileMenu__nav-item--title" style="margin-bottom: 20px;font-weight: 700;align-self: flex-start;" @click.native="dialog = false">Blog</nuxt-link>
 <!--      <nuxt-link to="/" class="mobileMenu__nav-item&#45;&#45;title" style="margin-bottom: 20px;font-weight: 700;align-self: flex-start;">How to order?</nuxt-link>-->
-
-      <SearchMobile/>
     </div>
   </header>
 </template>
@@ -260,7 +261,7 @@ export default {
       display: flex;
       justify-content: space-between;
       width: 100%;
-      margin-bottom: 30px;
+      //margin-bottom: 30px;
 
       .v-btn {
         width: calc(50% - 10px);
