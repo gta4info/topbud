@@ -23,7 +23,8 @@
             <span v-if="product.thc">THC: {{product.thc.replace('THC:', '')}}</span>
           </div>
           <div class="cardMobile__text" style="font-weight: 700; margin-top: 6px;">
-            ${{product.price}}
+            <template v-if="product.deal_price">${{product.deal_price}}</template>
+            <template v-else>${{product.price}}</template>
           </div>
         </div>
         <div class="cardMobile__img">

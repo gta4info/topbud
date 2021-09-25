@@ -256,7 +256,7 @@ export default {
         .then(res => {
           if(res.data.success === true) {
             this.promocodeDisabled = true;
-            this.promocodeIsPercent = res.data.isPrice;
+            this.promocodeIsPercent = res.data.isPercent;
             this.promocodeValue = res.data.value;
             this.promocodeApplied = true;
 
