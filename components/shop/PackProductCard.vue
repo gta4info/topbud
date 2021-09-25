@@ -23,7 +23,10 @@
             <span v-if="product.thc">THC: {{product.thc.replace('THC:', '')}}</span>
           </div>
           <div class="cardMobile__text" style="font-weight: 700; margin-top: 6px;">
-            <template v-if="product.deal_price">${{product.deal_price}}</template>
+            <template v-if="product.deal_price">
+              <span>${{product.price}}</span>
+              ${{product.deal_price}}
+            </template>
             <template v-else>${{product.price}}</template>
           </div>
         </div>
@@ -266,20 +269,9 @@ export default {
       flex-wrap: wrap;
 
       span {
-
-        &:not(:last-of-type) {
-          position: relative;
-          padding-right: 3px;
-          margin-right: 3px;
-          display: flex;
-
-          &:before {
-            content: ',';
-            position: absolute;
-            right: 0;
-            bottom: 0;
-          }
-        }
+        color: #ababab;
+        text-decoration: line-through;
+        margin-right: 4px;
       }
     }
   }
