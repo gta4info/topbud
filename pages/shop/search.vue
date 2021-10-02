@@ -1,36 +1,23 @@
 <template>
   <div class="page">
-    <div class="loading" v-if="loading">
-      <v-progress-circular
-        indeterminate
-        color="#699551"
-        size="30"
-      />
-    </div>
-    <template v-else>
+    <div class="goBack" @click="$router.back()">Go back</div>
+    <div class="products">
       <v-container>
-        <h1>Search</h1>
-        <nav class="breadcrumbs">
-          <ul>
-            <li><nuxt-link to="/">Home</nuxt-link></li>
-            <li><nuxt-link to="/shop">Shop</nuxt-link></li>
-            <li><nuxt-link to="/shop/search">Search</nuxt-link></li>
-            <li>{{ $route.query.q }}</li>
-          </ul>
-        </nav>
-      </v-container>
-
-      <div class="products">
-        <v-container>
-          <v-row v-if="products.length">
-            <v-col md="3" sm="12" v-for="(product, i) in products" :key="i">
-              <ProductCard :product="product"/>
+        <v-row v-if="products.length">
+          <template v-if="$vuetify.breakpoint.mdAndUp">
+            <v-col style="padding: 16px 5px;" cols="4" v-for="product in products" :key="product.slug">
+              <ProductCard :product="product" :key="product.slug"/>
             </v-col>
-          </v-row>
-          <p class="text-center" v-else>No products found by the query</p>
-        </v-container>
-      </div>
-    </template>
+          </template>
+          <template v-else>
+            <v-col style="padding: 0 5px;" cols="12" v-for="product in products" :key="product.slug">
+              <ProductCardMobile :product="product" :key="product.slug"/>
+            </v-col>
+          </template>
+        </v-row>
+        <p class="text-center" v-else>No products found by the query</p>
+      </v-container>
+    </div>
   </div>
 </template>
 
@@ -51,6 +38,7 @@ export default {
   },
   components: {
     'ProductCard': () => import('@/components/shop/ProductCard'),
+    'ProductCardMobile': () => import('@/components/shop/ProductCardMobile'),
   },
   data() {
     return {
@@ -58,6 +46,24 @@ export default {
       category: {},
       sub: {},
       loading: false,
+      breadcrumbs: [
+        {
+          link: '/',
+          title: 'home'
+        },
+        {
+          link: '/shop',
+          title: 'shop'
+        },
+        {
+          link: '/shop/search',
+          title: 'search'
+        },
+        {
+          link: null,
+          title: this.$route.query.q
+        },
+      ]
     }
   },
   computed: {
@@ -73,11 +79,30 @@ export default {
     },
     '$route.query.q'() {
       this.getProducts();
+      this.breadcrumbs = [
+        {
+          link: '/',
+          title: 'home'
+        },
+        {
+          link: '/shop',
+          title: 'shop'
+        },
+        {
+          link: '/shop/search',
+          title: 'search'
+        },
+        {
+          link: null,
+          title: this.$route.query.q
+        },
+      ]
+
+      this.$root.$emit('set-breadcrumbs', this.breadcrumbs);
     }
   },
   methods: {
     getProducts() {
-      this.loading = true;
       this.$axios
         .get(`/search?q=${this.$route.query.q}`)
         .then(res => {
@@ -89,15 +114,16 @@ export default {
               cslug: category.slug,
               sslug: sub ? sub.slug : null,
             }
-            res.data[key].img = `/${res.data[key].img}`;
+            res.data[key].img = `https://topbudstore.com/${res.data[key].img}`;
             arr.push(res.data[key]);
           });
           this.products = arr;
-          this.loading = false;
+
         })
     }
   },
   created () {
+    this.$root.$emit('set-breadcrumbs', this.breadcrumbs);
     if(this.categories.length && this.$route.query.q) {
       this.getProducts();
     }

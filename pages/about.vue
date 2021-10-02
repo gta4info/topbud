@@ -1,25 +1,5 @@
 <template>
   <div class="page">
-    <div class="loading" v-if="loading">
-      <v-progress-circular
-        indeterminate
-        color="#699551"
-        size="30"
-      />
-    </div>
-    <template v-else>
-      <v-container>
-        <h1>About</h1>
-        <nav class="breadcrumbs">
-          <ul>
-            <li>
-              <nuxt-link to="/">Home</nuxt-link>
-            </li>
-            <li>About</li>
-          </ul>
-        </nav>
-      </v-container>
-    </template>
     <section class="content">
       <v-container>
         <v-row>
@@ -47,11 +27,24 @@ export default {
   },
   name: 'about',
   async asyncData({$axios}) {
-    let loading = true;
     const content = await $axios.$get('static/about');
-    loading = false;
-    return { content, loading };
+
+    let breadcrumbs = [
+      {
+        link: '/',
+        title: 'home'
+      },
+      {
+        link: null,
+        title: 'About'
+      },
+    ]
+
+    return { content, breadcrumbs };
   },
+  created () {
+    this.$root.$emit('set-breadcrumbs', this.breadcrumbs);
+  }
 }
 </script>
 

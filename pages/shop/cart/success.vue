@@ -1,28 +1,13 @@
 <template>
   <div class="page">
     <v-container>
-      <nav class="breadcrumbs">
-        <ul>
-          <li>
-            <nuxt-link to="/">Home</nuxt-link>
-          </li>
-          <li>
-            <nuxt-link to="/shop">Shop</nuxt-link>
-          </li>
-          <li>
-            <nuxt-link to="/shop/cart">Cart</nuxt-link>
-          </li>
-          <li>Order number</li>
-        </ul>
-      </nav>
-
-      <h1>Order number</h1>
-
       <div class="orderSuccess">
-        <v-icon size="80" color="#28A745">mdi-check-circle-outline</v-icon>
-        <div>Your order ID: <span>{{$route.query.order}}</span></div>
-        <div>Thanks for shopping with TOPBUD Store!</div>
-        <nuxt-link to="/shop">Continue shopping</nuxt-link>
+        <img src="@/static/images/order-success.png" alt="">
+        <img src="@/static/images/order-success-thumb.png" alt="">
+        <div>Order Created</div>
+        <div>ID: <span>{{$route.query.order}}</span></div>
+        <v-btn to="/shop" depressed height="50" width="320" color="#21AA5B">Back To Categories</v-btn>
+        <v-btn to="/shop/deals" depressed height="50" width="320" color="#21AA5B">Look At Our Deals</v-btn>
       </div>
     </v-container>
   </div>
@@ -42,7 +27,24 @@ export default {
       }
     ]
   },
+  data: () => ({
+    breadcrumbs: [
+      {
+        link: '/',
+        title: 'home'
+      },
+      {
+        link: '/shop',
+        title: 'shop'
+      },
+      {
+        link: null,
+        title: 'Order created'
+      },
+    ]
+  }),
   created () {
+    this.$root.$emit('set-breadcrumbs', this.breadcrumbs);
     if(!this.$route.query.order) {
       this.$router.push({name: 'shop-cart'});
     }
@@ -59,19 +61,31 @@ export default {
     margin: 50px 0 100px;
 
     div {
-      font-size: 18px;
-      margin-top: 40px;
+      color: #21AA5B;
+      font-size: 24px;
+      font-weight: 700;
+      line-height: 1.2;
 
-      span {
-        font-weight: 900;
-        color: #28A745;
+      &:last-of-type {
+        margin-bottom: 37px;
       }
     }
 
-    a {
-      font-size: 18px;
-      text-decoration: underline;
-      margin-top: 10px;
+    img:first-of-type {
+      margin-bottom: 38px;
+      margin-left: -14px;
+    }
+
+    img:last-of-type {
+      margin-bottom: 7px;
+    }
+
+    .v-btn {
+      text-transform: none;
+      color: #ffffff;
+      font-weight: 700;
+      font-size: 20px;
+      margin-top: 30px;
     }
   }
 </style>

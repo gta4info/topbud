@@ -1,149 +1,116 @@
 <template>
   <div class="page">
-    <div class="loading" v-if="loading">
-      <v-progress-circular
-        indeterminate
-        color="#699551"
-        size="30"
-      />
-    </div>
-    <template v-else>
-      <v-container class="breadcrumbs-wrapper">
-        <nav class="breadcrumbs">
-          <ul>
-            <li><nuxt-link to="/">Home</nuxt-link></li>
-            <li><nuxt-link to="/shop">Shop</nuxt-link></li>
-            <li><nuxt-link :to="{name: 'category-cslug', params: {cslug: $route.params.cslug}}">{{ category.name }}</nuxt-link></li>
-            <li v-if="sub && Object.keys(sub).length"><nuxt-link :to="{name: 'category-cslug-sslug', params: {cslug: $route.params.cslug, sslug: $route.params.sslug}}">{{ sub.name }}</nuxt-link></li>
-            <li>{{ product.name }}</li>
-          </ul>
-        </nav>
-        <div class="product">
-
-          <div class="cardMobile__row" v-if="$vuetify.breakpoint.smAndDown">
-            <div class="cardMobile__content">
-              <div class="card__title cardMobile__title">{{product.name}}</div>
-              <div class="cardMobile__text">
-                <span v-if="product.cbd">CBD: {{product.cbd.replace('CBD:', '')}}</span>
-                <span v-if="product.thc">THC: {{product.thc.replace('THC:', '')}}</span>
-              </div>
-              <div class="cardMobile__text" style="font-weight: 700; margin-top: 6px;" v-if="product.prices.length > 1">
-                From
-                <template v-if="product.prices[0].deal_price">${{ product.prices[0].deal_price }}</template>
-                <template v-else>${{ product.prices[0].price }}</template>
-                - To
-                <template v-if="product.prices[product.prices.length-1].deal_price">${{ product.prices[product.prices.length - 1].deal_price }}</template>
-                <template v-else>${{ product.prices[product.prices.length-1].price }}</template>
-              </div>
-              <div class="cardMobile__text" style="font-weight: 700; margin-top: 6px;" v-else>
-                ${{product.prices[0].price}}
-              </div>
-            </div>
-            <div class="cardMobile__img">
-              <img :src="product.img" :alt="product.name">
-            </div>
+    <div class="goBack" @click="$router.back()">Go back</div>
+    <v-container>
+      <div class="product">
+        <div class="product__images">
+          <div class="product__images-list">
+            <img :src="product.img" :alt="product.name" @click="mainImage = product.img" v-ripple :class="{active: mainImage === product.img}">
           </div>
-
-          <div class="product__left">
-            <img :src="product.img" :alt="product.name">
-          </div>
-          <div class="product__right">
-            <h1>{{ product.name }}</h1>
-            <div class="product__subtitle">Choose weight</div>
-            <v-radio-group v-model="selectedWeight">
-              <v-radio :value="option.weight_id" v-for="(option, i) in product.prices" :key="i">
-                <template v-slot:label>
-                  <div class="d-flex">
-                    <span style="font-weight: 500;">{{weights[option.weight_id]}}</span>
-                    <template v-if="option.deal_price">
-                      <span class="ml-3" style="font-weight: 900;text-decoration: line-through">(${{option.price}}</span>
-                      <span class="green--text ml-2" style="font-weight: 900;">${{option.deal_price}})</span>
-                    </template>
-                    <span class="green--text ml-3" style="font-weight: 900;" v-else>(${{option.price}})</span>
-                  </div>
-                </template>
-              </v-radio>
-            </v-radio-group>
-            <div class="product__subtitle">Select amount</div>
-            <div class="product__amount">
-              <v-btn depressed @click="selectedAmount -= 1">
-                <v-icon>mdi-minus</v-icon>
-              </v-btn>
-              <div>{{selectedAmount}}</div>
-              <v-btn depressed @click="selectedAmount += 1">
-                <v-icon>mdi-plus</v-icon>
-              </v-btn>
-            </div>
-            <div class="product__purchase-wrapper">
-              <v-btn class="product__purchase" @click="addToCart" depressed>Add to cart (${{calculateSum}})</v-btn>
-<!--              <v-btn icon @click="addToWishList">-->
-<!--                <v-icon>mdi-heart-outline</v-icon>-->
-<!--              </v-btn>-->
-            </div>
-<!--            <div class="product__emotions">-->
-<!--              <button @click="sendEmotion('relaxed')">-->
-<!--                <v-icon size="46" color="#2173B3">mdi-emoticon-wink-outline</v-icon>-->
-<!--                Relaxed-->
-<!--              </button>-->
-<!--              <button @click="sendEmotion('happy')">-->
-<!--                <v-icon size="46" color="#F5AB24">mdi-emoticon-happy-outline</v-icon>-->
-<!--                Happy-->
-<!--              </button>-->
-<!--              <button @click="sendEmotion('euphoric')">-->
-<!--                <v-icon size="46" color="#F69058">mdi-emoticon-cool-outline</v-icon>-->
-<!--                Euphoric-->
-<!--              </button>-->
-<!--            </div>-->
-          </div>
+          <img class="product__images-main" :src="mainImage" :alt="product.name">
         </div>
-        <div class="information">
-          <div class="information__head">
+        <div class="product__right">
+          <div class="product__title">{{ product.name }}</div>
+          <div class="product__category">
+            {{ category.name }}
+            <template v-if="sub"> / {{ sub.name }}</template>
+          </div>
+
+          <div class="product__quality" v-if="product.cbd || product.thc">
+            <div class="product__quality-item" v-if="product.thc">
+              <div>
+                <div class="product__quality-item--title">THC</div>
+                <div class="product__quality-item--indicator thc">
+                  <div :style="{width: calculateIndicatorWidthThc}"></div>
+                </div>
+              </div>
+              <div>{{product.thc}}</div>
+            </div>
+            <div class="product__quality-item" v-if="product.cbd">
+              <div>
+                <div class="product__quality-item--title">CBD</div>
+                <div class="product__quality-item--indicator cbd">
+                  <div :style="{width: calculateIndicatorWidthCbd}"></div>
+                </div>
+              </div>
+              <div>{{product.cbd}}</div>
+            </div>
+          </div>
+
+          <div class="product__subtitle">Size</div>
+          <div class="product__weights">
             <div
-              v-for="tab in tabs"
-              :key="tab"
-              @click="selectedTab = tab"
-              :class="{'active': selectedTab === tab}"
-              class="information__tab"
+              class="product__weight"
+              :class="{active: selectedWeight === price.weight_id}"
+              v-for="(price, i) in product.prices"
+              :key="i"
+              @click="selectedWeight = price.weight_id"
             >
-              {{tab}}
+              <div class="product__weight-btn">{{weights[price.weight_id]}}</div>
+              <div class="product__weight-price">${{price.deal_price ? price.deal_price : price.price}}</div>
+              <div class="product__weight-old" v-if="price.deal_price">${{price.price}}</div>
             </div>
           </div>
-
-          <div class="information__content">
-            <div :class="{'active': selectedTab === 'Product information'}" v-html="product.description"></div>
-<!--            <div :class="{'active': selectedTab === 'Reviews'}">-->
-<!--              Reviews-->
-<!--            </div>-->
+          <div class="product__subtitle">Amount</div>
+          <div class="product__amount">
+            <v-btn depressed @click="selectedAmount -= 1">
+              <v-icon>mdi-minus</v-icon>
+            </v-btn>
+            <div>{{selectedAmount}}</div>
+            <v-btn depressed @click="selectedAmount += 1">
+              <v-icon>mdi-plus</v-icon>
+            </v-btn>
+          </div>
+          <div class="product__purchase-wrapper">
+            <v-btn class="product__purchase" @click="addToCart" depressed>Add to cart (${{calculateSum}})</v-btn>
+          </div>
+        </div>
+      </div>
+      <div class="information">
+        <div class="information__head">
+          <div
+            v-for="tab in tabs"
+            :key="tab"
+            @click="selectedTab = tab"
+            :class="{'active': selectedTab === tab}"
+            class="information__tab"
+          >
+            {{tab}}
           </div>
         </div>
 
-        <div class="related" v-if="false">
-          <h4 class="related__title">Related products</h4>
-          <v-container>
-            <v-row v-if="related.length">
-              <v-col sm="12" md="3" v-for="product in related" :key="product.id">
-                <nuxt-link :to="{name: 'category-cslug-pslug', params: {cslug: product.cslug, pslug: product.pslug}}" class="relatedCard">
-                  <div class="relatedCard__header">
-                    <img :src="require(`@/assets/images/${product.image}`)" :alt="product.title">
-                    <div class="relatedCard__header-hidden">
-                      <v-btn icon @click="addToWishList">
-                        <v-icon size="20">mdi-heart</v-icon>
-                      </v-btn>
-                      <v-btn icon @click="addToCart">
-                        <v-icon size="20">mdi-cart</v-icon>
-                      </v-btn>
-                    </div>
-                  </div>
-                  <h5 class="relatedCard__title">{{product.title}}</h5>
-                  <div class="relatedCard__price">${{product.price}}</div>
-                </nuxt-link>
-              </v-col>
-            </v-row>
-            <p v-else class="text-center">No related products was found</p>
-          </v-container>
+        <div class="information__content">
+          <div :class="{'active': selectedTab === 'About This Product'}" v-html="product.description"></div>
+<!--          <div :class="{'active': selectedTab === 'Reviews'}">Reviews</div>-->
         </div>
-      </v-container>
-    </template>
+      </div>
+
+      <div class="related" v-if="false">
+        <h4 class="related__title">Related products</h4>
+        <v-container>
+          <v-row v-if="related.length">
+            <v-col sm="12" md="3" v-for="product in related" :key="product.id">
+              <nuxt-link :to="{name: 'category-cslug-pslug', params: {cslug: product.cslug, pslug: product.pslug}}" class="relatedCard">
+                <div class="relatedCard__header">
+                  <img :src="require(`@/assets/images/${product.image}`)" :alt="product.title">
+                  <div class="relatedCard__header-hidden">
+                    <v-btn icon @click="addToWishList">
+                      <v-icon size="20">mdi-heart</v-icon>
+                    </v-btn>
+                    <v-btn icon @click="addToCart">
+                      <v-icon size="20">mdi-cart</v-icon>
+                    </v-btn>
+                  </div>
+                </div>
+                <h5 class="relatedCard__title">{{product.title}}</h5>
+                <div class="relatedCard__price">${{product.price}}</div>
+              </nuxt-link>
+            </v-col>
+          </v-row>
+          <p v-else class="text-center">No related products was found</p>
+        </v-container>
+      </div>
+    </v-container>
   </div>
 </template>
 
@@ -163,9 +130,6 @@ export default {
         }
       ]
     }
-  },
-  components: {
-    'TopBar': () => import('@/components/shop/TopBar')
   },
   async asyncData({$axios, params, store, error}) {
     let category = store.state.shop.categories.find(item => item.slug === params.cslug);
@@ -188,20 +152,69 @@ export default {
     }
 
     product.img = `https://topbudstore.com/${product.img}`;
+    let mainImage = product.img;
     let selectedWeight = product.prices[0].weight_id;
-    let loading = false;
 
-    return { selectedWeight, product, loading, category, sub }
+    let breadcrumbs;
+
+    if(sub) {
+      breadcrumbs = [
+        {
+          link: '/',
+          title: 'home'
+        },
+        {
+          link: '/shop',
+          title: 'categories'
+        },
+        {
+          link: `/category/${category.slug}`,
+          title: category.name.toLowerCase()
+        },
+        {
+          link: `/category/${category.slug}/${sub.slug}`,
+          title: sub.name.toLowerCase()
+        },
+        {
+          link: null,
+          title: product.name
+        },
+      ]
+    } else {
+      breadcrumbs = [
+        {
+          link: '/',
+          title: 'home'
+        },
+        {
+          link: '/shop',
+          title: 'categories'
+        },
+        {
+          link: `/category/${category.slug}`,
+          title: category.name.toLowerCase()
+        },
+        {
+          link: null,
+          title: product.name
+        },
+      ]
+    }
+
+    product.thc = product.thc.replace(/[THC:]/g, '').replace(/ /g, '')
+    product.cbd = product.cbd.replace(/[CDB:]/g, '').replace(/ /g, '')
+
+    return { selectedWeight, product, category, sub, mainImage, breadcrumbs }
   },
   data: () => ({
     related: [],
-    tabs: ['Product information'],
-    selectedTab: 'Product information',
+    tabs: ['About This Product'],
+    selectedTab: 'About This Product',
     selectedEmotion: null,
     selectedWeight: null,
     selectedAmount: 1,
     minAmount: 1,
-    maxAmount: 9999,
+    maxAmount: 9999
   }),
   watch: {
     selectedAmount() {
@@ -260,16 +273,33 @@ export default {
       let weight = this.product.prices.find(item => item.weight_id === this.selectedWeight);
       let optionPrice = weight.deal_price ? weight.deal_price : weight.price;
       return optionPrice * this.selectedAmount;
+    },
+    calculateIndicatorWidthThc() {
+      let data = this.product.thc.split('-').map(item => {
+        item = item.trim();
+        return item;
+      });
+
+      return parseInt(data[data.length - 1]) + '%'
+    },
+    calculateIndicatorWidthCbd() {
+      let data = this.product.cbd.split('-').map(item => {
+        item = item.trim();
+        return item;
+      });
+
+      return parseInt(data[data.length - 1]) + '%'
     }
   },
+  created () {
+    this.$root.$emit('set-breadcrumbs', this.breadcrumbs);
+  }
 }
 </script>
 
 <style lang="scss" scoped>
   .product {
     display: flex;
-    align-items: center;
-    width: 85%;
     margin-left: auto;
     margin-right: auto;
     margin-bottom: 60px;
@@ -278,22 +308,58 @@ export default {
       flex-direction: column;
     }
 
-    &__left {
-      margin-right: 60px;
-      border: 1px solid #CECECE;
-      border-radius: 8px;
-      width: 300px;
-      height: 300px;
+    &__images {
+      display: flex;
+      flex-shrink: 0;
+      margin-right: 40px;
+
       @media(max-width: 768px) {
-        display: none;
+        margin-right: 0;
+        justify-content: center;
+        margin-bottom: 30px;
       }
 
-      img {
-        max-width: 300px;
-        height: auto;
-        border-radius: 8px;
+      &-list {
+        display: flex;
+        flex-direction: column;
+
         @media(max-width: 768px) {
-          margin-bottom: 30px;
+          display: none;
+        }
+
+        img {
+          width: 66px;
+          height: 66px;
+          border-radius: 5px;
+          overflow: hidden;
+          border: 1px solid #E6E6E6;
+          cursor: pointer;
+
+          &:not(:last-of-type) {
+            margin-bottom: 17px;
+          }
+
+          &.active {
+            border-color: #008DE3;
+            cursor: default;
+          }
+        }
+      }
+
+      &-main {
+        width: 370px;
+        height: 370px;
+        margin-left: 20px;
+        border-radius: 5px;
+        overflow: hidden;
+        border: 1px solid #E6E6E6;
+
+        @media(max-width: 768px) {
+          max-width: 100%;
+          width: auto;
+          height: auto;
+          margin-left: 0;
+          max-height: 260px;
         }
       }
     }
@@ -301,13 +367,159 @@ export default {
     &__right {
       display: flex;
       flex-direction: column;
+    }
+
+    &__title {
+      font-size: 36px;
+      font-weight: 700;
+      color: #333333;
+      margin-bottom: 5px;
 
       @media(max-width: 768px) {
-        align-items: center;
+        font-size: 24px;
+        text-align: center;
+      }
+    }
+
+    &__category {
+      font-size: 24px;
+      font-weight: 700;
+      color: #D1D1D1;
+      margin-bottom: 32px;
+
+      @media(max-width: 768px) {
+        font-size: 18px;
+        margin-bottom: 20px;
+        text-align: center;
+      }
+    }
+
+    &__quality {
+      margin: 6px 0 30px;
+      display: flex;
+
+      @media(max-width: 768px) {
+        margin: 0 0 20px;
       }
 
-      h1 {
-        margin-bottom: 40px;
+      &-item {
+        display: flex;
+
+        &:not(:last-of-type) {
+          margin-right: 54px;
+        }
+
+        > div:first-of-type {
+          display: flex;
+          flex-direction: column;
+        }
+
+        > div:last-of-type {
+          font-size: 20px;
+          font-weight: 700;
+          color: #008DE3;
+          margin-left: 10px;
+        }
+
+        &--title {
+          letter-spacing: 0.26em;
+          color: #333333;
+          font-weight: 700;
+          font-size: 20px;
+          margin-bottom: 4px;
+        }
+
+        &--indicator {
+          height: 3px;
+          width: 38px;
+          position: relative;
+          background-image: url('~/static/images/indicator-empty.png');
+
+          div {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            z-index: 1;
+          }
+
+          &.thc {
+
+            div {
+              background-image: url('~/static/images/indicator-thc.png');
+            }
+          }
+
+          &.cbd {
+
+            div {
+              background-image: url('~/static/images/indicator-cbd.png');
+            }
+          }
+        }
+      }
+    }
+
+    &__weights {
+      display: flex;
+      flex-wrap: wrap;
+      margin-top: 20px;
+      margin-bottom: 20px;
+    }
+
+    &__weight {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+
+      &:not(:last-of-type) {
+        margin-right: 20px;
+      }
+
+      &.active {
+
+        .product__weight-btn {
+          background: #21AA5B;
+          color: #ffffff;
+        }
+      }
+
+      &-btn {
+        background: #E9E9E9;
+        height: 35px;
+        border-radius: 25px;
+        font-weight: 700;
+        font-size: 14px;
+        color: #333333;
+        padding: 0 20px;
+        transition: .3s;
+        margin-bottom: 6px;
+        display: flex;
+        align-items: center;
+        cursor: pointer;
+      }
+
+      &-price {
+        font-weight: 500;
+        font-size: 18px;
+        color: #21aa5b;
+      }
+
+      &-old {
+        font-weight: 700;
+        font-size: 12px;
+        color: #B1B1B1;
+        position: relative;
+        display: flex;
+        align-items: center;
+        line-height: 1;
+
+        &:before {
+          content: '';
+          position: absolute;
+          width: 100%;
+          height: 1px;
+          background: #ff4b55;
+        }
       }
     }
 
@@ -321,12 +533,13 @@ export default {
       align-items: center;
       padding: 5px 12px;
       margin-top: 20px;
-      border: 1px solid #7FAD39;
+      border: 1px solid #21AA5B;
       align-self: flex-start;
       border-radius: 4px;
       width: 170px;
+
       @media(max-width: 768px) {
-        align-self: center;
+        width: 100%;
       }
 
       div {
@@ -345,9 +558,16 @@ export default {
     }
 
     &__purchase {
-      height: 50px !important;
-      background: #7FAD39 !important;
+      height: 56px !important;
+      width: 330px;
+      background: #21AA5B !important;
       color: #fff;
+
+      @media(max-width: 768px) {
+        font-weight: 700;
+        width: 100%;
+        font-size: 18px;
+      }
 
       &-wrapper {
         margin-top: 30px;
@@ -555,68 +775,6 @@ export default {
     &__price {
       font-size: 20px;
       font-weight: 900;
-    }
-  }
-
-  .cardMobile {
-    &__row {
-      display: flex;
-      width: 100%;
-      margin: 15px 0;
-      align-items: center;
-    }
-
-    &__content {
-      display: flex;
-      flex-direction: column;
-      flex-grow: 1;
-    }
-
-    &__img {
-      width: 75px;
-      height: 75px;
-      border-radius: 10px;
-      overflow: hidden;
-      margin-left: 20px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      flex-shrink: 0;
-
-      img {
-        max-width: 100%;
-        max-height: 100%;
-      }
-    }
-
-    &__title {
-      justify-content: flex-start;
-      text-align: left;
-      width: 100%;
-      font-weight: 700;
-    }
-
-    &__text {
-      font-size: 14px;
-      display: flex;
-      flex-wrap: wrap;
-
-      span {
-
-        &:not(:last-of-type) {
-          position: relative;
-          padding-right: 3px;
-          margin-right: 3px;
-          display: flex;
-
-          &:before {
-            content: ',';
-            position: absolute;
-            right: 0;
-            bottom: 0;
-          }
-        }
-      }
     }
   }
 </style>

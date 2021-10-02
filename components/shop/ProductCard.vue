@@ -3,100 +3,85 @@
     <div class="card">
       <nuxt-link
         :to="{name: 'category-cslug-sslug-pslug', params: {
-        cslug: $route.params.cslug ? $route.params.cslug : product.search.cslug,
-        sslug: $route.params.sslug ? $route.params.sslug : (product.search ? (product.search.sslug ? product.search.sslug : 'product') :'product'),
-        pslug: product.slug
-      }}"
-        class="card__header"
-      >
-<!--        <div class="card__header-deal" v-if="product.deal"><span>Deal</span></div>-->
-        <div class="card__header-badges">
-          <div class="card__header-badge cbd" v-if="product.cbd">CBD: {{product.cbd}}</div>
-          <div class="card__header-badge thc" v-if="product.thc">THC: {{product.thc}}</div>
-        </div>
-        <div class="img">
-          <img :src="product.img" :alt="product.name">
-        </div>
-      </nuxt-link>
-      <div class="card__bottom">
-        <nuxt-link
-          :to="{name: 'category-cslug-sslug-pslug', params: {
           cslug: $route.params.cslug ? $route.params.cslug : product.search.cslug,
           sslug: $route.params.sslug ? $route.params.sslug : (product.search ? (product.search.sslug ? product.search.sslug : 'product') :'product'),
           pslug: product.slug
         }}"
+        class="card__header"
+      >
+        <div class="card__header-badges">
+          <div class="card__header-badge new" v-if="product.new">New</div>
+          <div class="card__header-badge deal" v-if="product.deal">Sale</div>
+        </div>
+        <div class="img" ref="images">
+          <img :src="product.img" :alt="product.name" ref="image">
+        </div>
+      </nuxt-link>
+      <div class="card__content">
+        <div class="card__category" v-if="categories.find(c => c.id === product.category_id).subs.length">
+          {{categories.find(c => c.id === product.category_id).subs.find(s => s.id === product.subcategory_id).name}}
+        </div>
+        <div class="card__category" v-else>
+          {{categories.find(c => c.id === product.category_id).name}}
+        </div>
+        <nuxt-link
+          :to="{name: 'category-cslug-sslug-pslug', params: {
+            cslug: $route.params.cslug ? $route.params.cslug : product.search.cslug,
+            sslug: $route.params.sslug ? $route.params.sslug : (product.search ? (product.search.sslug ? product.search.sslug : 'product') :'product'),
+            pslug: product.slug
+          }}"
           class="card__title"
         >
           {{product.name}}
         </nuxt-link>
-        <v-menu v-model="menu" content-class="card__weights" offset-y close-on-content-click>
-          <template v-slot:activator="{on}">
-            <div v-on="on" class="card__weights-input" :class="{active: menu}">
-              <template>
-                <span class="card__weights-input--weight">{{ weights[selectedWeight] }}</span>
-                <div v-if="product.prices.find(item => item.weight_id === selectedWeight)">
-                  <span class="card__weights-input--oldPrice" v-if="product.prices.find(item => item.weight_id === selectedWeight).deal_price">${{ product.prices.find(item => item.weight_id === selectedWeight).price }}</span>
-                  <span class="card__weights-input--price">${{ product.prices.find(item => item.weight_id === selectedWeight).deal_price ? product.prices.find(item => item.weight_id === selectedWeight).deal_price : product.prices.find(item => item.weight_id === selectedWeight).price }}</span>
-                </div>
-              </template>
-            </div>
-          </template>
-          <div class="card__weights-list">
-            <div
-              v-for="price in product.prices"
-              @click="selectedWeight = price.weight_id"
-              :class="{active: selectedWeight === price.weight_id}"
-            >
-              <span class="card__weights-input--weight">{{ weights[price.weight_id] }}</span>
-              <div>
-                <span class="card__weights-input--oldPrice" v-if="price.deal_price">${{ price.price }}</span>
-                <span class="card__weights-input--price">${{ price.deal_price ? price.deal_price : price.price }}</span>
+        <div class="card__quality" v-if="product.cbd || product.thc">
+          <div class="card__quality-item" v-if="product.thc">
+            <div>
+              <div class="card__quality-item--title">THC</div>
+              <div class="card__quality-item--indicator thc">
+                <div :style="{width: calculateIndicatorWidthThc}"></div>
               </div>
             </div>
+            <div>{{product.thc}}</div>
           </div>
-        </v-menu>
-        <div class="card__bottom-line">
-          <input type="text" class="card__quantity" v-model="selectedQuantity"/>
-          <button v-ripple @click="addToCart">
-            <v-icon color="#fff">mdi-cart</v-icon>
-          </button>
+          <div class="card__quality-item" v-if="product.cbd">
+            <div>
+              <div class="card__quality-item--title">CBD</div>
+              <div class="card__quality-item--indicator cbd">
+                <div :style="{width: calculateIndicatorWidthCbd}"></div>
+              </div>
+            </div>
+            <div>{{product.cbd}}</div>
+          </div>
+        </div>
+        <div class="card__price" v-if="product.prices.find(item => item.weight_id === selectedWeight)">
+          <span class="card__price-price">${{ product.prices.find(item => item.weight_id === selectedWeight).deal_price ? product.prices.find(item => item.weight_id === selectedWeight).deal_price : product.prices.find(item => item.weight_id === selectedWeight).price }}</span>
+          <span class="card__price-weight">/ {{ weights[selectedWeight] }}</span>
+          <span class="card__price-old" v-if="product.prices.find(item => item.weight_id === selectedWeight).deal_price">${{ product.prices.find(item => item.weight_id === selectedWeight).price }}</span>
         </div>
       </div>
+      <v-menu v-model="menu" content-class="card__weights" offset-y close-on-content-click>
+        <template v-slot:activator="{on}">
+          <div v-on="on" class="card__weights-input" :class="{active: menu}">
+            <span class="card__weights-input--weight">{{ weights[selectedWeight] }}</span>
+          </div>
+        </template>
+        <div class="card__weights-list">
+          <div
+            v-for="price in product.prices"
+            @click="selectedWeight = price.weight_id"
+            :class="{active: selectedWeight === price.weight_id}"
+          >
+            <span class="card__weights-input--weight">{{ weights[price.weight_id] }}</span>
+            <div>
+              <span class="card__weights-input--oldPrice" v-if="price.deal_price">${{ price.price }}</span>
+              <span class="card__weights-input--price">${{ price.deal_price ? price.deal_price : price.price }}</span>
+            </div>
+          </div>
+        </div>
+      </v-menu>
+      <button v-ripple @click="addToCart" class="card__addToCart" :disabled="isInCart || disabledToAdd[selectedWeight]">Add to cart</button>
     </div>
-
-    <nuxt-link
-      :to="{
-          name: 'category-cslug-sslug-pslug', params: {
-          cslug: $route.params.cslug ? $route.params.cslug : product.search.cslug,
-          sslug: $route.params.sslug ? $route.params.sslug : (product.search ? (product.search.sslug ? product.search.sslug : 'product') :'product'),
-          pslug: product.slug
-        }}"
-       class="cardMobile"
-    >
-      <div class="cardMobile__row">
-        <div class="cardMobile__content">
-          <div class="card__title cardMobile__title">{{product.name}}</div>
-          <div class="cardMobile__text">
-            <span v-if="product.cbd">CBD: {{product.cbd.replace('CBD:', '')}}</span>
-            <span v-if="product.thc">THC: {{product.thc.replace('THC:', '')}}</span>
-          </div>
-          <div class="cardMobile__text" style="font-weight: 700; margin-top: 6px;" v-if="product.prices.length > 1">
-            From
-            <template v-if="product.prices[0].deal_price">${{ product.prices[0].deal_price }}</template>
-            <template v-else>${{ product.prices[0].price }}</template>
-             - To
-            <template v-if="product.prices[product.prices.length-1].deal_price">${{ product.prices[product.prices.length - 1].deal_price }}</template>
-            <template v-else>${{ product.prices[product.prices.length-1].price }}</template>
-          </div>
-          <div class="cardMobile__text" style="font-weight: 700; margin-top: 6px;" v-else>
-            ${{product.prices[0].price}}
-          </div>
-        </div>
-        <div class="cardMobile__img">
-          <img :src="product.img" :alt="product.name">
-        </div>
-      </div>
-    </nuxt-link>
   </div>
 </template>
 
@@ -113,19 +98,51 @@ export default {
   },
   computed: {
     ...mapGetters({
-      weights: 'shop/weights'
+      weights: 'shop/weights',
+      categories: 'shop/categories',
+      cart: 'shop/cart'
     }),
+    calculateIndicatorWidthThc() {
+      let data = this.product.thc.split('-').map(item => {
+        item = item.trim();
+        return item;
+      });
+
+      return parseInt(data[data.length - 1]) + '%'
+    },
+    calculateIndicatorWidthCbd() {
+      let data = this.product.cbd.split('-').map(item => {
+        item = item.trim();
+        return item;
+      });
+
+      return parseInt(data[data.length - 1]) + '%'
+    },
+    isInCart() {
+      return this.cart.find(item => item.id === this.product.prices.find(p => p.weight_id === this.selectedWeight).id);
+    }
   },
   data() {
     return {
       selectedQuantity: 1,
       selectedWeight: this.product.prices[0].weight_id,
       menu: false,
-      menuMobile: false,
+      disabledToAdd: {}
+    }
+  },
+  watch: {
+    product: {
+      handler() {
+        this.selectedWeight = this.product.prices[0].weight_id;
+        this.product.prices.map(item => {
+          this.disabledToAdd[item.weight_id] = !!this.cart.find(item => item.id === this.product.prices.find(p => p.weight_id === this.selectedWeight).id);
+        })
+      },
+      deep: true
     }
   },
   methods: {
-    addToCart() {
+    addToCart(event) {
       let cart = [];
       if(this.$cookies.get('cart')) {
         cart = this.$cookies.get('cart');
@@ -149,14 +166,34 @@ export default {
 
       this.$store.commit('shop/SET_CART_LENGTH');
 
-      // this.$root.$emit('show-product-added-to-cart-dialog');
+      // let img = this.$refs['image'];
+      // let clone = img.cloneNode( true );
+      // clone.classList = 'zoom';
+      //
+      // clone.style.cssText = ` top:${event.pageY}px; right:${window.innerWidth - event.pageX - 30}px`;
+      // document.getElementById('app').append(clone)
+
+      this.$set(this.disabledToAdd, this.selectedWeight, true);
+
       this.$toast.success('Product was added to cart!', {duration: 1500})
     },
+  },
+  created () {
+    this.product.thc = this.product.thc.replace(/[THC:]/g, '').replace(/ /g, '')
+    this.product.cbd = this.product.cbd.replace(/[CDB:]/g, '').replace(/ /g, '')
   },
 }
 </script>
 
 <style lang="scss" scoped>
+  //.zoom {
+  //  position: absolute;
+  //  width: 60px !important;
+  //  height: 60px !important;
+  //  //opacity: 0;
+  //  animation: zoom .6s linear forwards;
+  //  z-index: 2;
+  //}
   .card {
     display: flex;
     flex-direction: column;
@@ -166,9 +203,136 @@ export default {
     border-radius: 8px;
     position: relative;
     height: 100%;
+    overflow: hidden;
 
     @media(max-width: 768px) {
       display: none;
+    }
+
+    &__content {
+      display: flex;
+      flex-direction: column;
+      padding: 12px 20px 16px;
+      width: 100%;
+      height: 100%;
+    }
+
+    &__category {
+      color: #d1d1d1;
+      font-size: 18px;
+      font-weight: 700;
+    }
+
+    &__quality {
+      margin: 6px 0 30px;
+      display: flex;
+
+      &-item {
+        display: flex;
+
+        &:not(:last-of-type) {
+          margin-right: 32px;
+        }
+
+        > div:first-of-type {
+          display: flex;
+          flex-direction: column;
+        }
+
+        > div:last-of-type {
+          font-size: 14px;
+          font-weight: 500;
+          color: #333333;
+          margin-left: 4px;
+        }
+
+        &--title {
+          letter-spacing: 0.26em;
+          color: #333;
+          font-weight: 700;
+          font-size: 14px;
+          margin-bottom: 4px;
+        }
+
+        &--indicator {
+          height: 3px;
+          width: 38px;
+          position: relative;
+          background-image: url('~/static/images/indicator-empty.png');
+
+          div {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            z-index: 1;
+          }
+
+          &.thc {
+
+            div {
+              background-image: url('~/static/images/indicator-thc.png');
+            }
+          }
+
+          &.cbd {
+
+            div {
+              background-image: url('~/static/images/indicator-cbd.png');
+            }
+          }
+        }
+      }
+    }
+
+    &__price {
+      display: flex;
+      font-weight: 700;
+
+      &-price {
+        font-size: 24px;
+        color: #21AA5B;
+        //padding-right: 15px;
+        //margin-right: 8px;
+        position: relative;
+        display: flex;
+        align-items: center;
+
+        //&:before {
+        //  content: '/';
+        //  position: absolute;
+        //  right: 0;
+        //  color: #333333;
+        //  font-size: 18px;
+        //  margin-top: 3px;
+        //}
+      }
+
+      &-old {
+        font-size: 24px;
+        color: #B1B1B1;
+        position: relative;
+        display: flex;
+        align-items: center;
+        margin-left: 30px;
+
+        &:before {
+          content: '';
+          position: absolute;
+          width: 100%;
+          height: 2px;
+          background-color: #FF4B55;
+          z-index: 1;
+        }
+      }
+
+      &-weight {
+        font-size: 18px;
+        color: #333333;
+        line-height: 1;
+        align-self: center;
+        margin-top: 2px;
+        margin-left: 6px;
+      }
     }
 
     &__header {
@@ -178,9 +342,7 @@ export default {
       justify-content: center;
       height: 100%;
       width: 100%;
-      transition: .3s;
-      color: #000;
-      border-bottom: 1px solid #E9E9E9;
+      min-height: 269px;
 
       .img {
         overflow: hidden;
@@ -260,115 +422,98 @@ export default {
 
       &-badges {
         display: flex;
-        flex-direction: column;
         position: absolute;
-        top: 18px;
-        left: -5px;
+        top: 0;
+        right: 30px;
       }
 
       &-badge {
-        clip-path: polygon(100% 0%, calc(100% - 0.75rem) 50%, 100% 100%, 0 100%, 0% 50%, 0 0);
         color: #fff;
-        font-family: 'Nunito', sans-serif;
+        font-family: 'Roboto', sans-serif;
         font-weight: 700;
         font-size: 12px;
-        letter-spacing: 0.03rem;
-        padding: 0.3rem 1rem 0.3rem 0.3rem;
-        text-shadow: 1px 1px 2px rgb(150 150 150 / 50%);
+        padding: 6px 16px;
         white-space: nowrap;
         z-index: 1;
+        border-radius: 0 0 5px 5px;
+        text-transform: uppercase;
 
         &:not(:last-child) {
-          margin-bottom: 10px;
+          margin-right: 8px;
         }
 
-        &.thc {
-          background: hsl(24, 100%, 50%);
+        &.deal {
+          background: #FF4B55;
         }
-        &.cbd {
-          background: hsl(101, 93%, 28%);
+        &.new {
+          background: #21AA5B;
         }
       }
     }
 
     &__title {
-      font-weight: 900;
-      font-size: 16px;
+      font-weight: 700;
+      font-size: 18px;
       width: 100%;
-      text-align: center;
-      margin: 10px 0;
-      display: flex;
-      justify-content: center;
-      color: #000;
+      margin: 3px 0 auto;
+      color: #333;
+      line-height: 1.4;
     }
 
-    &__bottom {
-      padding: 0 15px 15px;
+    &__addToCart {
       width: 100%;
-      height: 100%;
+      height: 56px;
+      background: #21AA5B;
       display: flex;
-      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      text-transform: uppercase;
+      font-size: 18px;
+      font-weight: 700;
+      color: #fff;
 
-      &-line {
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        margin-top: 10px;
-
-        input, button {
-          height: 30px;
-          border: 1px solid #AAAAAA;
-          border-radius: 4px;
-          outline: none;
-        }
-
-        input {
-          padding: 0 12px;
-          width: 80px;
-          margin-right: 20px;
-        }
-
-        button {
-          flex-grow: 1;
-          background: #28A745;
-          display: flex;
-          align-items: center;
-          justify-content: center;
-        }
+      &:disabled {
+        background: #B8B8B8;
       }
     }
 
     &__weights {
       border-radius: 0 0 4px 4px;
-      box-shadow: none;
-      border: 1px solid #AAAAAA;
+      border: 1px solid #e6e6e6;
       border-top: 0;
 
       &-input {
         display: flex;
         align-items: center;
         width: 100%;
-        font-size: 12px;
-        height: 30px;
-        border: 1px solid #AAAAAA;
-        padding: 4px 25px 4px 12px;
-        border-radius: 4px;
+        font-size: 18px;
+        font-weight: 500;
+        color: #333333;
+        height: 56px;
+        border-top: 1px solid #e6e6e6;
+        padding: 0 20px;
         cursor: pointer;
         position: relative;
         margin-top: auto;
+        flex-shrink: 0;
 
         &:before {
-          content: '▼';
+          content: '';
           position: absolute;
-          right: 6px;
+          width: 10px;
+          height: 10px;
+          border-right: 2px solid #000;
+          border-bottom: 2px solid #000;
+          right: 20px;
+          transform: rotate(45deg);
           transition: .3s;
-          color: #AAAAAA;
-          font-size: 12px;
+          margin-top: -3px;
         }
 
         &.active {
           &:before {
-            transform: rotate(180deg);
+            transform: rotate(225deg);
           }
         }
 

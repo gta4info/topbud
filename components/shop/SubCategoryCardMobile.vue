@@ -1,11 +1,11 @@
 <template>
   <nuxt-link
-    :to="{name: 'category-cslug', params: {cslug: category.slug}}"
+    :to="{name: 'category-cslug-sslug', params: {cslug: category.slug, sslug: sub.slug}}"
     class="card"
-    :style="{backgroundImage: `url(${category.img})`}"
+    :style="{backgroundImage: `url(${sub.img})`}"
     v-ripple
   >
-    <div class="card__title">{{category.name}}</div>
+    <div class="card__title">{{sub.name}}</div>
   </nuxt-link>
 </template>
 
@@ -16,7 +16,11 @@ export default {
     category: {
       type: Object,
       required: true
-    }
+    },
+    sub: {
+      type: Object,
+      required: true
+    },
   }
 }
 </script>
@@ -29,14 +33,14 @@ export default {
   color: #000;
   border: 1px solid #E9E9E9;
   border-radius: 5px;
-  height: 280px;
   width: 100%;
+  min-height: 160px;;
   overflow: hidden;
-  background-size: 100%;
+  background-size: 100% 100%;
   background-position: center center;
   position: relative;
   transition: background-size .3s;
-  padding: 36px 20px;
+  padding: 20px 10px;
 
   &:hover {
     background-size: 120%;
@@ -53,10 +57,11 @@ export default {
   }
 
   &__title {
-    font-size: 48px;
+    font-size: 24px;
     font-family: "Courgette", sans-serif;
     color: #FFFFFF;
     z-index: 1;
+    text-align: center;
   }
 }
 </style>

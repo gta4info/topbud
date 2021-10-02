@@ -1,56 +1,67 @@
 <template>
   <div class="page">
-    <div class="loading" v-if="loading">
-      <v-progress-circular
-        indeterminate
-        color="#699551"
-        size="30"
-      />
-    </div>
-    <template v-else>
+    <div class="goBack" @click="$router.back()">Go back</div>
+    <div class="products">
       <v-container>
-        <h1>OZ deals</h1>
-        <nav class="breadcrumbs">
-          <ul>
-            <li><nuxt-link to="/">Home</nuxt-link></li>
-            <li><nuxt-link to="/shop">Shop</nuxt-link></li>
-            <li>Deals</li>
-          </ul>
-        </nav>
-      </v-container>
-
-      <div class="products">
-        <v-container>
-          <v-row>
-            <v-col md="2" sm="12" class="py-0 px-0">
-              <Filters :min="min" :max="max" :range="range" :categories="categoriesFilter" :search="search"/>
-            </v-col>
-            <v-col md="10" sm="12">
-              <v-container>
-                <v-row v-if="productsFiltered.length">
-                  <v-col md="3" sm="6">
+        <v-row>
+          <v-col
+            md="3"
+            sm="12"
+            :class="{'pb-0': $vuetify.breakpoint.smAndDown}"
+            :style="$vuetify.breakpoint.smAndDown ? 'position: sticky;top: 0;background: #fff;z-index: 2' : ''"
+          >
+            <Filters :min="min" :max="max" :search="search" v-if="$vuetify.breakpoint.mdAndUp"/>
+            <FiltersMobile :min="min" :max="max" :search="search" v-else/>
+          </v-col>
+          <v-col md="9" sm="12" :class="{'pt-0': $vuetify.breakpoint.smAndDown}">
+            <v-container class="py-0">
+              <v-row v-if="productsFiltered.length">
+                <v-col cols="12" :class="{'px-0': $vuetify.breakpoint.smAndDown}">
+                  <div class="sorting" style="margin: 18px 0;">
+                    <v-select
+                      v-model="selectedSorting"
+                      :items="sorting"
+                      value="value"
+                      text="text"
+                      outlined
+                      height="30"
+                      dense
+                      hide-details
+                    />
+                  </div>
+                </v-col>
+                <v-col md="4" sm="6" style="padding: 16px 5px;" v-if="$vuetify.breakpoint.mdAndUp">
+                  <MixCard/>
+                  <DealCard/>
+                  <DealCardMobile/>
+                </v-col>
+                <template v-if="$vuetify.breakpoint.mdAndUp">
+                  <v-col cols="4" style="padding: 16px 5px;">
                     <MixCard/>
+                    <DealCard/>
                   </v-col>
-                  <v-col md="3" sm="6">
-                    <DealCard v-if="$vuetify.breakpoint.mdAndUp"/>
-                    <DealCardMobile v-else/>
-                  </v-col>
-                  <v-col
-                    md="3"
-                    sm="12"
-                    v-for="product in productsFiltered"
-                    :key="product.slug"
-                  >
+                  <v-col style="padding: 16px 5px;" cols="4" v-for="product in productsFiltered" :key="product.slug">
                     <ProductCard :product="product" :key="product.slug"/>
                   </v-col>
-                </v-row>
-                <p class="text-center" v-else>No products with selected filters was found</p>
-              </v-container>
-            </v-col>
-          </v-row>
-        </v-container>
-      </div>
-    </template>
+                </template>
+                <template v-else>
+                  <v-col cols="6" class="pl-0 pt-0">
+                    <MixCard/>
+                  </v-col>
+                  <v-col cols="6" class="pr-0 pt-0">
+                    <DealCardMobile/>
+                  </v-col>
+                  <v-col style="padding: 0 5px;" cols="12" v-for="product in productsFiltered" :key="product.slug">
+                    <ProductCardMobile :product="product" :key="product.slug"/>
+                  </v-col>
+                </template>
+              </v-row>
+              <p class="text-center" v-else>No products with selected filters was found</p>
+            </v-container>
+          </v-col>
+        </v-row>
+      </v-container>
+    </div>
   </div>
 </template>
 
@@ -74,7 +85,9 @@ export default {
     'DealCardMobile': () => import('@/components/shop/DealCardMobile'),
     'MixCard': () => import('@/components/shop/MixCard'),
     'ProductCard': () => import('@/components/shop/ProductCard'),
+    'ProductCardMobile': () => import('@/components/shop/ProductCardMobile'),
     'Filters': () => import('@/components/shop/Filters'),
+    'FiltersMobile': () => import('@/components/shop/FiltersMobile'),
   },
   async asyncData({$axios, params, store}) {
     const data = await $axios.$get('/deals');
@@ -131,7 +144,7 @@ export default {
         cslug: category.slug,
         sslug: sub ? sub.slug : null,
       }
-      data.products[key].img = `/${data.products[key].img}`;
+      data.products[key].img = `https://topbudstore.com/${data.products[key].img}`;
       products.push(data.products[key]);
     });
 
@@ -163,21 +176,45 @@ export default {
 
     let range = [min, max];
 
-    let loading = false;
+    let breadcrumbs = [
+      {
+        link: '/',
+        title: 'home'
+      },
+      {
+        link: '/shop',
+        title: 'shop'
+      },
+      {
+        link: null,
+        title: 'Deals'
+      },
+    ]
 
-    return {products, categoriesFilter, min, max, range, loading}
+    return {products, categoriesFilter, min, max, range, breadcrumbs}
   },
   data: () => ({
     loadingFiltered: false,
     categoriesFilter: [],
-    search: ''
+    search: '',
+    selectedSorting: 1,
+    sorting: [
+      {
+        text: 'Price: Low to High',
+        value: 1
+      },
+      {
+        text: 'Price: High to Low',
+        value: 2
+      }
+    ]
   }),
   computed: {
     ...mapGetters({
       categories: 'shop/categories'
     }),
     productsFiltered() {
-      return this.products.filter(item => {
+      let bySearch = this.products.filter(item => {
         let re = new RegExp(this.search, 'ig');
         if(item.name.match(re)) {
           return item;
@@ -186,7 +223,15 @@ export default {
             return item;
           }
         }
-      })
+      });
+
+      if(this.selectedSorting === 1) {
+        return bySearch.sort((a, b) => {return a.prices[0].price - b.prices[0].price})
+      }
+
+      if(this.selectedSorting === 2) {
+        return bySearch.sort((a, b) => {return b.prices[0].price - a.prices[0].price})
+      }
     }
   },
   watch: {
@@ -285,7 +330,7 @@ export default {
                 cslug: category.slug,
                 sslug: sub ? sub.slug : null,
               }
-              res.data.products[key].img = `/${res.data.products[key].img}`;
+              res.data.products[key].img = `https://topbudstore.com/${res.data.products[key].img}`;
               arr.push(res.data.products[key]);
             });
 
@@ -293,11 +338,11 @@ export default {
 
             this.loadingFiltered = false;
           })
-
       }
     }
   },
   created () {
+    this.$root.$emit('set-breadcrumbs', this.breadcrumbs);
     this.$root.$on('change-filter-range', data => {
       this.min = data.min;
       this.max = data.max;

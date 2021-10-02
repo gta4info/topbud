@@ -1,51 +1,26 @@
 <template>
   <div class="page">
-<!--    <v-container fluid class="mainScreen" :class="selectedMainScreen > 0 ? selectedMainScreen === 1 ? 'sativa' : 'indica' : ''">-->
-<!--      <v-container>-->
-<!--        <div class="mainScreen__content">-->
-<!--          <div class="mainScreen__left" @mouseenter="selectedMainScreen = 1" :class="{active: selectedMainScreen === 1}">-->
-<!--            <div class="mainScreen__image">-->
-<!--              <div>-->
-<!--                <img class="default" src="@/static/images/sativa-img-1.png" alt="">-->
-<!--                <img class="active" src="@/static/images/sativa-img-2.png" alt="">-->
-<!--              </div>-->
-<!--            </div>-->
-<!--            <nuxt-link to="/category/flower/sativa">Shop Sativa</nuxt-link>-->
-<!--          </div>-->
-<!--          <div class="mainScreen__center">Choose your side</div>-->
-<!--          <div class="mainScreen__right" @mouseenter="selectedMainScreen = 2" :class="{active: selectedMainScreen === 2}">-->
-<!--            <div class="mainScreen__image">-->
-<!--              <div>-->
-<!--                <img class="default" src="@/static/images/indica-img-1.png" alt="">-->
-<!--                <img class="active" src="@/static/images/indica-img-2.png" alt="">-->
-<!--              </div>-->
-<!--            </div>-->
-<!--            <nuxt-link to="/category/flower/indica">Shop Indica</nuxt-link>-->
-<!--          </div>-->
-<!--        </div>-->
-<!--      </v-container>-->
-<!--    </v-container>-->
-    <section class="buttons">
+    <section class="offers">
       <v-container>
-        <v-row>
-          <v-col sm="12" md="6">
-            <nuxt-link to="/shop/mix" class="buttons__item mnm" v-ripple>
-              <div class="buttons__item-title">Mix’n’Match</div>
-              <div class="buttons__item-text">add a lot of buds with <span>lower</span> price</div>
-            </nuxt-link>
-          </v-col>
-          <v-col sm="12" md="6">
-            <nuxt-link to="/shop/deals" class="buttons__item deals" v-ripple>
-              <div class="buttons__item-title">Oz Deals</div>
-            </nuxt-link>
-          </v-col>
-        </v-row>
+        <div class="offers__items">
+          <nuxt-link
+            :to="banner.url"
+            v-for="(banner, i) in banners"
+            :key="i"
+            class="offers__item"
+            :style="{backgroundImage: `url(https://topbudstore.com/${banner.mobile_img})`}"
+            v-ripple
+          >
+            <div class="offers__item-title">{{banner.mobile_title}}</div>
+            <div class="offers__item-link">{{banner.btn_title}}</div>
+          </nuxt-link>
+        </div>
       </v-container>
     </section>
     <section class="categories">
       <v-container>
         <div class="title">Categories</div>
-        <div class="categories__items" v-if="windowWidth > 768">
+        <div class="categories__items" v-if="$vuetify.breakpoint.mdAndUp">
           <div class="categories__item flower">
             <div class="categories__item-title">Flower</div>
             <v-btn to="/category/flower" depressed outlined>Shop now</v-btn>
@@ -108,6 +83,64 @@
             <div class="categories__item-title">Accessories</div>
             <img src="@/static/images/accessories-category.png" alt="Accessories">
           </nuxt-link>
+        </div>
+      </v-container>
+    </section>
+    <section class="products" v-if="popularProducts.length">
+      <v-container>
+        <div class="products__header">
+          <div class="title">Popular products</div>
+          <div class="products__cats">
+            <div
+              class="products__cats-item"
+              :class="{active: Object.keys(selectedPopularCat).length === 0}"
+              @click="selectedPopularCat = {}"
+            >
+              All
+            </div>
+            <div
+              class="products__cats-item"
+              :class="{active: selectedPopularCat === item}"
+              v-for="item in popularProductsCategories"
+              :key="item.id"
+              @click="selectedPopularCat = item"
+            >
+              {{item.name}}
+            </div>
+          </div>
+        </div>
+        <Carousel :products="filteredPopularProducts" :key="selectedPopularCat.name" v-if="$vuetify.breakpoint.mdAndUp"/>
+        <div v-for="product in filteredPopularProducts" :key="product.id" v-else>
+          <ProductCardMobile :product="product"/>
+        </div>
+      </v-container>
+    </section>
+    <section class="products" v-if="newProducts.length">
+      <v-container>
+        <div class="products__header">
+          <div class="title">New products</div>
+          <div class="products__cats">
+            <div
+              class="products__cats-item"
+              :class="{active: Object.keys(selectedNewCat).length === 0}"
+              @click="selectedNewCat = {}"
+            >
+              All
+            </div>
+            <div
+              class="products__cats-item"
+              :class="{active: selectedNewCat === item}"
+              v-for="item in newProductsCategories"
+              :key="item.id"
+              @click="selectedNewCat = item"
+            >
+              {{item.name}}
+            </div>
+          </div>
+        </div>
+        <Carousel :products="filteredNewProducts" :key="selectedNewCat.name" v-if="$vuetify.breakpoint.mdAndUp"/>
+        <div v-for="product in filteredNewProducts" :key="product.id" v-else>
+          <ProductCardMobile :product="product"/>
         </div>
       </v-container>
     </section>
@@ -214,31 +247,24 @@
 <!--        </div>-->
 <!--      </v-container>-->
 <!--    </section>-->
-    <v-container fluid style="padding-left: 0;padding-right: 0;">
-      <section class="subscribe">
-        <v-container>
-          <div class="subscribe__content">
-            <div class="subscribe__title">STAY TUNED</div>
-            <div class="subscribe__text">Keep me up to date on news and exclusive offers.</div>
-            <div class="subscribe__group">
-              <input type="email" v-model="subscribeEmail" placeholder="Your email" @keypress.enter="subscribe">
-              <v-btn height="100%" width="218" depressed color="#F6C76F" @click="subscribe" :loading="subscribing">Let’s Go!</v-btn>
-            </div>
-          </div>
-        </v-container>
-      </section>
-    </v-container>
   </div>
 </template>
 
 <script>
+import { mapGetters } from 'vuex'
+import ProductCard from '@/components/shop/PackProductCard'
+
 export default {
   scrollToTop: true,
+  components: {
+    ProductCard,
+    'Carousel': () => import('@/components/shop/Carousel'),
+    'ProductCardMobile': () => import('@/components/shop/ProductCardMobile'),
+  },
   async asyncData({$axios}) {
     const blog = await $axios.$get('blog');
     return { blog };
   },
-  layout: 'new',
   head: {
     title: 'Best weed in Vaughan | TOPBUD store',
     meta: [
@@ -251,9 +277,13 @@ export default {
   },
   data: () => ({
     selectedMainScreen: null,
-    subscribeEmail: null,
-    subscribing: false,
-    windowWidth: null,
+    popularProducts: [],
+    newProducts: [],
+    popularProductsCategories: [],
+    newProductsCategories: [],
+    selectedPopularCat: {},
+    selectedNewCat: {},
+    banners: [],
     facts: [
       {
         title: 'What exactly is CBD?',
@@ -270,61 +300,113 @@ export default {
     ]
   }),
   methods: {
-    subscribe() {
-      if(!this.subscribeEmail || this.subscribeEmail.length < 5) {
-        return this.$toast.error('Please fill your email to subscribe!', {duration: 1500})
+    getCategoriesSlugsForProduct(product) {
+      let cat = this.categories.find(c => c.id === product.category_id);
+      let sub = product.subcategory_id ? cat.subs.find(s => s.id === product.subcategory_id) : null;
+
+      return {
+        cslug: cat.slug,
+        sslug: sub ? sub.slug : null,
       }
-
-      const re = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-
-      if(!re.test(String(this.subscribeEmail).toLowerCase())) {
-        return this.$toast.error('Email address is not valid!', {duration: 1500})
-      }
-
-      this.subscribing = true;
-
-      this.$axios
-        .post('/emailsub', {
-          email: this.subscribeEmail
-        })
-        .then(res => {
-          this.subscribeEmail = null;
-          this.$toast.success('You\'ve subscribed successfully!', {duration: 1500})
-        })
-        .catch(() => this.$toast.success('Please check your email and try again!', {duration: 1500}))
-        .finally(() => this.subscribing = false)
     },
-    setWindowWidth() {
-      this.windowWidth = window.outerWidth;
+  },
+  computed: {
+    ...mapGetters({
+      categories: 'shop/categories'
+    }),
+    filteredPopularProducts() {
+      if(Object.keys(this.selectedPopularCat).length === 0) {
+        return this.popularProducts
+      }
+
+      return this.popularProducts.filter(item => item.category_id === this.selectedPopularCat.category_id);
+    },
+    filteredNewProducts() {
+      if(Object.keys(this.selectedNewCat).length === 0) {
+        return this.newProducts
+      }
+
+      return this.newProducts.filter(item => item.category_id === this.selectedNewCat.category_id);
     }
   },
-  mounted () {
-    if (process.browser) {
-      this.windowWidth = window.outerWidth;
-      window.addEventListener("resize", this.setWindowWidth);
-      if(this.windowWidth > 768) {
-        window.addEventListener("scroll", () => {
-          let scroll = window.scrollY;
-          let mainScreen = document.querySelector('.mainScreen');
+  async mounted () {
+    if(this.$vuetify.breakpoint.smAndDown) {
+      await this.$axios
+        .get('/mainBanners')
+        .then(res => {
+          this.banners = res.data.data;
+        })
+    }
+    await this.$axios
+      .get('/mainProds/pop')
+      .then(res => {
+        let prods = [];
+        let cats = [];
+        Object.keys(res.data.products).map(item => {
+          prods.push(res.data.products[item]);
+        })
 
-          if(mainScreen) {
-            let mainScreenHeight = mainScreen.offsetHeight;
-            let header = document.querySelector('.header__wrapper .bg');
+        this.popularProducts = prods.map(item => {
+          let slugs = this.getCategoriesSlugsForProduct(item);
+          item.search = {
+            cslug: slugs.cslug,
+            sslug: slugs.sslug
+          }
+          item.img = 'https://topbudstore.com/' + item.img;
 
-            if (mainScreenHeight / 2 - scroll < 0) {
-              header.style.opacity = ((1 - (mainScreenHeight - 300 - scroll) / mainScreenHeight) * 0.8);
-            } else if (mainScreenHeight / 2 - scroll > 0) {
-              header.style.opacity = ((1 - (mainScreenHeight - 300 - scroll) / mainScreenHeight) * 0.8);
-            }
+          cats.push({
+            category_id: item.category_id,
+            name: this.categories.find(c => c.id === item.category_id).name
+          })
+          return item;
+        })
 
-            if (scroll === 0) {
-              header.style.opacity = 0;
+        cats.map(c => {
+          if(!this.popularProductsCategories.find(ppc => ppc.name === c.name)) {
+            if(this.popularProductsCategories.length < 3) {
+              this.popularProductsCategories.push(c)
             }
           }
-        });
-      }
-    }
+        })
+      })
+
+    await this.$axios
+      .get('/mainProds/new')
+      .then(res => {
+        let prods = [];
+        let cats = [];
+        Object.keys(res.data.products).map(item => {
+          prods.push(res.data.products[item]);
+        })
+
+        this.newProducts = prods.map(item => {
+          let slugs = this.getCategoriesSlugsForProduct(item);
+          item.search = {
+            cslug: slugs.cslug,
+            sslug: slugs.sslug
+          }
+          item.img = 'https://topbudstore.com/' + item.img;
+
+          cats.push({
+            category_id: item.category_id,
+            subcategory_id: item.subcategory_id,
+            name: this.categories.find(c => c.id === item.category_id).name
+          })
+          return item;
+        })
+
+        cats.map(c => {
+          if(!this.newProductsCategories.find(npc => npc.name === c.name)) {
+            if(this.newProductsCategories.length < 3) {
+              this.newProductsCategories.push(c)
+            }
+          }
+        })
+      })
   },
+  created () {
+    this.$root.$emit('set-breadcrumbs', []);
+  }
 }
 </script>
 
@@ -342,11 +424,6 @@ export default {
   }
 
   .buttons {
-    margin-top: 60px;
-
-    @media(max-width: 768px) {
-      margin-top: 20px;
-    }
 
     &__content {
       display: flex;
@@ -652,6 +729,10 @@ export default {
 
   .categories {
 
+    .title {
+      margin-top: 0;
+    }
+
     &__items {
       display: grid;
       grid-template-columns: 1fr 1fr 1fr;
@@ -893,6 +974,8 @@ export default {
       @media(max-width: 1024px) {
         min-height: 260px;
         height: auto;
+        border-radius: 5px;
+        overflow-x: hidden;
       }
 
       @media(max-width: 768px) {
@@ -906,6 +989,10 @@ export default {
 
       &:not(:last-of-type) {
         margin-right: 40px;
+
+        @media(max-width: 768px) {
+          margin-right: 0;
+        }
       }
 
       &.under {
@@ -1060,86 +1147,130 @@ export default {
     }
   }
 
-  .subscribe {
-    background: url("~/static/images/subscribe.jpg");
-    height: 387px;
+  .products {
+    margin-top: 60px;
 
     @media(max-width: 768px) {
-      height: auto;
-      padding: 40px 0 50px;
-      background-size: cover;
+      margin-top: 0;
     }
 
-    &__content {
-      width: 100%;
-      max-width: 1000px;
-      display: flex;
-      flex-direction: column;
-      margin: 0 auto;
-      padding-top: 10px;
-    }
-
-    &__title {
-      font-size: 48px;
-      color: #fff;
-      font-weight: 700;
-      margin-bottom: 12px;
-    }
-
-    &__text {
-      font-weight: 700;
-      font-size: 24px;
-      color: #fff;
-      margin-bottom: 22px;
-    }
-
-    &__group {
-      width: 100%;
-      height: 100px;
-      padding: 12px;
+    &__header {
       display: flex;
       align-items: center;
-      background: #fff;
-      border-radius: 5px;
 
       @media(max-width: 768px) {
         flex-direction: column;
-        background: transparent;
-        height: auto;
+        align-items: flex-start;
       }
 
-      input {
-        padding: 0 28px;
-        font-size: 24px;
+      .title {
+        margin-right: 97px;
+
+        @media(max-width: 768px) {
+          margin-right: 0;
+          margin-bottom: 34px;
+        }
+      }
+    }
+
+    &__cats {
+      display: flex;
+      align-items: center;
+
+      @media(max-width: 768px) {
+        margin-bottom: 28px;
+        overflow-x: auto;
+      }
+
+      &-item {
+        height: 44px;
+        padding: 0 20px;
+        border-radius: 30px;
+        background: #fff;
+        color: #333333;
+        text-transform: lowercase;
         font-weight: 700;
-        color: #333;
-        outline: none;
-        width: 100%;
+        font-size: 24px;
+        display: flex;
+        align-items: center;
+        cursor: pointer;
 
         @media(max-width: 768px) {
-          background: #ffffff;
-          height: 60px;
-          padding: 0 20px;
-          display: flex;
-          font-size: 18px;
-          border-radius: 5px;
-          margin-bottom: 20px;
+          height: 30px;
+          font-size: 14px;
+          flex-shrink: 0;
         }
 
-        &::placeholder {
-          color: #333;
+        &:not(:last-of-type) {
+          margin-right: 20px;
+
+          @media(max-width: 768px) {
+            margin-right: 0;
+          }
+        }
+
+        &.active {
+          background: #F6C76F;
+          color: #ffffff;
+          cursor: default;
+        }
+      }
+    }
+  }
+
+  .offers {
+
+    &__items {
+      display: flex;
+      align-items: center;
+      overflow-x: auto;
+    }
+
+    &__item {
+      width: 150px;
+      height: 110px;
+      background-size: cover;
+      padding: 10px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      flex-shrink: 0;
+      border-radius: 10px;
+      overflow-x: hidden;
+      position: relative;
+
+      &:nth-of-type(even) {
+        &:before {
+          background: linear-gradient(0deg, rgba(50, 76, 255, 0.7), rgba(50, 76, 255, 0.7))
         }
       }
 
-      .v-btn {
-        color: #fff;
-        text-transform: none;
-        font-size: 24px;
-
-        @media(max-width: 768px) {
-          height: 60px !important;
-          width: 100% !important;
+      &:nth-of-type(odd) {
+        &:before {
+          background: linear-gradient(0deg, rgba(255, 98, 63, 0.8), rgba(255, 98, 63, 0.8));
         }
+      }
+
+      &:before {
+        content: '';
+        position: absolute;
+        top: 0;
+        right: 0;
+        bottom: 0;
+        left: 0;
+      }
+
+      &:not(:last-of-type) {
+        margin-right: 10px;
+      }
+
+      &-title, &-link {
+        font-weight: 700;
+        font-size: 12px;
+        line-height: 1.2;
+        z-index: 1;
+        position: relative;
+        color: #ffffff;
       }
     }
   }

@@ -1,171 +1,149 @@
 <template>
   <div class="page">
-    <div class="loading" v-if="loading">
-      <v-progress-circular
-        indeterminate
-        color="#699551"
-        size="30"
-      />
-    </div>
-    <template v-else>
-      <v-container>
-        <nav class="breadcrumbs">
-          <ul>
-            <li>
-              <nuxt-link to="/">Home</nuxt-link>
-            </li>
-            <li>
-              <nuxt-link to="/shop">Shop</nuxt-link>
-            </li>
-            <li>Cart</li>
-          </ul>
-        </nav>
-
-        <h1>Your shopping cart</h1>
-
-        <div class="table" v-if="cart.length || (mixs.cart && mixs.cart.data && mixs.cart.data.length)">
-          <v-container class="table__header">
-            <v-row>
-              <v-col cols="6">
-                <div class="table__header-title">Products</div>
-              </v-col>
-              <v-col cols="2">
-                <div class="table__header-price">Price</div>
-              </v-col>
-              <v-col cols="2">
-                <div class="table__header-quantity">Quantity</div>
-              </v-col>
-              <v-col cols="1">
-                <div class="table__header-total">Total</div>
-              </v-col>
-              <v-col cols="1"></v-col>
-            </v-row>
-          </v-container>
-          <div class="table__list">
-            <v-container>
-              <v-row v-for="(product, ind) in cart" :key="`${product.id}+${ind}`" class="table__item">
-                <v-col cols="6">
-                  <div class="table__item-title">
-                    <img :src="product.img" :alt="product.title">
-                    <div class="table__item-title">{{ product.name }} <span>{{ weights[product.weight_id] }}</span></div>
+    <div class="goBack" @click="$router.back()">Go back</div>
+    <v-container>
+      <v-row v-if="cart.length || (mixs.cart && mixs.cart.data && mixs.cart.data.length)">
+        <v-col cols="12" md="7" sm="12">
+          <div class="table">
+            <v-container class="table__header">
+              <v-row>
+                <v-col cols="7">
+                  <div class="table__header-title">
+                    <img src="@/static/images/cart-table-icon.png" alt="Products">
+                    Products
                   </div>
                 </v-col>
-                <v-col cols="2">
-                  <div class="table__item-price">${{ product.price }}</div>
+                <v-col cols="2" v-if="$vuetify.breakpoint.mdAndUp">
+                  <div class="table__header-title">Quantity</div>
                 </v-col>
-                <v-col cols="2">
-                  <div class="table__item-quantity">
-                    <v-btn
-                      x-small
-                      depressed
-                      @click="$store.commit('shop/CHANGE_AMOUNT_OF_PRODUCT_IN_CART', {id: product.id, quantity: product.quantity - 1})"
-                    >
-                      <v-icon small>mdi-minus</v-icon>
-                    </v-btn>
-                    <div>{{product.quantity}}</div>
-                    <v-btn
-                      x-small
-                      depressed
-                      @click="$store.commit('shop/CHANGE_AMOUNT_OF_PRODUCT_IN_CART', {id: product.id, quantity: product.quantity + 1})"
-                    >
-                      <v-icon small>mdi-plus</v-icon>
-                    </v-btn>
-                  </div>
+                <v-col cols="2" v-if="$vuetify.breakpoint.mdAndUp">
+                  <div class="table__header-title">Price</div>
                 </v-col>
-                <v-col cols="1">
-                  <div class="table__item-total">${{ product.price * product.quantity }}</div>
-                </v-col>
-                <v-col cols="1">
-                  <v-btn icon @click="$store.dispatch('shop/deleteProductFromCart', product.id)">
-                    <v-icon small>mdi-close</v-icon>
-                  </v-btn>
-                </v-col>
-              </v-row>
-
-              <!--Mix'N'Match-->
-              <v-row v-for="(mix, i) in mixs.cart.data" :key="i" class="table__item table__item-mix">
-                <v-col cols="6">
-                  <div class="table__item-title" :class="`table__item-mix--${mix.weight}`">
-                    <div class="table__item-imgGroup">
-                      <img :src="product.img" :alt="product.name" v-for="(product, index) in mix.products[0]" :key="index">
-                    </div>
-                    <div class="table__item-titleGroup">
-                      <div v-for="(product, ind) in mix.products[0]" :key="`${product.id}+${ind}`"><div style="font-weight: 700;display: inline;">{{product.quantity}}x</div> {{ product.name }} <span>{{ weights[product.weight_id] }}</span></div>
-                    </div>
-                  </div>
-                </v-col>
-                <v-col cols="2">
-                  <div class="table__item-price">${{ mix.price }}</div>
-                </v-col>
-                <v-col cols="2">
-                  <div class="table__item-quantity">
-                    <v-btn
-                      x-small
-                      depressed
-                      @click="$store.commit('shop/CHANGE_AMOUNT_OF_MIX_IN_MIXS_CART', {key: i, quantity: mix.quantity - 1})"
-                    >
-                      <v-icon small>mdi-minus</v-icon>
-                    </v-btn>
-                    <div>{{mix.quantity}}</div>
-                    <v-btn
-                      x-small
-                      depressed
-                      @click="$store.commit('shop/CHANGE_AMOUNT_OF_MIX_IN_MIXS_CART', {key: i, quantity: mix.quantity + 1})"
-                    >
-                      <v-icon small>mdi-plus</v-icon>
-                    </v-btn>
-                  </div>
-                </v-col>
-                <v-col cols="1">
-                  <div class="table__item-total">${{ mix.price * mix.quantity }}</div>
-                </v-col>
-                <v-col cols="1">
-                  <v-btn icon @click="$store.commit('shop/DELETE_MIX_FROM_MIXS_CART', i)">
-                    <v-icon small>mdi-close</v-icon>
-                  </v-btn>
-                </v-col>
+                <v-col cols="1" v-if="$vuetify.breakpoint.mdAndUp"></v-col>
               </v-row>
             </v-container>
-          </div>
+            <div class="table__list">
+              <v-container>
+                <v-row v-for="(product, ind) in cart" :key="`${product.id}+${ind}`" class="table__item">
+                  <v-col md="7" sm="12">
+                    <div class="table__item-product">
+                      <img :src="product.img" :alt="product.title">
+                      <div class="table__item-title">{{ product.name }} <span>{{ weights[product.weight_id] }}</span></div>
+                    </div>
+                  </v-col>
+                  <v-col md="2" sm="5">
+                    <div class="table__item-quantity">
+                      <v-btn
+                        x-small
+                        depressed
+                        @click="$store.commit('shop/CHANGE_AMOUNT_OF_PRODUCT_IN_CART', {id: product.id, quantity: product.quantity - 1})"
+                      >
+                        <v-icon small>mdi-minus</v-icon>
+                      </v-btn>
+                      <div>{{product.quantity}}</div>
+                      <v-btn
+                        x-small
+                        depressed
+                        @click="$store.commit('shop/CHANGE_AMOUNT_OF_PRODUCT_IN_CART', {id: product.id, quantity: product.quantity + 1})"
+                      >
+                        <v-icon small>mdi-plus</v-icon>
+                      </v-btn>
+                    </div>
+                  </v-col>
+                  <v-col md="2" sm="3">
+                    <div class="table__item-total">${{ product.price * product.quantity }}</div>
+                  </v-col>
+                  <v-col md="1" sm="4">
+                    <v-btn class="table__item-remove" icon @click="$store.dispatch('shop/deleteProductFromCart', product.id)">
+                      <v-icon large color="#B1B1B1">mdi-trash-can-outline</v-icon>
+                    </v-btn>
+                  </v-col>
+                </v-row>
 
-          <div class="table__bottom">
-            <div class="table__bottom-continue">
-              <nuxt-link to="/shop">Continue shopping</nuxt-link>
+                <!--Mix'N'Match-->
+                <v-row v-for="(mix, i) in mixs.cart.data" :key="i" class="table__item table__item-mix">
+                  <v-col md="7" sm="12">
+                    <div class="table__item-product" :class="`table__item-mix--${mix.weight}`">
+                      <div class="table__item-imgGroup">
+                        <img :src="product.img" :alt="product.name" v-for="(product, index) in mix.products[0]" :key="index">
+                      </div>
+                      <div class="table__item-titleGroup">
+                        <div v-for="(product, ind) in mix.products[0]" :key="`${product.id}+${ind}`"><div style="font-weight: 700;display: inline;">{{product.quantity}}x</div> {{ product.name }} <span>{{ weights[product.weight_id] }}</span></div>
+                      </div>
+                    </div>
+                  </v-col>
+                  <v-col md="2" sm="5">
+                    <div class="table__item-quantity">
+                      <v-btn
+                        x-small
+                        depressed
+                        @click="$store.commit('shop/CHANGE_AMOUNT_OF_MIX_IN_MIXS_CART', {key: i, quantity: mix.quantity - 1})"
+                      >
+                        <v-icon small>mdi-minus</v-icon>
+                      </v-btn>
+                      <div>{{mix.quantity}}</div>
+                      <v-btn
+                        x-small
+                        depressed
+                        @click="$store.commit('shop/CHANGE_AMOUNT_OF_MIX_IN_MIXS_CART', {key: i, quantity: mix.quantity + 1})"
+                      >
+                        <v-icon small>mdi-plus</v-icon>
+                      </v-btn>
+                    </div>
+                  </v-col>
+                  <v-col md="2" sm="3">
+                    <div class="table__item-total">${{ mix.price * mix.quantity }}</div>
+                  </v-col>
+                  <v-col md="1" sm="4">
+                    <v-btn class="table__item-remove" icon @click="$store.commit('shop/DELETE_MIX_FROM_MIXS_CART', i)">
+                      <v-icon large color="#B1B1B1">mdi-trash-can-outline</v-icon>
+                    </v-btn>
+                  </v-col>
+                </v-row>
+              </v-container>
             </div>
-            <div class="table__bottom-checkout">
-              <div>
-                <span>Cart Total</span>
-                <span style="color: #000">${{calculateCartTotal}}</span>
-              </div>
-              <div class="d-flex flex-column">
-                <div>
-                  <span>Delivery</span>
-                  <span style="color: #000">${{calculateCartTotal >= 100 ? 0 : 10}}</span>
-                </div>
-                <div>
-                  <span style="color: #7FAD39">Order Total</span>
-                  <span style="color: #7FAD39">${{calculateTotal}}</span>
-                </div>
-              </div>
 
-              <div class="d-flex flex-column">
-                <div v-if="calculateCartTotal < 60" style="color: #de2b2b;font-size: 18px;font-weight: 900;margin-bottom: 6px;">Minimal cart total is 60$</div>
-                <v-btn color="#7FAD39" class="white--text" block depressed :disabled="calculateCartTotal < 60" to="/shop/cart/checkout">Checkout</v-btn>
-              </div>
+            <div class="table__bottom">
+              <nuxt-link to="/delivery" target="_blank" class="table__bottom-delivery" v-ripple>
+                <img src="@/static/images/delivery-car.png" alt="Delivery information">
+                <span>Delivery Information</span>
+              </nuxt-link>
+              <div class="table__bottom-checkout">
+                <div>
+                  <span>Cart Total</span>
+                  <span style="color: #333333">${{calculateCartTotal}}</span>
+                </div>
+                <div class="d-flex flex-column">
+                  <div>
+                    <span>Delivery</span>
+                    <span style="color: #333333">${{calculateCartTotal >= 100 ? 0 : 10}}</span>
+                  </div>
+                  <div>
+                    <span>Order Total</span>
+                    <span style="color: #008DE3">${{calculateTotal}}</span>
+                  </div>
+                </div>
 
-              <div class="table__bottom-delivery">
-                <nuxt-link to="/delivery" target="_blank">Delivery information</nuxt-link>
+<!--                <div class="d-flex flex-column">-->
+<!--                  <div v-if="calculateCartTotal < 60" style="color: #de2b2b;font-size: 18px;font-weight: 900;margin-bottom: 6px;">Minimal cart total is 60$</div>-->
+<!--                  <v-btn color="#7FAD39" class="white&#45;&#45;text" block depressed :disabled="calculateCartTotal < 60" to="/shop/cart/checkout">Checkout</v-btn>-->
+<!--                </div>-->
               </div>
             </div>
-          </div>
 
-        </div>
-        <div v-else class="empty">
+          </div>
+        </v-col>
+        <v-col cols="12" md="5" sm="12">
+          <CheckoutForm />
+        </v-col>
+      </v-row>
+      <v-row v-else>
+        <div class="empty">
           <div>Your cart is empty</div>
           <nuxt-link to="/shop">Continue shopping</nuxt-link>
         </div>
-      </v-container>
-    </template>
+      </v-row>
+    </v-container>
   </div>
 </template>
 
@@ -185,10 +163,23 @@ export default {
     ]
   },
   components: {
-    'CheckOutForm': () => import('@/components/shop/CheckOutForm')
+    'CheckoutForm': () => import('@/components/shop/CheckoutForm')
   },
   data: () => ({
-    loading: true
+    breadcrumbs: [
+      {
+        link: '/',
+        title: 'home'
+      },
+      {
+        link: '/shop',
+        title: 'shop'
+      },
+      {
+        link: null,
+        title: 'Shopping Cart'
+      },
+    ]
   }),
   computed: {
     ...mapGetters({
@@ -219,9 +210,10 @@ export default {
     }
   },
   async created () {
+    this.$root.$emit('set-breadcrumbs', this.breadcrumbs);
     await this.$store.dispatch('shop/setMixsCart');
     await this.$store.dispatch('shop/getMixProducts');
-    await this.$store.dispatch('shop/getCartProducts').then(() => this.loading = false);
+    await this.$store.dispatch('shop/getCartProducts');
   }
 }
 </script>
@@ -236,43 +228,70 @@ h1 {
   flex-direction: column;
 
   &__header {
-    border-bottom: 1px solid #ebebeb;
-    font-weight: 900;
     font-size: 18px;
+    margin-bottom: 20px;
 
-    @media(max-width: 768px) {
-      font-size: 14px;
+    &-title {
+      display: flex;
+      align-items: center;
+      font-weight: 700;
+      font-size: 18px;
+      color: #333;
 
-      .col-6 {
-        width: 45%;
-        max-width: 45%;
+      img {
+        margin-right: 20px;
       }
     }
   }
 
-  &__item {
-    border-bottom: 1px solid #ebebeb;
-    position: relative;
+  &__list {
+    max-height: 664px;
+    overflow-y: auto;
+    padding-right: 10px;
 
-    .col {
-      min-height: 110px;
-      display: flex;
-      align-items: center;
+    @media(max-width: 768px) {
+      max-height: 410px;
+    }
+
+    &::-webkit-scrollbar-track {
+      background: #EDEDED !important;
+    }
+
+    &::-webkit-scrollbar-thumb {
+      background: #C4C4C4 !important;
+    }
+
+    &::-webkit-scrollbar {
+      width: 4px;
+    }
+  }
+
+  &__item {
+    position: relative;
+    border: 1px solid #E6E6E6;
+    border-radius: 10px;
+    min-height: 156px;
+    padding: 0 20px;
+
+    @media(max-width: 768px) {
+      padding: 22px;
+
+      .col-sm-12 {
+        flex: 1 0 100%;
+      }
+    }
+
+    &:not(:last-of-type) {
+      margin-bottom: 10px;
 
       @media(max-width: 768px) {
-        height: auto;
-
-        &.col-6 {
-          width: 45%;
-          max-width: 45%;
-        }
-
-        &:last-child {
-          position: absolute;
-          top: 0;
-          right: 10px;
-        }
+        margin-bottom: 20px;
       }
+    }
+
+    .col {
+      display: flex;
+      align-items: center;
     }
 
     &-mix {
@@ -282,10 +301,11 @@ h1 {
         &-imgGroup {
           display: flex;
           flex-wrap: wrap;
-          align-items: center;
           position: relative;
-          width: 70px;
+          width: 64px;
+          min-height: 64px;
           margin-right: 20px;
+          flex-shrink: 0;
 
           @media(max-width: 768px) {
             display: none;
@@ -309,38 +329,31 @@ h1 {
       }
     }
 
-    &-title {
+    &-product {
       display: flex;
       align-items: center;
 
-      @media(max-width: 768px) {
-        flex-direction: column;
-      }
-
       img {
-        width: 50px;
-        height: 50px;
+        width: 64px;
+        height: 64px;
         margin-right: 20px;
+      }
+    }
 
-        @media(max-width: 768px) {
-          display: none;
-        }
+    &-title {
+      font-size: 16px;
+
+      @media(max-width: 768px) {
+        font-size: 12px;
       }
 
-      div {
-        font-size: 16px;
+      span {
+        margin-left: 10px;
+        color: #cecece;
+
         @media(max-width: 768px) {
-          font-size: 12px;
-        }
-
-        span {
-          margin-left: 10px;
-          color: #cecece;
-
-          @media(max-width: 768px) {
-            align-self: flex-start;
-            margin-left: 0;
-          }
+          align-self: flex-start;
+          margin-left: 0;
         }
       }
     }
@@ -356,22 +369,34 @@ h1 {
     &-total {
       font-weight: 900;
       font-size: 18px;
+      width: 100%;
+      text-align: center;
+
       @media(max-width: 768px) {
         font-size: 14px;
+      }
+    }
+
+    &-remove {
+
+      @media(max-width: 768px) {
+        margin-left: auto;
       }
     }
 
     &-quantity {
       display: flex;
       align-items: center;
-      padding: 5px 12px;
-      border: 1px solid #7FAD39;
+      padding: 5px 6px;
+      border: 1px solid #e6e6e6;
       border-radius: 4px;
       width: 130px;
 
       @media(max-width: 768px) {
-        flex-direction: column;
         padding: 5px;
+        width: 80px;
+        height: 35px;
+        border-radius: 25px;
       }
 
       div {
@@ -384,10 +409,16 @@ h1 {
       }
 
       .v-btn {
-        height: 28px !important;
-        width: 28px !important;
-        min-width: 28px !important;
-        border-radius: 0 !important;
+        height: 24px !important;
+        width: 24px !important;
+        min-width: 24px !important;
+        border-radius: 8px !important;
+
+        @media(max-width: 768px) {
+          height: 16px !important;
+          width: 16px !important;
+          min-width: 16px !important;
+        }
       }
     }
   }
@@ -397,29 +428,45 @@ h1 {
     justify-content: space-between;
     margin-top: 50px;
     margin-bottom: 50px;
+    padding-right: 10px;
 
     @media(max-width: 768px) {
-      flex-direction: column;
+      flex-direction: column-reverse;
     }
 
-    &-continue {
+    &-delivery {
+      display: flex;
+      flex-direction: column;
+      width: 230px;
+      border-radius: 5px;
+      border: 1px solid #008DE3;
+      align-self: flex-start;
+
       @media(max-width: 768px) {
-        display: flex;
-        justify-content: center;
-        margin-bottom: 20px;
+        width: 100%;
+        margin-top: 40px;
       }
-      a {
-        color: #6f6f6f;
-        text-transform: uppercase;
-        font-weight: 900;
-        font-size: 14px;
+
+      img {
+        width: 120px;
+        height: 55px;
+        margin: 13px auto 12px;
+      }
+
+      span {
+        color: #008DE3;
+        font-size: 16px;
+        font-weight: 700;
+        text-align: center;
+        padding: 9px 0;
+        border-top: 1px solid #008DE3;
       }
     }
 
     &-checkout {
       display: flex;
       flex-direction: column;
-      width: 445px;
+      width: 220px;
 
       @media(max-width: 768px) {
         width: auto;
@@ -428,7 +475,10 @@ h1 {
       div {
         display: flex;
         justify-content: space-between;
-        margin-bottom: 20px;
+
+        &:not(:last-of-type) {
+          margin-bottom: 10px;
+        }
 
         span:last-child {
           color: #dd2222;
@@ -440,20 +490,9 @@ h1 {
       }
 
       span {
-        font-weight: 900;
+        font-weight: 700;
         font-size: 18px;
-      }
-    }
-
-    &-delivery {
-      font-size: 14px;
-      font-weight: 900;
-      text-decoration: underline;
-      margin-top: 10px;
-
-      @media(max-width: 768px) {
-        display: flex;
-        justify-content: center !important;
+        color: #b1b1b1;
       }
     }
   }

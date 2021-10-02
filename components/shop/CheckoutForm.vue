@@ -1,155 +1,91 @@
 <template>
-  <div class="page">
-    <v-container>
-      <nav class="breadcrumbs">
-        <ul>
-          <li>
-            <nuxt-link to="/">Home</nuxt-link>
-          </li>
-          <li>
-            <nuxt-link to="/shop">Shop</nuxt-link>
-          </li>
-          <li>
-            <nuxt-link to="/shop/cart">Cart</nuxt-link>
-          </li>
-          <li>Checkout</li>
-        </ul>
-      </nav>
-
-      <h1>Order checkout</h1>
-
-      <div class="checkout">
-        <v-row>
-          <v-col cols="12" sm="12" md="6">
-            <div class="checkout__summary">
-              <div class="checkout__title">Order summary</div>
-              <div class="checkout__summary-group" v-if="cart.length">
-                <div class="checkout__summary-group--title">Regular products:</div>
-                <div class="checkout__summary-group--line" v-for="item in cart" :key="item.id">
-                  {{item.quantity}} x {{ weights[item.weight_id] }} {{ item.name }} <span>${{ item.price }}</span>
-                </div>
-              </div>
-              <div class="checkout__summary-group" v-if="mixs.cart && mixs.cart.data && mixs.cart.data.length">
-                <div class="checkout__summary-group--title">Mix'N'Match products:</div>
-                <div class="mix-group" v-for="(mix, i) in mixs.cart.data" :key="i">
-                  <div v-for="(mixGroup,index) in mix.products" :key="index">
-                    <div class="checkout__summary-group--line" v-for="item in mixGroup" :key="item.id">
-                      {{item.quantity * mix.quantity}} x {{ weights[item.weight_id] }} {{ item.name }} <span>${{ item.price * item.quantity * mix.quantity }}</span>
-                    </div>
-                    <div></div>
-                  </div>
-                </div>
-              </div>
-              <div class="checkout__summary-total" v-if="promocodeApplied">
-                Cart total:
-                <div>
-                  ${{calculateCartTotal}}
-                  <span v-if="promocodeIsPercent">(${{promocodeValue}} off)</span>
-                  <span v-else>({{promocodeValue}}% off)</span>
-                </div>
-              </div>
-              <div class="checkout__summary-total" v-else>Cart total: <div>${{calculateCartTotal}}</div></div>
-              <div class="checkout__summary-total">Delivery: <div>${{calculateCartTotal >= 100 ? 0 : 10}}</div></div>
-              <div class="checkout__summary-totals">Order total: <div>${{calculateTotal}}</div></div>
-            </div>
-          </v-col>
-          <v-col cols="12" sm="12" md="6">
-            <div class="checkout__client">
-              <div class="checkout__title">Client information</div>
-              <div class="checkout__client-group">
-                <span>Name *</span>
-                <v-text-field v-model="name" label="example: Johnny Cage" solo hide-details height="40" dense/>
-              </div>
-              <div class="checkout__client-group">
-                <span>Phone *</span>
-                <v-text-field
-                  v-model="phone"
-                  label="example: 4377787966"
-                  solo
-                  hide-details
-                  height="40"
-                  dense
-                  inputmode="numeric"
-                  name="phone"
-                  pattern="[0-9]*"
-                  type="number"
-                />
-              </div>
-              <div class="checkout__client-group">
-                <span>Payment *</span>
-                <v-select v-model="payment" solo :items="payments" height="40" dense hide-details/>
-              </div>
-              <div class="checkout__client-group" v-click-outside="onClickOutside">
-                <span>Address *</span>
-                <div class="checkout__client-address">
-                  <v-text-field
-                    v-model="addressQuery"
-                    solo
-                    dense
-                    hide-details
-                    label="example: 20, Main str, Ontario"
-                    prepend-inner-icon="mdi-magnify"
-                    @focus="showResults = true"
-                    @input="resultPicked = false"
-                  />
-                  <div class="results" :class="{active: results.length && showResults}">
-                    <div v-for="(result, i) in results" :key="i" @click="onResultSelected(result.text)"><span>{{result.text}}</span></div>
-                  </div>
-                </div>
-              </div>
-              <div class="checkout__client-group">
-                <span>Comment</span>
-                <v-text-field
-                  v-model="comment"
-                  label="Leave a comment for the order"
-                  solo
-                  hide-details
-                  height="40"
-                  dense
-                  name="comment"
-                />
-              </div>
-              <div class="checkout__client-group">
-                <span>Promocode</span>
-                <div class="checkout__client-promocode">
-                  <v-text-field
-                    v-model="promocode"
-                    label="Enter promocode"
-                    solo
-                    hide-details
-                    height="40"
-                    dense
-                    name="promocode"
-                    :disabled="promocodeDisabled"
-                  />
-                  <v-btn
-                    depressed
-                    @click="applyPromocode"
-                    height="40"
-                    color="#28A745"
-                    :disabled="promocodeDisabled || this.promocode.length === 0 || !checkRequiredFields"
-                    :loading="applyingPromocode"
-                  >
-                    Apply
-                  </v-btn>
-                </div>
-              </div>
-              <v-btn
-                depressed
-                color="#28A745"
-                class="white--text mt-5"
-                @click="checkout"
-                :loading="sending"
-                height="60"
-                :disabled="!checkRequiredFields"
-              >
-                Send order
-              </v-btn>
-            </div>
-          </v-col>
-        </v-row>
+  <div class="checkout">
+    <div class="checkout__client">
+      <div class="checkout__title"><img src="@/static/images/cart-client-icon.png" alt="Client information">Client information</div>
+      <div class="checkout__client-group">
+        <v-text-field v-model="name" label="Name *" solo hide-details height="50" dense/>
       </div>
-    </v-container>
+      <div class="checkout__client-group">
+        <v-text-field
+          v-model="phone"
+          label="Phone *"
+          solo
+          hide-details
+          height="50"
+          dense
+          inputmode="numeric"
+          name="phone"
+          pattern="[0-9]*"
+          type="number"
+        />
+      </div>
+      <div class="checkout__client-group">
+        <v-select v-model="payment" solo :items="payments" height="50" dense hide-details placeholder="Payment *"/>
+      </div>
+      <div class="checkout__client-group" v-click-outside="onClickOutside">
+        <div class="checkout__client-address">
+          <v-text-field
+            v-model="addressQuery"
+            solo
+            dense
+            height="50"
+            hide-details
+            label="Address *"
+            @focus="showResults = true"
+            @input="resultPicked = false"
+          />
+          <div class="results" :class="{active: results.length && showResults}">
+            <div v-for="(result, i) in results" :key="i" @click="onResultSelected(result.text)"><span>{{result.text}}</span></div>
+          </div>
+        </div>
+      </div>
+      <div class="checkout__client-group">
+        <v-text-field
+          v-model="comment"
+          label="Comment"
+          solo
+          hide-details
+          height="50"
+          dense
+          name="comment"
+        />
+      </div>
+      <div class="checkout__client-group">
+        <div class="checkout__client-promocode">
+          <v-text-field
+            v-model="promocode"
+            label="Promocode"
+            solo
+            hide-details
+            height="50"
+            dense
+            name="promocode"
+            :disabled="promocodeDisabled"
+          />
+          <v-btn
+            depressed
+            @click="applyPromocode"
+            height="50"
+            color="#28A745"
+            :disabled="promocodeDisabled || this.promocode.length === 0 || !checkRequiredFields"
+            :loading="applyingPromocode"
+          >
+            Apply
+          </v-btn>
+        </div>
+      </div>
+      <v-btn
+        class="checkout__btn"
+        depressed
+        color="#28A745"
+        @click="checkout"
+        :loading="sending"
+        height="60"
+        :disabled="!checkRequiredFields"
+      >
+        Send order
+      </v-btn>
+    </div>
   </div>
 </template>
 
@@ -157,17 +93,6 @@
 import { mapGetters } from 'vuex'
 
 export default {
-  scrollToTop: true,
-  head: {
-    title: 'Order summary | TOPBUD store',
-    meta: [
-      {
-        hid: 'description',
-        name: 'description',
-        content: 'Your shopping cart with TOPBUD store'
-      }
-    ]
-  },
   data: () => ({
     payment: 'cash',
     phone: '',
@@ -383,101 +308,31 @@ export default {
 
 <style lang="scss" scoped>
   .checkout {
-    margin-top: 40px;
-    margin-bottom: 100px;
+    margin-left: 5px;
+    padding-top: 12px;
+    position: sticky;
+    top: 60px;
 
     @media(max-width: 768px) {
-      .row {
-        flex-direction: column-reverse;
-      }
+      margin-left: 0;
+      padding-top: 0;
     }
 
     &__title {
       font-weight: 700;
-      font-size: 22px;
-      margin-bottom: 15px;
-    }
-
-    &__summary {
-      border: 1px solid #dedede;
-      border-radius: 8px;
+      font-size: 20px;
+      margin-bottom: 32px;
       display: flex;
-      flex-direction: column;
-      padding: 12px 20px;
-      height: 100%;
+      align-items: center;
 
-      &-group {
-        display: flex;
-        flex-direction: column;
-
-        &:not(:last-of-type) {
-          margin-bottom: 20px;
-          padding-bottom: 20px;
-          border-bottom: 1px solid #dedede;
-        }
-
-        &--title {
-          font-weight: 700;
-          font-size: 18px;
-          border-bottom: 1pt solid #dedede;
-          padding-bottom: 20px;
-          margin-bottom: 20px;
-          line-height: 1;
-        }
-
-        &--line {
-          display: flex;
-          align-items: center;
-
-          &:not(:last-of-type) {
-            margin-bottom: 4px;
-          }
-
-          span {
-            margin-left: auto;
-            font-weight: 700;
-          }
-        }
-      }
-
-      &-total {
-        align-self: flex-end;
-        font-weight: 700;
-        display: flex;
-        align-items: center;
-
-        div {
-          font-weight: 700;
-          margin-left: 10px;
-          font-size: 16px;
-
-          span {
-            color: #28A745;
-          }
-        }
-      }
-
-      &-totals {
-        align-self: flex-end;
-        font-weight: 700;
-        color: red;
-        display: flex;
-        align-items: center;
-
-        div {
-          font-weight: 700;
-          margin-left: 10px;
-          font-size: 16px;
-        }
+      img {
+        margin-right: 20px;
       }
     }
 
     &__client {
-      border: 1px solid #dedede;
-      border-radius: 8px;
       display: flex;
       flex-direction: column;
-      padding: 12px 20px;
       height: 100%;
 
       &-promocode {
@@ -495,7 +350,7 @@ export default {
         flex-direction: column;
 
         &:not(:last-child) {
-          margin-bottom: 15px;
+          margin-bottom: 20px;
         }
 
         span {
@@ -547,6 +402,13 @@ export default {
           }
         }
       }
+    }
+
+    &__btn {
+      font-weight: 700;
+      font-size: 20px;
+      color: #ffffff;
+      text-transform: none;
     }
   }
 

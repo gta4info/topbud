@@ -1,30 +1,10 @@
 <template>
   <div class="page">
-    <div class="loading" v-if="loading">
-      <v-progress-circular
-        indeterminate
-        color="#699551"
-        size="30"
-      />
-    </div>
-    <template v-else>
-      <v-container>
-        <nav class="breadcrumbs">
-          <ul>
-            <li><nuxt-link to="/">Home</nuxt-link></li>
-            <li><nuxt-link to="/shop">Shop</nuxt-link></li>
-            <li><nuxt-link to="/blog">Blog</nuxt-link></li>
-            <li>{{ blog.name }}</li>
-          </ul>
-        </nav>
-      </v-container>
-    </template>
     <section class="content">
       <v-container>
         <v-row>
           <v-col cols="12">
             <div class="blog__top">
-              <h1>{{ blog.name }}</h1>
               <img :src="blog.img" :alt="blog.name">
             </div>
           </v-col>
@@ -54,14 +34,30 @@ export default {
   },
   name: 'blog_slug',
   async asyncData({$axios, params}) {
-    let loading = true;
     const data = await $axios.$get(`/blog?slug=${params.slug}`);
 
     let blog = data[Object.keys(data)[0]];
-    // blog.img = `http://31.186.250.216:8000/${blog.img}`;
+    blog.img = `https://topbudstore.com/${blog.img}`;
 
-    loading = false;
-    return { blog, loading };
+    let breadcrumbs = [
+      {
+        link: '/',
+        title: 'home'
+      },
+      {
+        link: '/blog',
+        title: 'blog'
+      },
+      {
+        link: null,
+        title: blog.name
+      },
+    ]
+
+    return { blog, breadcrumbs };
+  },
+  created () {
+    this.$root.$emit('set-breadcrumbs', this.breadcrumbs);
   }
 }
 </script>
@@ -72,6 +68,12 @@ export default {
     display: flex;
     flex-direction: column;
     align-items: center;
+
+    @media(max-width: 768px) {
+      img {
+        max-width: 100%;
+      }
+    }
 
     h1 {
       margin-bottom: 30px;

@@ -1,5 +1,5 @@
 <template>
-  <v-dialog v-model="dialog" max-width="800" persistent>
+  <v-dialog v-model="dialog" max-width="800" persistent content-class="dialogRestriction">
     <div class="card">
       <div class="card__body">
         <img src="@/static/images/logo.png" alt="TOPBUD">
@@ -33,6 +33,12 @@ export default {
 
     @media(max-width: 768px) {
       padding: 50px;
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      background: #202536 url('~/static/images/dialog-restriction-bg.png') no-repeat;
+      background-size: cover;
     }
 
     &__body {

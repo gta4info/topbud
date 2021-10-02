@@ -37,7 +37,7 @@ export default {
     border: 1px solid #28A745;
     border-radius: 8px;
     position: relative;
-    height: 100%;
+    height: calc(50% - 5px);
     cursor: pointer;
 
     &:hover {

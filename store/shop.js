@@ -6,11 +6,13 @@ export const state = () => ({
   categories: [],
   cartLength: 0,
   mixs: {
+    1: [],
     2: [],
     4: [],
     selected: {
-      2: [{},{}],
-      4: [{},{}]
+      1: [],
+      2: [],
+      4: []
     },
     cart: []
   }
@@ -95,10 +97,6 @@ export const mutations = {
       data.key = state.mixs.selected[data.type].indexOf(state.mixs.selected[data.type].find(item => item.id === data.id))
     }
     state.mixs.selected[data.type].splice(data.key, 1)
-
-    if(state.mixs.selected[data.type].length === 1) {
-      state.mixs.selected[data.type].push({});
-    }
   },
   PUSH_PRODUCT_TO_SELECTED_MIXS(state, data) {
     if(!state.mixs.selected[data.type].find(item => item.id === data.product.id)) {
@@ -107,18 +105,6 @@ export const mutations = {
       state.mixs.selected[data.type].unshift(data.product);
 
       Vue.set(state.mixs.selected[data.type], data.key, data.product)
-
-      let firstEmpty = state.mixs.selected[data.type].indexOf(state.mixs.selected[data.type].find(item => !item.id));
-      if (firstEmpty >= 0) {
-        state.mixs.selected[data.type].splice(firstEmpty, 1)
-      }
-      if(process.browser) {
-        if(window.outerWidth > 600) {
-          if (!state.mixs.selected[data.type].find(item => !item.id)) {
-            state.mixs.selected[data.type].unshift({});
-          }
-        }
-      }
     }
   },
   SET_WEIGHTS(state, data) {
@@ -136,13 +122,13 @@ export const mutations = {
   SET_CATEGORIES(state, data) {
     let arr = [];
     Object.keys(data).map(key => {
-      data[key].img = '/' + data[key].img;
+      data[key].img = 'https://topbudstore.com/' + data[key].img;
       arr.push(data[key]);
 
       if(data[key].subs) {
         let subs = [];
         Object.keys(data[key].subs).map(sub => {
-          data[key].subs[sub].img = '/' + data[key].subs[sub].img;
+          data[key].subs[sub].img = 'https://topbudstore.com/' + data[key].subs[sub].img;
           subs.push(data[key].subs[sub])
         });
         data[key].subs = subs;
@@ -153,7 +139,7 @@ export const mutations = {
   SET_CART(state, data) {
     data.map(p => {
       let quantity = this.$cookies.get('cart').find(item => item.product_id === p.id).amount
-      p.img = '/' + p.img;
+      p.img = 'https://topbudstore.com/' + p.img;
       p.quantity = quantity;
       return p;
     })

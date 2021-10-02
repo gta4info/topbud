@@ -1,240 +1,288 @@
 <template>
-  <div class="page">
-    <v-container>
-      <h1>Mix'N'Match</h1>
-      <nav class="breadcrumbs">
-        <ul>
-          <li><nuxt-link to="/">Home</nuxt-link></li>
-          <li><nuxt-link to="/shop">Shop</nuxt-link></li>
-          <li><nuxt-link to="/shop/deals">OZ Deals</nuxt-link></li>
-          <li>Mix'N'Match</li>
-        </ul>
-      </nav>
-
-      <div class="pack">
-        <v-container>
-          <v-row class="d-flex flex-wrap">
-            <v-col cols="12" sm="12" md="7">
-              <div>
-                <v-container class="pack__content">
-                  <v-row class="md">
-                    <Filters :min="min" :max="max" :range="[]" :search="search" inline/>
-                  </v-row>
-                  <v-row>
-                    <v-col cols="12" class="mobileTop">
-                      <div>
-                        <div class="pack__title">Choose products</div>
-                        <div class="pack__options-weights--items pack__options-weightsMobile">
-                          <div
-                            class="pack__options-weights--item"
-                            :class="{active: selectedWeight === 2}"
-                            @click="selectedWeight = 2"
-                          >
-                            1 oz
-                          </div>
-                          <div
-                            class="pack__options-weights--item"
-                            :class="{active: selectedWeight === 4}"
-                            @click="selectedWeight = 4"
-                          >
-                            1/2 oz
-                          </div>
-                        </div>
+  <div class="page mix">
+    <div class="goBack" @click="$router.back()">Go back</div>
+    <v-container v-if="$vuetify.breakpoint.mdAndUp">
+      <v-row>
+        <v-col cols="3">
+          <Filters :min="min" :max="max" :search="search"/>
+        </v-col>
+        <v-col cols="9">
+          <v-container class="py-0">
+            <v-row>
+              <v-col cols="12">
+                <div class="sorting">
+                  <v-select
+                    v-model="selectedSorting"
+                    :items="sorting"
+                    value="value"
+                    text="text"
+                    outlined
+                    height="30"
+                    dense
+                    hide-details
+                  />
+                </div>
+              </v-col>
+              <v-col cols="12">
+                <div class="mnm">
+                  <div class="mnm__title">Choose size</div>
+                  <div class="mnm__options">
+                    <div
+                      class="mnm__option"
+                      :class="{active: selectedWeight === 1}"
+                      @click="selectedWeight = 1"
+                    >
+                      2 Oz
+                    </div>
+                    <div
+                      class="mnm__option"
+                      :class="{active: selectedWeight === 2}"
+                      @click="selectedWeight = 2"
+                    >
+                      1 Oz
+                    </div>
+                    <div
+                      class="mnm__option"
+                      :class="{active: selectedWeight === 4}"
+                      @click="selectedWeight = 4"
+                    >
+                      1/2 Oz
+                    </div>
+                  </div>
+                  <div class="mnm__pack" v-if="mixs.selected[selectedWeight].filter(item => item.id).length >= 2">
+                    <div class="mnm__pack-items">
+                      <div
+                        class="mnm__pack-item"
+                        v-for="(product, i) in mixsSelected[selectedWeight].filter(item => Object.keys(item).length)"
+                        :key="i"
+                        v-if="i < 2"
+                      >
+                        <img :src="product.img" :alt="product.name">
                       </div>
-                      <div v-if="$vuetify.breakpoint.smAndDown">
-                        <v-text-field
-                          v-model="search"
-                          solo
-                          dense
-                          hide-details
-                          clearable
-                          height="40"
-                          label="Search"
-                          class="filter__name"
-                          @focusin="showCombineOptionsButton = false"
-                          @focusout="showCombineOptionsButton = true"
-                        />
-                      </div>
-                    </v-col>
-                  </v-row>
-                  <div class="pack__products">
-                    <v-row>
-                      <v-col
-                        md="4"
-                        sm="12"
-                        cols="12"
-                        v-for="product in productsFiltered"
+                      <div class="mnm__pack-count" v-if="mixsSelected[selectedWeight].filter(item => Object.keys(item).length).length - 2 > 0">+{{mixsSelected[selectedWeight].filter(item => Object.keys(item).length).length - 2}}</div>
+                    </div>
+                    <div class="mnm__pack-totals">
+                      <div class="mnm__pack-totals--oldPrice">${{calculateMixPrice.old}}</div>
+                      <div class="mnm__pack-totals--price">${{calculateMixPrice.sum}} <span class="mnm__pack-totals--weight"> / {{calculateMixPrice.weight}} Oz</span></div>
+                    </div>
+                    <v-btn class="mnm__editBtn" depressed @click="mixModal = !mixModal">Edit Pack</v-btn>
+                  </div>
+                  <div class="mnm__modal" v-if="mixModal" v-click-outside="onClickOutsideModal">
+                    <div class="mnm__modal-title">Products in pack:</div>
+                    <div class="mnm__modal-products">
+                      <div
+                        class="mnm__modal-product"
+                        v-for="(product, i) in mixsSelected[selectedWeight].filter(item => Object.keys(item).length)"
                         :key="product.id"
                       >
-                        <PackProductCard :product="product" :key="product.id" :selectedWeight="selectedWeight" :selected="product.selected"/>
-                      </v-col>
-                    </v-row>
-                  </div>
-                </v-container>
-              </div>
-            </v-col>
-            <v-col cols="12" sm="12" md="5">
-              <div class="pack__options-wrapper">
-
-                <div class="pack__optionsMobile-btn--wrapper" :class="{active: showCombineOptionsButton}">
-                  <v-btn
-                    class="pack__optionsMobile-btn"
-                    depressed
-                    block
-                    color="#7FAD39"
-                    @click="showCombineOptions = true"
-                    :disabled="!mixsSelected[selectedWeight].filter(item => Object.keys(item).length).length"
-                  >
-                    Combine options ({{mixsSelected[selectedWeight].filter(item => Object.keys(item).length).length}})
-                  </v-btn>
-                </div>
-
-                <div class="pack__options" :class="{active: showCombineOptions}">
-                  <div class="pack__options-content">
-                    <div class="pack__options-group">
-                      <v-btn icon class="pack__optionsMobile-close" @click="showCombineOptions = false">
-                        <v-icon>mdi-close</v-icon>
-                      </v-btn>
-                      <div class="pack__title">Combine options</div>
-                      <div class="pack__options-weights">
-                        <div class="pack__options-title">Choose weight</div>
-                        <div class="pack__options-weights--items">
-                          <div
-                            class="pack__options-weights--item"
-                            :class="{active: selectedWeight === 2}"
-                            @click="selectedWeight = 2"
+                        <div class="mnm__modal-product--img">
+                          <img :src="product.img" :alt="product.name">
+                        </div>
+                        <div class="mnm__modal-product--info">
+                          <div class="mnm__modal-product--name">{{product.name}}</div>
+                        </div>
+                        <div class="mnm__modal-product--quantity">
+                          <v-btn
+                            x-small
+                            depressed
+                            @click="changeAmountForProduct(i, product, product.quantity - 1)"
                           >
-                            1 oz
-                          </div>
-                          <div
-                            class="pack__options-weights--item"
-                            :class="{active: selectedWeight === 4}"
-                            @click="selectedWeight = 4"
+                            <v-icon small color="#C4C4C4">mdi-minus</v-icon>
+                          </v-btn>
+                          <div>{{product.quantity}}</div>
+                          <v-btn
+                            x-small
+                            depressed
+                            @click="changeAmountForProduct(i, product, product.quantity + 1)"
                           >
-                            1/2 oz
-                          </div>
+                            <v-icon small color="#C4C4C4">mdi-plus</v-icon>
+                          </v-btn>
+                        </div>
+                        <div class="mnm__modal-product--total">
+                          <div class="mnm__modal-product--weight">{{calculateProductTotalWeight(product.id)}}</div>
+                          <div class="mnm__modal-product--price">${{product.quantity * product.deal_price}}</div>
+                        </div>
+                        <div class="mnm__modal-product--remove">
+                          <v-btn icon @click="removeFromSelected(i, product.id)" color="#B1B1B1"><v-icon>mdi-trash-can-outline</v-icon></v-btn>
                         </div>
                       </div>
                     </div>
-                    <div class="pack__options-group">
-                      <div class="pack__options-title">Fill slots with products</div>
-                      <div class="pack__options-slots">
-                        <template v-if="selectedWeight === 2">
-                          <div
-                            class="pack__options-slot"
-                            v-for="(product, i) of mixsSelected[2]"
-                            :key="product.id"
-                          >
-                            <template v-if="Object.keys(product).length">
-                              <div class="pack__options-slot--image">
-                                <img :src="product.img" :alt="product.name">
-                              </div>
-                              <div class="pack__options-slot--content">
-                                <div class="pack__options-slot--name">{{product.name}}</div>
-                                <div class="pack__options-slot--price">${{product.deal_price}} x{{product.quantity}} = ${{product.deal_price * product.quantity}}</div>
-
-                                <div class="pack__options-slot--quantity">
-                                  <v-btn
-                                    width="20"
-                                    height="20"
-                                    x-small
-                                    depressed
-                                    @click="changeAmountForProduct(i, product, product.quantity - 1)"
-                                  >
-                                    <v-icon small>mdi-minus</v-icon>
-                                  </v-btn>
-                                  <div class="mx-2">{{product.quantity}}</div>
-                                  <v-btn
-                                    width="20"
-                                    height="20"
-                                    x-small
-                                    depressed
-                                    @click="changeAmountForProduct(i, product, product.quantity + 1)"
-                                  >
-                                    <v-icon small>mdi-plus</v-icon>
-                                  </v-btn>
-                                </div>
-
-                              </div>
-                              <div class="pack__options-slot--remove">
-                                <v-btn icon @click="removeFromSelected(i, product.id)"><v-icon>mdi-close</v-icon></v-btn>
-                              </div>
-                            </template>
-                            <div class="pack__options-slot--empty" v-else>
-                              <div>1/2 oz</div>
-                              <span>Empty slot</span>
-                            </div>
-                          </div>
-                        </template>
-                        <template v-if="selectedWeight === 4">
-                          <div
-                            class="pack__options-slot"
-                            v-for="(product, i) of mixsSelected[4]"
-                            :key="i"
-                          >
-                            <template v-if="Object.keys(product).length">
-                              <div class="pack__options-slot--image">
-                                <img :src="product.img" :alt="product.name">
-                              </div>
-                              <div class="pack__options-slot--content">
-                                <div class="pack__options-slot--name">{{product.name}}</div>
-                                <div class="pack__options-slot--price">${{product.deal_price}} x{{product.quantity}} = ${{product.deal_price * product.quantity}}</div>
-
-                                <div class="pack__options-slot--quantity">
-                                  <v-btn
-                                    x-small
-                                    depressed
-                                    @click="changeAmountForProduct(i, product, product.quantity - 1)"
-                                  >
-                                    <v-icon small>mdi-minus</v-icon>
-                                  </v-btn>
-                                  <div class="mx-2">{{product.quantity}}</div>
-                                  <v-btn
-                                    x-small
-                                    depressed
-                                    @click="changeAmountForProduct(i, product, product.quantity + 1)"
-                                  >
-                                    <v-icon small>mdi-plus</v-icon>
-                                  </v-btn>
-                                </div>
-
-                              </div>
-                              <div class="pack__options-slot--remove">
-                                <v-btn icon @click="removeFromSelected(i, product.id)"><v-icon>mdi-close</v-icon></v-btn>
-                              </div>
-                            </template>
-                            <div class="pack__options-slot--empty" v-else>
-                              <div>1/4 oz</div>
-                              <span>Empty slot</span>
-                            </div>
-                          </div>
-                        </template>
+                    <div class="mnm__modal-totals">
+                      <div class="mnm__modal-totals--item">
+                        <div class="mnm__modal-totals--title">You Save:</div>
+                        <div class="mnm__modal-totals--sum">${{calculateMixPrice.saved}}</div>
                       </div>
-                    </div>
-                    <div class="pack__options-group">
-                      <div class="pack__options-title md">Mix'N'Match total</div>
-                      <div class="pack__cart">
-                        <div class="pack__cart-saved md"><span>${{calculateMixPrice.sum}}</span></div>
-                        <v-btn
-                          depressed
-                          color="#7FAD39"
-                          class="pack__cart-btn"
-                          :disabled="mixs.selected[selectedWeight].filter(item => Object.keys(item).length).length < 2"
-                          @click="addToCart"
-                        >
-                          <template v-if="$vuetify.breakpoint.mdAndUp">Add to cart</template>
-                          <template v-else-if="calculateMixPrice.sum > 0">Add to cart (${{calculateMixPrice.sum}})</template>
-                          <template v-else>Add to cart</template>
-                        </v-btn>
-                        <div class="pack__cart-saved mt-5 md">You've just saved with Mix'N'Match: <span style="font-size: 18px;">${{calculateMixPrice.saved}}</span></div>
+                      <div class="mnm__modal-totals--item">
+                        <div class="mnm__modal-totals--title">Pack Total:</div>
+                        <div class="mnm__modal-totals--sum">${{calculateMixPrice.sum}}</div>
                       </div>
+                      <v-btn
+                        depressed
+                        color="#21AA5B"
+                        class="mnm__modal-checkout"
+                        @click="addToCart"
+                      >
+                        Add to cart
+                      </v-btn>
                     </div>
                   </div>
                 </div>
+              </v-col>
+            </v-row>
+            <v-row>
+              <v-col cols="12">
+                <div class="mnm__title">Choose atleast two products</div>
+              </v-col>
+              <template v-if="productsFiltered.length">
+                <v-col style="padding: 16px 5px;" cols="4" v-for="product in productsFiltered" :key="product.id">
+                  <PackProductCard :product="product" :key="product.id" :selectedWeight="selectedWeight" :selected="product.selected"/>
+                </v-col>
+              </template>
+              <v-col cols="12" v-else>
+                <p>No products was found!</p>
+              </v-col>
+            </v-row>
+          </v-container>
+        </v-col>
+      </v-row>
+    </v-container>
+
+
+    <v-container v-else>
+      <div class="mnm">
+        <div class="mnm__title">Choose size</div>
+        <div class="mnm__options">
+          <div
+            class="mnm__option"
+            :class="{active: selectedWeight === 1}"
+            @click="selectedWeight = 1"
+          >
+            2 Oz
+          </div>
+          <div
+            class="mnm__option"
+            :class="{active: selectedWeight === 2}"
+            @click="selectedWeight = 2"
+          >
+            1 Oz
+          </div>
+          <div
+            class="mnm__option"
+            :class="{active: selectedWeight === 4}"
+            @click="selectedWeight = 4"
+          >
+            1/2 Oz
+          </div>
+        </div>
+      </div>
+
+      <FiltersMobile :min="min" :max="max" :search="search"/>
+
+      <div class="sorting" style="margin: 18px 0;">
+        <v-select
+          v-model="selectedSorting"
+          :items="sorting"
+          value="value"
+          text="text"
+          outlined
+          height="30"
+          dense
+          hide-details
+        />
+      </div>
+
+      <div class="mnm__title" style="margin-bottom: 15px;">Choose atleast two products</div>
+
+      <div class="mix__products" v-if="productsFiltered.length">
+        <div v-for="product in productsFiltered" :key="product.id">
+          <PackProductCardMobile :product="product" :key="product.id" :selectedWeight="selectedWeight" :selected="product.selected"/>
+        </div>
+      </div>
+      <p v-else>No products was found!</p>
+
+      <div class="mnm__pack" v-if="mixs.selected[selectedWeight].filter(item => item.id).length >= 2">
+        <div class="mnm__pack-items">
+          <div
+            class="mnm__pack-item"
+            v-for="(product, i) in mixsSelected[selectedWeight].filter(item => Object.keys(item).length)"
+            :key="i"
+            v-if="i < 2"
+          >
+            <img :src="product.img" :alt="product.name">
+          </div>
+          <div class="mnm__pack-count" v-if="mixsSelected[selectedWeight].filter(item => Object.keys(item).length).length - 2 > 0">+{{mixsSelected[selectedWeight].filter(item => Object.keys(item).length).length - 2}}</div>
+        </div>
+        <div class="mnm__pack-totals">
+          <div class="mnm__pack-totals--oldPrice">${{calculateMixPrice.old}}</div>
+          <div class="mnm__pack-totals--price">${{calculateMixPrice.sum}} <span class="mnm__pack-totals--weight"> / {{calculateMixPrice.weight}} Oz</span></div>
+        </div>
+        <v-btn class="mnm__editBtn" depressed @click="mixModal = !mixModal">Edit Pack</v-btn>
+      </div>
+      <div class="mnm__modal" v-if="mixModal" v-click-outside="onClickOutsideModal">
+        <v-btn icon class="mnm__modal-close" @click="mixModal = false">
+          <v-icon size="24">mdi-close</v-icon>
+        </v-btn>
+        <div class="mnm__modal-title">Products in pack:</div>
+        <div class="mnm__modal-products">
+          <div
+            class="mnm__modal-product"
+            v-for="(product, i) in mixsSelected[selectedWeight].filter(item => Object.keys(item).length)"
+            :key="product.id"
+          >
+            <div>
+              <div class="mnm__modal-product--img">
+                <img :src="product.img" :alt="product.name">
               </div>
-            </v-col>
-          </v-row>
-        </v-container>
+              <div class="mnm__modal-product--info">
+                <div class="mnm__modal-product--name">{{product.name}}</div>
+              </div>
+            </div>
+            <div>
+              <div class="mnm__modal-product--quantity">
+                <v-btn
+                  x-small
+                  depressed
+                  @click="changeAmountForProduct(i, product, product.quantity - 1)"
+                >
+                  <v-icon small color="#C4C4C4">mdi-minus</v-icon>
+                </v-btn>
+                <div>{{product.quantity}}</div>
+                <v-btn
+                  x-small
+                  depressed
+                  @click="changeAmountForProduct(i, product, product.quantity + 1)"
+                >
+                  <v-icon small color="#C4C4C4">mdi-plus</v-icon>
+                </v-btn>
+              </div>
+              <div class="mnm__modal-product--total">
+                <div class="mnm__modal-product--weight">{{calculateProductTotalWeight(product.id)}}</div>
+                <div class="mnm__modal-product--price">${{product.quantity * product.deal_price}}</div>
+              </div>
+              <div class="mnm__modal-product--remove">
+                <v-btn icon @click="removeFromSelected(i, product.id)" color="#B1B1B1"><v-icon>mdi-trash-can-outline</v-icon></v-btn>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="mnm__modal-totals">
+          <div class="mnm__modal-totals--item">
+            <div class="mnm__modal-totals--title">You Save:</div>
+            <div class="mnm__modal-totals--sum">${{calculateMixPrice.saved}}</div>
+          </div>
+          <div class="mnm__modal-totals--item">
+            <div class="mnm__modal-totals--title">Pack Total:</div>
+            <div class="mnm__modal-totals--sum">${{calculateMixPrice.sum}}</div>
+          </div>
+          <v-btn
+            depressed
+            color="#21AA5B"
+            class="mnm__modal-checkout"
+            @click="addToCart"
+          >
+            Add to cart
+          </v-btn>
+        </div>
       </div>
     </v-container>
   </div>
@@ -258,16 +306,24 @@ export default {
   },
   components: {
     'PackProductCard': () => import('@/components/shop/PackProductCard'),
+    'PackProductCardMobile': () => import('@/components/shop/PackProductCardMobile'),
     'Filters': () => import('@/components/shop/Filters'),
+    'FiltersMobile': () => import('@/components/shop/FiltersMobile'),
   },
   async asyncData({$axios, store}) {
-    let min = 0;
-    let max = 0;
+    let max1 = 0;
+    let min1 = 0;
+    let max2 = 0;
+    let min2 = 0;
+    let max4 = 0;
+    let min4 = 0;
+
     const first = await $axios.$get('/deals/mixs/2/0/0');
     let fProducts = first.products.map(item => {
-      if(min > item.deal_price || min === 0) min = item.deal_price;
-      if(max < item.deal_price || max === 0) max = item.deal_price;
+      if(min2 > item.deal_price || min2 === 0) min2 = item.deal_price;
+      if(max2 < item.deal_price || max2 === 0) max2 = item.deal_price;
       item.img = 'https://topbudstore.com/' + item.img;
+      item.selected = false;
       return item;
     })
     store.commit('shop/SET_MIXS', {
@@ -277,11 +333,11 @@ export default {
 
     const second = await $axios.$get('/deals/mixs/4/0/0');
     let sProducts = second.products.map(item => {
-      if(min > item.deal_price) min = item.deal_price;
-      if(max < item.deal_price) max = item.deal_price;
+      if(min4 > item.deal_price || min4 === 0) min4 = item.deal_price;
+      if(max4 < item.deal_price || max4 === 0) max4 = item.deal_price;
       item.img = 'https://topbudstore.com/' + item.img;
+      item.selected = false;
       return item;
-
     })
 
     store.commit('shop/SET_MIXS', {
@@ -289,35 +345,83 @@ export default {
       products: sProducts
     })
 
-    min = Math.round(min) - 1;
-    max = Math.round(max) + 1;
+    const third = await $axios.$get('/deals/mixs/1/0/0');
+    let tProducts = third.products.map(item => {
+      if(min1 > item.deal_price || min1 === 0) min1 = item.deal_price;
+      if(max1 < item.deal_price || max1 === 0) max1 = item.deal_price;
+      item.img = 'https://topbudstore.com/' + item.img;
+      item.selected = false;
+      return item;
+    })
+    store.commit('shop/SET_MIXS', {
+      type: 1,
+      products: tProducts
+    })
 
-    return {min, max};
+    min1 = Math.round(min1) - 1;
+    max1 = Math.round(max1) + 1;
+    min2 = Math.round(min2) - 1;
+    max2 = Math.round(max2) + 1;
+    min4 = Math.round(min4) - 1;
+    max4 = Math.round(max4) + 1;
+
+    let min = {
+      1: min1,
+      2: min2,
+      4: min4
+    }
+    let max = {
+      1: max1,
+      2: max2,
+      4: max4
+    }
+
+    let breadcrumbs = [
+      {
+        link: '/',
+        title: 'home'
+      },
+      {
+        link: '/shop',
+        title: 'shop'
+      },
+      {
+        link: null,
+        title: 'Mix’N’Match'
+      },
+    ]
+
+    return {min, max, breadcrumbs};
   },
   data: () => ({
-    selectedWeight: 2,
+    mixModal: false,
+    selectedWeight: 1,
     search: '',
-    showCombineOptions: false,
-    showCombineOptionsButton: true,
+    selectedSorting: 1,
+    sorting: [
+      {
+        text: 'Price: Low to High',
+        value: 1
+      },
+      {
+        text: 'Price: High to Low',
+        value: 2
+      }
+    ]
   }),
   watch: {
-    min() {
-      this.getFilteredProducts();
+    min: {
+      handler() {
+        this.getFilteredProducts();
+      },
+      deep: true
     },
-    max() {
-      this.getFilteredProducts();
+    max: {
+      handler() {
+        this.getFilteredProducts();
+      },
+      deep: true
     },
-    showCombineOptions() {
-      if(process.browser && this.$vuetify.breakpoint.smAndDown) {
-        let header = document.querySelector('.header');
-        if(this.showCombineOptions === true) {
-          console.log(header.classList)
-          header.classList.add("hidden")
-        } else {
-          header.classList.remove("hidden")
-        }
-      }
-    }
   },
   computed: {
     ...mapGetters({
@@ -326,22 +430,41 @@ export default {
     }),
     calculateMixPrice() {
       let sum = 0;
+      let old = 0;
       let saved = 0;
 
       this.mixs.selected[this.selectedWeight].filter(item => item.id).map(item => {
         if(Object.keys(item).length) {
           sum = sum + item.deal_price * item.quantity;
-          saved = saved + (item.price * item.quantity - item.deal_price * item.quantity)
+          old = old + (item.price * item.quantity);
+          saved = saved + (item.price * item.quantity - item.deal_price * item.quantity);
         }
+      })
+
+      let weight, weightTotal = 0;
+      if(this.selectedWeight === 1) {
+        weight = 2
+      }
+      if(this.selectedWeight === 2) {
+        weight = 1
+      }
+      if(this.selectedWeight === 4) {
+        weight = 0.5
+      }
+
+      this.mixs.selected[this.selectedWeight].filter(item => item.id).map(i => {
+        weightTotal = weightTotal + i.quantity * weight
       })
 
       return {
         sum: sum,
+        old: old,
+        weight: weightTotal,
         saved: saved
       };
     },
     productsFiltered() {
-      return this.mixs[this.selectedWeight].filter(item => {
+      let bySearch = this.mixs[this.selectedWeight].filter(item => {
         let re = new RegExp(this.search, 'ig');
         if(item.name.match(re)) {
           return item;
@@ -350,10 +473,24 @@ export default {
             return item;
           }
         }
-      })
+      });
+
+      if(this.selectedSorting === 1) {
+        return bySearch.sort((a, b) => {return a.price - b.price})
+      }
+
+      if(this.selectedSorting === 2) {
+        return bySearch.sort((a, b) => {return b.price - a.price})
+      }
     },
   },
   methods: {
+    onClickOutsideModal() {
+      this.mixModal = false;
+    },
+    calculateProductTotalWeight(id) {
+      return this.mixsSelected[this.selectedWeight].find(item => item.id === id).weight
+    },
     async changeAmountForProduct(key, product, quantity) {
       await this.$store.dispatch('shop/changeMixProductAmount', {key: key, product: product, quantity: quantity, type: this.selectedWeight})
         .then(res => {
@@ -364,7 +501,20 @@ export default {
     },
     async getFilteredProducts() {
       await this.$axios
-        .get(`/deals/mixs/2/${this.min}/${this.max}`)
+        .get(`/deals/mixs/1/${this.min[1]}/${this.max[1]}`)
+        .then(res => {
+          res.data.products.map(item => {
+            item.img = 'https://topbudstore.com/' + item.img;
+            item.selected = false;
+            return item;
+          })
+          this.$store.commit('shop/SET_MIXS', {
+            type: 1,
+            products: res.data.products
+          })
+        });
+      await this.$axios
+        .get(`/deals/mixs/2/${this.min[2]}/${this.max[2]}`)
         .then(res => {
           res.data.products.map(item => {
             item.img = 'https://topbudstore.com/' + item.img;
@@ -377,7 +527,7 @@ export default {
           })
         });
       await this.$axios
-        .get(`/deals/mixs/4/${this.min}/${this.max}`)
+        .get(`/deals/mixs/4/${this.min[4]}/${this.max[4]}`)
         .then(res => {
           res.data.products.map(item => {
             item.img = 'https://topbudstore.com/' + item.img;
@@ -422,15 +572,16 @@ export default {
       this.$store.commit('shop/CLEAR_SELECTED_MIXS', {type: this.selectedWeight});
       this.$store.commit('shop/SET_MIXS_CART');
 
-      this.showCombineOptions = false;
+      this.mixModal = false;
 
       this.$toast.success("Mix'N'Match was added to cart!", {duration: 1500})
     }
   },
   created () {
+    this.$root.$emit('set-breadcrumbs', this.breadcrumbs);
     this.$root.$on('change-filter-range', data => {
-      this.min = data.min;
-      this.max = data.max;
+      this.min[this.selectedWeight] = data.min;
+      this.max[this.selectedWeight] = data.max;
     })
     this.$root.$on('change-filter-search-query', data => {
       this.search = data;
@@ -440,436 +591,481 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-
-@media(max-width: 768px) {
-  .breadcrumbs {
-    display: none;
-  }
-
-  .page {
-    overflow: hidden !important;
-    min-height: auto;
-    max-height: 100%;
-
-    > .container {
-      height: 100%;
-      display: flex;
-      flex-direction: column;
-    }
-  }
-
-  .title {
-    display: none;
-  }
-
-  .mobileTop {
+  .mnm {
     display: flex;
-    flex-direction: column;
-    margin-bottom: 15px;
-    padding: 0 12px !important;
-    height: auto !important;
+    align-items: center;
+    position: relative;
+    height: 50px;
 
-    > div:first-of-type {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      margin-bottom: 15px;
-    }
-  }
-}
-
-.pack {
-
-  @media(max-width: 768px) {
-    margin: -12px -12px 0;
-    overflow: hidden;
-    flex-grow: 1;
-
-    > .container {
-      height: 100%;
-
-      > .row {
-
-        .col-12 {
-
-          &:first-of-type {
-            height: calc(100% - 85px);
-            display: flex;
-
-            > div {
-              height: 100%;
-              width: 100%;
-            }
-          }
-        }
-      }
+    @media(max-width: 768px) {
+      height: 31px;
+      margin-bottom: 18px;
     }
 
-    > .container {
-
-      > .row {
-        height: 100%;
-      }
-    }
-
-    &__content {
-      display: flex;
-      flex-direction: column;
-      padding-top: 0;
-      padding-left: 0;
-      padding-right: 0;
-      height: calc(100% + 25px);
+    &__title {
+      color: #333333;
+      font-size: 24px;
+      font-weight: 700;
 
       @media(max-width: 768px) {
-        .row + .row {
-          margin-top: 0;
+        font-size: 20px;
+      }
+
+      @media(max-width: 320px) {
+        font-size: 16px;
+      }
+    }
+
+    &__options {
+      margin-left: 28px;
+      display: flex;
+      align-items: center;
+
+      @media(max-width: 768px) {
+        margin-left: 18px;
+      }
+    }
+
+    &__option {
+      padding: 5px 9px;
+      border-radius: 30px;
+      color: #333333;
+      background: #fff;
+      transition: .3s;
+      font-weight: 700;
+      cursor: pointer;
+
+      @media(max-width: 768px) {
+        font-size: 14px;
+        flex-shrink: 0;
+      }
+
+      &:not(:last-of-type) {
+        margin-right: 6px;
+
+        @media(max-width: 768px) {
+          margin-right: 0;
         }
       }
-    }
-  }
-
-  &__products {
-    @media(max-width: 768px) {
-      margin-top: 10px;
-      height: calc(100vh - 85px - 60px);
-      overflow-x: hidden;
-      overflow-y: auto;
-      align-items: flex-start;
-
-      > .row {
-        padding-top: 19px;
-      }
-    }
-  }
-
-  &__title {
-    font-size: 22px;
-    font-weight: 900;
-  }
-
-  &__options {
-    display: flex;
-    flex-direction: column;
-    padding-left: 10px;
-    border-left: 1px solid #E9E9E9;
-    height: 100%;
-
-    @media(max-width: 768px) {
-      position: fixed;
-      top: 105vh;
-      left: 0;
-      right: 0;
-      background: #fff;
-      z-index: 2;
-      transition: .5s ease-in-out;
-      padding-left: 0;
-      overflow: hidden !important;
-      height: 100%;
 
       &.active {
-        top: 0;
+        background: #f6c76f;
+        color: #fff;
+        cursor: default;
+      }
+    }
+
+    &__pack {
+      display: flex;
+      align-items: center;
+      margin-left: auto;
+
+      @media(max-width: 768px) {
+        margin-left: 0;
+        background: #ffffff;
+        z-index: 1;
+        position: absolute;
         bottom: 0;
-      }
-    }
-
-    .pack__title {
-      text-align: center;
-    }
-
-    &-content {
-      position: sticky;
-      top: 100px;
-      max-height: calc(100vh - 100px);
-      overflow: hidden !important;
-
-      @media(max-width: 768px) {
-        max-height: 100%;
-        top: 0;
-        position: relative;
-      }
-    }
-
-    &-title {
-      margin-bottom: 10px;
-      font-weight: 900;
-      text-align: center;
-
-      @media(max-width: 768px) {
-        display: none;
-      }
-    }
-
-    &-group {
-      margin-top: 20px;
-
-      @media(max-width: 768px) {
-        &:first-of-type {
-          position: sticky;
-          top: 0;
-          background: #fff;
-          z-index: 1;
-          margin-top: 0;
-          padding-top: 20px;
-        }
-
-        .pack__options-weights {
-          display: none;
-        }
-      }
-
-      .md {
-        @media(max-width: 768px) {
-          display: none;
-        }
-      }
-    }
-
-    &-weights {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-
-      &Mobile {
-        margin-bottom: 0 !important;
-
-        @media(min-width: 769px) {
-          display: none !important;
-        }
-      }
-
-      &--items {
-        display: flex;
-        align-items: center;
-        background: #e9e9e9;
-        border-radius: 30px;
-        margin-bottom: 20px;
-      }
-
-      &--item {
-        height: 40px;
+        left: 0;
+        right: 0;
+        height: 60px;
         padding: 0 30px;
-        font-weight: 900;
+      }
+
+      &-items {
         display: flex;
-        align-items: center;
-        transition: .3s;
-        cursor: pointer;
+      }
+
+      &-item {
+        width: 50px;
+        height: 50px;
+        border-radius: 5px;
+        border: 1px solid #D8D8D8;
+        overflow: hidden;
 
         @media(max-width: 768px) {
+          width: 30px;
           height: 30px;
-          padding: 0 10px;
         }
 
-        &.active {
-          background: #7FAD39;
-          cursor: default;
-          color: #fff;
+        &:not(:first-of-type) {
+          margin-left: -25px;
+
+          @media(max-width: 768px) {
+            margin-left: -15px;
+          }
         }
-
-        &:first-child {
-          border-radius: 30px 0 0 30px;
-        }
-
-        &:last-child {
-          border-radius: 0 30px 30px 0;
-        }
-      }
-    }
-
-    &-slots {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      max-height: 404px;
-      overflow-y: auto;
-      padding-bottom: 4px;
-    }
-
-    &-slot {
-      width: 300px;
-      display: flex;
-      align-items: center;
-      min-height: 92px;
-      margin: 8px 0 0;
-      padding: 12px;
-      border-radius: 16px;
-      box-shadow: rgb(6 5 50 / 24%) 0 1px 2px;
-      position: relative;
-
-      @media(max-width: 768px) {
-        min-height: auto;
-      }
-
-      &--image {
-        min-width: 68px;
-        width: 68px;
-        height: 68px;
-        margin-right: 8px;
-        border-radius: 16px;
-        overflow: hidden;
 
         img {
           width: 100%;
           height: 100%;
-          object-fit: contain;
         }
       }
 
-      &--name {
-        font-weight: 900;
+      &-count {
+        background: #FF4B55;
+        color: #fff;
+        font-weight: 700;
+        border-radius: 10px;
+        align-self: flex-start;
+        padding: 0 6px;
+        margin-left: -18px;
+
+        @media(max-width: 768px) {
+          font-size: 13px;
+          border-radius: 5px;
+          line-height: 1.2;
+          padding: 0 3px;
+        }
       }
 
-      &--price {
-        font-weight: 900;
-        color: #7FAD39;
-      }
-
-      &--content {
+      &-totals {
         display: flex;
         flex-direction: column;
         align-items: flex-start;
-      }
+        margin-left: 35px;
+        font-weight: 700;
+        font-size: 20px;
+        line-height: 1.2;
 
-      &--quantity {
-        display: flex;
-        align-items: center;
-        border: 1px solid #7FAD39;
-        border-radius: 4px;
-        margin-top: 6px;
-        padding: 4px;
-
-        .v-btn {
-          min-width: 20px !important;
+        @media(max-width: 768px) {
+          margin-left: 15px;
         }
-      }
 
-      &--remove {
-        position: absolute;
-        top: 0;
-        bottom: 0;
-        right: -18px;
-        margin: auto 0;
-        display: flex;
-        align-items: center;
-
-        .v-btn {
-          background: #eeeeee !important;
-        }
-      }
-
-      &--empty {
-        display: flex;
-        align-items: center;
-        width: 100%;
-        height: 100%;
-
-        div {
-          width: 68px;
-          height: 68px;
-          margin-right: 8px;
-          border-radius: 16px;
+        &--oldPrice {
+          color: #B1B1B1;
+          position: relative;
           display: flex;
           align-items: center;
-          justify-content: center;
-          font-weight: 900;
-          font-size: 16px;
-          background: #eeeeee;
+          margin-bottom: 2px;
+
+          @media(max-width: 768px) {
+            font-size: 12px;
+          }
+
+          &:before {
+            content: '';
+            position: absolute;
+            width: 100%;
+            height: 2px;
+            background: #FF4B55;
+          }
         }
 
-        span {
-          font-weight: 900;
+        &--price {
+          color: #21AA5B;
+          display: flex;
+          align-items: center;
+
+          @media(max-width: 768px) {
+            font-size: 15px;
+          }
+        }
+
+        &--weight {
+          color: #333333;
+          margin-left: 4px;
+
+          @media(max-width: 768px) {
+            font-size: 15px;
+          }
         }
       }
     }
 
-    &Mobile {
+    &__editBtn {
+      width: 140px !important;
+      height: 50px !important;
+      color: #009BDB !important;
+      font-weight: 700;
+      font-size: 14px;
+      text-transform: none;
+      letter-spacing: 0.03em;
+      border: 1px solid #b1b1b1;
+      border-radius: 25px;
+      margin-left: 35px;
 
-      &-btn {
-        color: #fff !important;
-        border-radius: 30px;
-        font-size: 14px;
-        height: 40px !important;
+      @media(max-width: 768px) {
+        font-size: 10px;
+        height: 30px !important;
+        width: 105px !important;
+        margin-left: auto;
+      }
+    }
 
-        &--wrapper {
-          position: fixed;
-          bottom: -80px;
-          left: 0;
-          right: 0;
-          background: #fff;
-          padding: 6px 10px;
-          display: none;
-          transition: .5s;
+    &__modal {
+      padding: 22px 30px 37px;
+      background: #ffffff;
+      position: absolute;
+      top: 80px;
+      right: 0;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+      border-radius: 5px;
+      z-index: 2;
+      display: flex;
+      flex-direction: column;
 
-          @media(max-width: 768px) {
-            display: flex;
-          }
-
-          &.active {
-            bottom: 0;
-          }
-        }
+      @media(max-width: 768px) {
+        padding: 30px 20px;
+        position: fixed;
+        top: 0;
+        right: 0;
+        bottom: 60px;
+        left: 0;
       }
 
       &-close {
         position: absolute;
-        top: 18px;
+        top: 30px;
         right: 20px;
-        display: none;
+      }
+
+      &-title {
+        font-size: 24px;
+        font-weight: 700;
+        color: #333;
+        margin-bottom: 27px;
+      }
+
+      &-products {
+        max-height: 250px;
+        overflow-y: auto;
+        display: flex;
+        flex-direction: column;
+        padding-right: 15px;
 
         @media(max-width: 768px) {
+          height: 100%;
+          flex-grow: 1;
+          max-height: 100%;
+          padding-right: 0;
+        }
+
+        &::-webkit-scrollbar-track {
+          background: #EDEDED !important;
+        }
+
+        &::-webkit-scrollbar-thumb {
+          background: #C4C4C4 !important;
+        }
+
+        &::-webkit-scrollbar {
+          width: 4px;
+        }
+      }
+
+      &-product {
+        display: flex;
+
+        @media(max-width: 768px) {
+          border: 1px solid #E6E6E6;
+          border-radius: 10px;
+          padding: 27px 20px;
+          flex-direction: column;
+
+          > div {
+            display: flex;
+            align-items: center;
+
+            &:first-child {
+              margin-bottom: 25px;
+            }
+          }
+        }
+
+        &:not(:last-of-type) {
+          margin-bottom: 20px;
+        }
+
+        &--img {
+          border-radius: 5px;
+          width: 70px;
+          height: 70px;
+          border: 1px solid #D8D8D8;
+          overflow: hidden;
+          margin-right: 20px;
+
+          @media(max-width: 768px) {
+            border: 0;
+          }
+
+          img {
+            width: 100%;
+            height: 100%;
+          }
+        }
+
+        &--info {
           display: flex;
+          flex-direction: column;
+          justify-content: center;
+          flex-grow: 1;
+          width: 250px;
+        }
+
+        &--name {
+          font-weight: 700;
+          font-size: 16px;
+          color: #333;
+
+          @media(max-width: 768px) {
+            font-size: 14px;
+          }
+        }
+
+        &--quantity {
+          margin-left: 25px;
+          margin-right: 10px;
+          display: flex;
+          flex-direction: column;
+          justify-content: center;
+          align-items: center;
+          height: 70px;
+          width: 30px;
+          border-radius: 25px;
+          border: 1px solid #C4C4C4;
+
+          @media(max-width: 768px) {
+            flex-direction: row;
+            width: 80px;
+            height: 35px;
+            margin-left: 0;
+            margin-right: 20px;
+            padding: 0 10px;
+          }
+
+          > div {
+            font-weight: 700;
+            font-family: "Roboto", sans-serif;
+            font-size: 16px;
+
+            @media(max-width: 768px) {
+              flex-grow: 1;
+              text-align: center;
+            }
+          }
+
+          .v-btn {
+            width: 16px !important;
+            height: 16px !important;
+            min-width: 16px !important;
+            padding: 0;
+          }
+        }
+
+        &--total {
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          justify-content: center;
+          width: 60px;
+        }
+
+        &--price {
+          color: #333333;
+          font-weight: 700;
+          font-family: "Roboto", sans-serif;
+          font-size: 14px;
+
+          @media(max-width: 768px) {
+            font-size: 18px;
+            font-family: "Montserrat", sans-serif;
+          }
+        }
+
+        &--remove {
+          display: flex;
+          align-items: center;
+
+          @media(max-width: 768px) {
+            margin-left: auto;
+          }
+        }
+      }
+
+      &-totals {
+        display: flex;
+        flex-direction: column;
+        align-self: flex-end;
+        min-width: 200px;
+        margin-top: 24px;
+
+        @media(max-width: 768px) {
+          width: 100%;
+          margin-top: 14px;
+        }
+
+        &--item {
+          display: flex;
+          justify-content: space-between;
+          width: 100%;
+
+          @media(max-width: 768px) {
+            width: 220px;
+            align-self: flex-end;
+          }
+
+          &:not(:last-of-type) {
+            margin-bottom: 10px;
+          }
+
+          &:last-of-type {
+
+            .mnm__modal-totals--sum {
+              color: #008de3;
+            }
+          }
+        }
+
+        &--title {
+          font-weight: 700;
+          color: #b1b1b1;
+          font-size: 18px;
+        }
+
+        &--sum {
+          font-weight: 700;
+          color: #333333;
+          font-size: 18px;
+        }
+      }
+
+      &-checkout {
+        margin-top: 30px;
+        height: 50px !important;
+        padding-left: 25px !important;
+        padding-right: 25px !important;
+        background: #21aa5b !important;
+        border-radius: 5px;
+        font-size: 18px;
+        font-weight: 700;
+        text-transform: none;
+        color: #fff !important;
+
+        @media(max-width: 768px) {
+          margin-top: 14px;
         }
       }
     }
   }
 
-  &__cart {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-
-    @media(max-width: 768px) {
-      padding-bottom: 20px;
-    }
-
-    &-totals {
-      font-weight: 600;
-
-      span {
-        font-weight: 900;
-        color: #7FAD39;
-      }
-    }
-
-    &-saved {
-      font-weight: 600;
+  @media(max-width: 768px) {
+    .mix {
+      height: 100%;
       display: flex;
       flex-direction: column;
-      align-items: center;
+      overflow: hidden;
+      position: fixed;
+      top: 36px;
+      right: 0;
+      left: 0;
+      bottom: 60px;
 
-      span {
-        font-size: 22px;
-        font-weight: 900;
-        color: #7FAD39;
+      &__products {
+        display: flex;
+        flex-direction: column;
+        overflow-y: auto;
       }
     }
-
-    &-btn {
-      margin-top: 10px;
-      width: 300px;
-      height: 60px !important;
-      color: #fff;
-      font-weight: 900;
-    }
   }
-}
-
-.md {
-  display: flex;
-  justify-content: center;
-
-  @media(max-width: 768px) {
-    display: none;
-  }
-}
 </style>
