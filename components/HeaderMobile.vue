@@ -26,6 +26,7 @@
       <div class="searchMenu__header">
         <v-text-field
           v-model="searchQuery"
+          @input="debounceSearch"
           label="search"
           dense
           solo
@@ -117,8 +118,7 @@ export default {
     dialogMenu: false,
     searchQuery: '',
     results: [],
-    loadingResults: false,
-    awaitingSearch: false,
+    debounceTimeout: null
   }),
   computed: {
     ...mapGetters({
@@ -143,16 +143,6 @@ export default {
     }
   },
   watch: {
-    searchQuery() {
-      if(this.searchQuery.length) {
-        if(!this.awaitingSearch) {
-          this.getSearch();
-        }
-        this.awaitingSearch = true;
-      } else {
-        this.results = [];
-      }
-    },
     infoState() {
       if(this.infoState) {
         this.othersState = false;
@@ -181,9 +171,14 @@ export default {
     },
   },
   methods: {
+    debounceSearch: function() {
+      if (this.debounceTimeout) clearTimeout(this.debounceTimeout);
+      this.debounceTimeout = setTimeout(() => {
+        this.getSearch();
+      }, 500); // delay for half second
+    },
     getSearch() {
-      if(this.loadingResults) return;
-      this.loadingResults = true;
+      if(this.searchQuery.length === 0) return false;
       this.$axios
         .get(`/search?q=${this.searchQuery}`)
         .then(res => {
@@ -202,10 +197,6 @@ export default {
           this.products = arr;
           this.results = arr;
           this.showResults = true;
-        })
-        .finally(() => {
-          this.loadingResults = false;
-          this.awaitingSearch = false;
         })
     },
   },
