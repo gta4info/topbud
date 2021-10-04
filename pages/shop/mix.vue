@@ -32,21 +32,21 @@
                       :class="{active: selectedWeight === 1}"
                       @click="selectedWeight = 1"
                     >
-                      2 Oz
+                      56g
                     </div>
                     <div
                       class="mnm__option"
                       :class="{active: selectedWeight === 2}"
                       @click="selectedWeight = 2"
                     >
-                      1 Oz
+                      28g
                     </div>
                     <div
                       class="mnm__option"
                       :class="{active: selectedWeight === 4}"
                       @click="selectedWeight = 4"
                     >
-                      1/2 Oz
+                      14g
                     </div>
                   </div>
                   <div class="mnm__pack" v-if="mixs.selected[selectedWeight].length >= 1">
@@ -63,7 +63,7 @@
                     </div>
                     <div class="mnm__pack-totals">
                       <div class="mnm__pack-totals--oldPrice">${{calculateMixPrice.old}}</div>
-                      <div class="mnm__pack-totals--price">${{calculateMixPrice.sum}} <span class="mnm__pack-totals--weight"> / {{calculateMixPrice.weight}} Oz</span></div>
+                      <div class="mnm__pack-totals--price">${{calculateMixPrice.sum}} <span class="mnm__pack-totals--weight"> / {{calculateMixPrice.weight}}g</span></div>
                     </div>
                     <v-btn class="mnm__editBtn" depressed @click="mixModal = !mixModal">Edit Pack</v-btn>
                   </div>
@@ -157,21 +157,21 @@
             :class="{active: selectedWeight === 1}"
             @click="selectedWeight = 1"
           >
-            2 Oz
+            56g
           </div>
           <div
             class="mnm__option"
             :class="{active: selectedWeight === 2}"
             @click="selectedWeight = 2"
           >
-            1 Oz
+            28g
           </div>
           <div
             class="mnm__option"
             :class="{active: selectedWeight === 4}"
             @click="selectedWeight = 4"
           >
-            1/2 Oz
+            14g
           </div>
         </div>
       </div>
@@ -214,7 +214,7 @@
         </div>
         <div class="mnm__pack-totals">
           <div class="mnm__pack-totals--oldPrice">${{calculateMixPrice.old}}</div>
-          <div class="mnm__pack-totals--price">${{calculateMixPrice.sum}} <span class="mnm__pack-totals--weight"> / {{calculateMixPrice.weight}} Oz</span></div>
+          <div class="mnm__pack-totals--price">${{calculateMixPrice.sum}} <span class="mnm__pack-totals--weight"> / {{calculateMixPrice.weight}}g</span></div>
         </div>
         <v-btn class="mnm__editBtn" depressed @click="mixModal = !mixModal">Edit Pack</v-btn>
       </div>
@@ -459,13 +459,13 @@ export default {
 
       let weight, weightTotal = 0;
       if(this.selectedWeight === 1) {
-        weight = 2
+        weight = 28
       }
       if(this.selectedWeight === 2) {
-        weight = 1
+        weight = 14
       }
       if(this.selectedWeight === 4) {
-        weight = 0.5
+        weight = 7
       }
 
       this.mixs.selected[this.selectedWeight].filter(item => item.id).map(i => {

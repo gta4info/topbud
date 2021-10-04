@@ -35,9 +35,9 @@
         <div class="card__price">
           <span class="card__price-price">${{ product.deal_price ? product.deal_price : product.price }}</span>
           <span class="card__price-weight">/
-            <template v-if="selectedWeight === 4">0.5 oz</template>
-            <template v-if="selectedWeight === 2">1 oz</template>
-            <template v-if="selectedWeight === 1">2 oz</template>
+            <template v-if="selectedWeight === 4">7g</template>
+            <template v-if="selectedWeight === 2">14g</template>
+            <template v-if="selectedWeight === 1">28g</template>
           </span>
           <span class="card__price-old" v-if="product.deal_price">${{ product.price }}</span>
         </div>
