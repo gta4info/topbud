@@ -411,6 +411,14 @@ export default {
     ]
   }),
   watch: {
+    mixs: {
+      handler() {
+        if(this.mixs.selected[this.selectedWeight].length === 0) {
+          this.mixModal = false;
+        }
+      },
+      deep: true
+    },
     min: {
       handler() {
         this.getFilteredProducts();
