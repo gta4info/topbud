@@ -139,10 +139,12 @@ export default {
   .filters {
     display: flex;
     flex-direction: column;
-    width: 240px;
+    padding: 30px 20px;
     margin-left: auto;
     position: sticky;
     top: 40px;
+    box-shadow: 0 4px 40px rgba(0, 0, 0, 0.1);
+    border-radius: 10px;
   }
 
   .filter {

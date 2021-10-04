@@ -30,11 +30,6 @@
                     />
                   </div>
                 </v-col>
-                <v-col md="4" sm="6" style="padding: 16px 5px;" v-if="$vuetify.breakpoint.mdAndUp">
-                  <MixCard/>
-                  <DealCard/>
-                  <DealCardMobile/>
-                </v-col>
                 <template v-if="$vuetify.breakpoint.mdAndUp">
                   <v-col cols="4" style="padding: 16px 5px;">
                     <MixCard/>

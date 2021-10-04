@@ -49,7 +49,7 @@
                       1/2 Oz
                     </div>
                   </div>
-                  <div class="mnm__pack" v-if="mixs.selected[selectedWeight].filter(item => item.id).length >= 2">
+                  <div class="mnm__pack" v-if="mixs.selected[selectedWeight].length >= 1">
                     <div class="mnm__pack-items">
                       <div
                         class="mnm__pack-item"
@@ -85,17 +85,17 @@
                           <v-btn
                             x-small
                             depressed
-                            @click="changeAmountForProduct(i, product, product.quantity - 1)"
+                            @click="changeAmountForProduct(i, product, product.quantity + 1)"
                           >
-                            <v-icon small color="#C4C4C4">mdi-minus</v-icon>
+                            <v-icon small color="#C4C4C4">mdi-plus</v-icon>
                           </v-btn>
                           <div>{{product.quantity}}</div>
                           <v-btn
                             x-small
                             depressed
-                            @click="changeAmountForProduct(i, product, product.quantity + 1)"
+                            @click="changeAmountForProduct(i, product, product.quantity - 1)"
                           >
-                            <v-icon small color="#C4C4C4">mdi-plus</v-icon>
+                            <v-icon small color="#C4C4C4">mdi-minus</v-icon>
                           </v-btn>
                         </div>
                         <div class="mnm__modal-product--total">
@@ -121,6 +121,7 @@
                         color="#21AA5B"
                         class="mnm__modal-checkout"
                         @click="addToCart"
+                        :disabled="!allowAddToCart"
                       >
                         Add to cart
                       </v-btn>
@@ -147,8 +148,7 @@
       </v-row>
     </v-container>
 
-
-    <v-container v-else>
+    <v-container class="mix__mobileWrapper" :style="mixs.selected[selectedWeight].length >= 1 ? 'padding-bottom: 66px' : ''" v-else>
       <div class="mnm">
         <div class="mnm__title">Choose size</div>
         <div class="mnm__options">
@@ -200,11 +200,11 @@
       </div>
       <p v-else>No products was found!</p>
 
-      <div class="mnm__pack" v-if="mixs.selected[selectedWeight].filter(item => item.id).length >= 2">
+      <div class="mnm__pack" v-if="mixs.selected[selectedWeight].length >= 1">
         <div class="mnm__pack-items">
           <div
             class="mnm__pack-item"
-            v-for="(product, i) in mixsSelected[selectedWeight].filter(item => Object.keys(item).length)"
+            v-for="(product, i) in mixsSelected[selectedWeight]"
             :key="i"
             v-if="i < 2"
           >
@@ -279,6 +279,7 @@
             color="#21AA5B"
             class="mnm__modal-checkout"
             @click="addToCart"
+            :disabled="!allowAddToCart"
           >
             Add to cart
           </v-btn>
@@ -428,6 +429,13 @@ export default {
       mixs: 'shop/mixs',
       mixsSelected: 'shop/mixsSelected'
     }),
+    allowAddToCart() {
+      let total = 0;
+      this.mixsSelected[this.selectedWeight].map(item => {
+        total += item.quantity;
+      })
+      return total >= 2;
+    },
     calculateMixPrice() {
       let sum = 0;
       let old = 0;
@@ -664,6 +672,7 @@ export default {
         margin-left: 0;
         background: #ffffff;
         z-index: 1;
+        flex-shrink: 0;
         position: absolute;
         bottom: 0;
         left: 0;
@@ -1051,12 +1060,13 @@ export default {
 
   @media(max-width: 768px) {
     .mix {
-      height: 100%;
+      height: calc(100% - 60px);
       display: flex;
       flex-direction: column;
       overflow: hidden;
       position: fixed;
-      top: 36px;
+      //top: 36px;
+      top: 0;
       right: 0;
       left: 0;
       bottom: 60px;
@@ -1065,6 +1075,12 @@ export default {
         display: flex;
         flex-direction: column;
         overflow-y: auto;
+        flex-grow: 1;
+      }
+
+      &__mobileWrapper {
+        position: relative;
+        height: calc(100% - 66px);
       }
     }
   }

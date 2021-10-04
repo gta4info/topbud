@@ -150,7 +150,7 @@
                 <template v-if="$vuetify.breakpoint.mdAndUp">{{banner.pc_title}}</template>
                 <template v-else>{{banner.mobile_title}}</template>
               </div>
-              <a :href="banner.url" target="_blank" v-ripple>{{banner.btn_title}}</a>
+              <a :href="banner.url" v-ripple>{{banner.btn_title}}</a>
             </div>
           </slick>
         </div>

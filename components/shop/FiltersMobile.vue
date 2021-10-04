@@ -339,7 +339,8 @@ export default {
 
   .filterMenu {
     position: fixed;
-    top: 36px;
+    //top: 36px;
+    top: 0;
     bottom: 0;
     right: -100vw;
     background: #fff;

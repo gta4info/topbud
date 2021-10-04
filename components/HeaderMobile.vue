@@ -61,6 +61,8 @@
         </v-btn>
       </div>
       <a href="tel:14373884091" class="mobileMenu__phone">1 (437) 388 - 4091</a>
+      <nuxt-link to="/" class="mobileMenu__nav-item--title" style="margin-bottom: 20px;font-weight: 700;align-self: flex-start;" @click.native="dialogMenu = false">Home</nuxt-link>
+      <nuxt-link to="/shop" class="mobileMenu__nav-item--title" style="margin-bottom: 20px;font-weight: 700;align-self: flex-start;" @click.native="dialogMenu = false">Shop</nuxt-link>
       <div class="mobileMenu__scrollable">
         <v-expansion-panels class="mobileMenu__nav">
           <v-expansion-panel class="mobileMenu__nav-item" v-for="category in computedCategories.filter(item => item.subs && item.subs.length)" :key="category.slug">

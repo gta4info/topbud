@@ -3,8 +3,8 @@
     <section class="offers">
       <v-container>
         <div class="offers__items">
-          <nuxt-link
-            :to="banner.url"
+          <a
+            :href="banner.url"
             v-for="(banner, i) in banners"
             :key="i"
             class="offers__item"
@@ -13,7 +13,7 @@
           >
             <div class="offers__item-title">{{banner.mobile_title}}</div>
             <div class="offers__item-link">{{banner.btn_title}}</div>
-          </nuxt-link>
+          </a>
         </div>
       </v-container>
     </section>
@@ -171,25 +171,25 @@
         </div>
       </v-container>
     </section>
-    <section class="shopping">
-      <v-container>
-        <div class="shopping__items">
-          <div class="shopping__item under">
-            <div class="shopping__item-title">Ounces<br/> Under $100</div>
-            <v-btn to="/" depressed height="45" style="background: #F6C76F!important;color: #071F41!important">Shop Now</v-btn>
-          </div>
-          <div class="shopping__item mixnmatch">
-            <div class="shopping__item-title">Mix And Match</div>
-            <div class="shopping__item-text">An excellent option for sampling AAAA and AAA flowers at a low price</div>
-            <v-btn to="/shop/mix" depressed height="45" style="background: #071F41!important;color: #fff!important">Shop Now</v-btn>
-          </div>
-          <div class="shopping__item newdibles">
-            <div class="shopping__item-title">What's new in edibles</div>
-            <v-btn to="/category/edibles" depressed height="45" style="background: #F6C76F!important;color: #071F41!important">Shop Now</v-btn>
-          </div>
-        </div>
-      </v-container>
-    </section>
+<!--    <section class="shopping">-->
+<!--      <v-container>-->
+<!--        <div class="shopping__items">-->
+<!--          <div class="shopping__item under">-->
+<!--            <div class="shopping__item-title">Ounces<br/> Under $100</div>-->
+<!--            <v-btn to="/" depressed height="45" style="background: #F6C76F!important;color: #071F41!important">Shop Now</v-btn>-->
+<!--          </div>-->
+<!--          <div class="shopping__item mixnmatch">-->
+<!--            <div class="shopping__item-title">Mix And Match</div>-->
+<!--            <div class="shopping__item-text">An excellent option for sampling AAAA and AAA flowers at a low price</div>-->
+<!--            <v-btn to="/shop/mix" depressed height="45" style="background: #071F41!important;color: #fff!important">Shop Now</v-btn>-->
+<!--          </div>-->
+<!--          <div class="shopping__item newdibles">-->
+<!--            <div class="shopping__item-title">What's new in edibles</div>-->
+<!--            <v-btn to="/category/edibles" depressed height="45" style="background: #F6C76F!important;color: #071F41!important">Shop Now</v-btn>-->
+<!--          </div>-->
+<!--        </div>-->
+<!--      </v-container>-->
+<!--    </section>-->
     <section class="blog">
       <v-container>
         <div class="title">Our blog</div>

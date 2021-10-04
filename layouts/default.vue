@@ -3,7 +3,7 @@
     <Header v-if="$vuetify.breakpoint.mdAndUp" :breadcrumbs="breadcrumbs"/>
     <HeaderMobile v-else/>
     <v-main app>
-      <ticker v-if="$vuetify.breakpoint.smAndDown"/>
+<!--      <ticker v-if="$vuetify.breakpoint.smAndDown"/>-->
       <nuxt/>
       <Footer/>
     </v-main>

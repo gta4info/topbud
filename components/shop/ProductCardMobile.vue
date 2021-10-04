@@ -1,18 +1,11 @@
 <template>
-  <nuxt-link
-    class="card"
-    :to="{name: 'category-cslug-sslug-pslug', params: {
-      cslug: $route.params.cslug ? $route.params.cslug : product.search.cslug,
-      sslug: $route.params.sslug ? $route.params.sslug : (product.search ? (product.search.sslug ? product.search.sslug : 'product') :'product'),
-      pslug: product.slug
-    }}"
-  >
+  <div class="card">
     <div class="card__content">
       <div class="card__category" v-if="categories.find(c => c.id === product.category_id).subs.length">
         {{categories.find(c => c.id === product.category_id).subs.find(s => s.id === product.subcategory_id).name}}
       </div>
       <div class="card__category" v-else>{{categories.find(c => c.id === product.category_id).name}}</div>
-      <div class="card__title">{{product.name}}</div>
+      <div class="card__title" @click="goToProduct">{{product.name}}</div>
       <div class="card__quality" v-if="product.cbd || product.thc">
         <div class="card__quality-item" v-if="product.thc">
           <div>
@@ -33,18 +26,21 @@
           <div>{{product.cbd}}</div>
         </div>
       </div>
-      <div class="d-flex">
-        <v-btn @click.prevent="addToCart" class="card__addToCart" :disabled="isInCart || disabledToAdd[selectedWeight]" depressed>
+      <div class="card__bottom">
+        <v-btn @click="handleClickCart" class="card__addToCart" depressed>
           <v-icon color="#fff" size="20">mdi-cart-outline</v-icon>
         </v-btn>
-        <div class="card__price" v-if="product.prices.find(item => item.weight_id === selectedWeight)">
+        <div class="card__price" v-if="product.prices.length > 1">
+          <span class="card__price-price">From ${{ product.prices[0].deal_price ? product.prices[0].deal_price : product.prices[0].price }}</span>
+        </div>
+        <div class="card__price" v-else>
           <span class="card__price-old" v-if="product.prices.find(item => item.weight_id === selectedWeight).deal_price">${{ product.prices.find(item => item.weight_id === selectedWeight).price }}</span>
           <span class="card__price-price">${{ product.prices.find(item => item.weight_id === selectedWeight).deal_price ? product.prices.find(item => item.weight_id === selectedWeight).deal_price : product.prices.find(item => item.weight_id === selectedWeight).price }}</span>
           <span class="card__price-weight">/ {{ weights[selectedWeight] }}</span>
         </div>
       </div>
     </div>
-    <div class="card__header">
+    <div class="card__header" @click="goToProduct">
       <div class="img" ref="images">
         <img :src="product.img" :alt="product.name" ref="image">
       </div>
@@ -53,7 +49,45 @@
       <div class="card__header-badge new" v-if="product.new">New</div>
       <div class="card__header-badge deal" v-if="product.deal">Sale</div>
     </div>
-  </nuxt-link>
+    <div
+      class="card__weightsDialog"
+      v-if="showWeightsDialog"
+      @click="showWeightsDialog = true"
+      v-click-outside:prevent="handleClickOutside"
+    >
+      <div class="card__weightsDialog-title">
+        <div class="mr-auto">Choose weight</div>
+        <template v-if="product.prices[selectedWeight] && product.prices[selectedWeight].deal_price">
+          You Save <span>${{product.prices[selectedWeight].price - product.prices[selectedWeight].deal_price}}</span>
+        </template>
+      </div>
+      <div class="card__weightsDialog-content">
+        <div class="card__weightsDialog-left">
+          <div class="card__weightsDialog-items">
+            <div
+              class="card__weightsDialog-item"
+              :class="{active: selectedWeight === price.weight_id}"
+              v-for="price in product.prices"
+              :key="price.id"
+              @click="selectedWeight = price.weight_id"
+            >
+              <div class="card__weightsDialog-item--weight">{{weights[price.weight_id]}}</div>
+              <div class="card__weightsDialog-item--price">${{price.deal_price ? price.deal_price : price.price}}</div>
+            </div>
+          </div>
+        </div>
+        <div class="card__weightsDialog-addToCart">
+          <v-btn
+            @click="addToCart"
+            :disabled="isInCart || disabledToAdd[selectedWeight]"
+            depressed
+          >
+            Add
+          </v-btn>
+        </div>
+      </div>
+    </div>
+  </div>
 </template>
 
 <script>
@@ -98,7 +132,8 @@ export default {
       selectedQuantity: 1,
       selectedWeight: this.product.prices[0].weight_id,
       menu: false,
-      disabledToAdd: {}
+      disabledToAdd: {},
+      showWeightsDialog: false
     }
   },
   watch: {
@@ -113,6 +148,26 @@ export default {
     }
   },
   methods: {
+    goToProduct() {
+      console.log(this.showWeightsDialog)
+      if(!this.showWeightsDialog) {
+        this.$router.push({name: 'category-cslug-sslug-pslug', params: {
+            cslug: this.$route.params.cslug ? this.$route.params.cslug : this.product.search.cslug,
+            sslug: this.$route.params.sslug ? this.$route.params.sslug : (this.product.search ? (this.product.search.sslug ? this.product.search.sslug : 'product') :'product'),
+            pslug: this.product.slug
+          }})
+      }
+    },
+    handleClickCart() {
+      if(this.product.prices.length > 1) {
+        this.showWeightsDialog = !this.showWeightsDialog;
+      } else {
+        this.addToCart();
+      }
+    },
+    handleClickOutside() {
+      this.showWeightsDialog = false;
+    },
     addToCart(event) {
       let cart = [];
       if(this.$cookies.get('cart')) {
@@ -136,6 +191,8 @@ export default {
       this.$cookies.set('cart', cart);
 
       this.$store.commit('shop/SET_CART_LENGTH');
+
+      this.showWeightsDialog = false;
 
       this.$set(this.disabledToAdd, this.selectedWeight, true);
 
@@ -398,16 +455,12 @@ export default {
 
     &__addToCart {
       width: 40px !important;
-      height: 25px !important;
-      min-width: 25px !important;
+      height: 26px !important;
+      min-width: 26px !important;
       background: #21AA5B !important;
       padding: 0 !important;
       border-radius: 5px !important;
       margin-right: 10px;
-
-      &:disabled {
-        background: #B8B8B8 !important;
-      }
     }
 
     &__weights {
@@ -482,6 +535,136 @@ export default {
             background: #ccc;
             color: #fff;
           }
+        }
+      }
+    }
+
+    &__bottom {
+      display: flex;
+      position: relative;
+      width: 100%;
+    }
+
+    &__weightsDialog {
+      padding: 13px 20px 10px;
+      background: #21AA5B;
+      border-radius: 5px;
+      width: 100%;
+      position: absolute;
+      left: 0;
+      right: 0;
+      bottom: 45px;
+      z-index: 1;
+
+      &:before {
+        content: '';
+        position: absolute;
+        bottom: -4px;
+        left: 16px;
+        background: #21AA5B;
+        transform: rotate(45deg);
+        width: 8px;
+        height: 8px;
+      }
+
+      &-content {
+        display: flex;
+        width: 100%;
+      }
+
+      &-addToCart {
+        display: flex;
+        flex-direction: column;
+        height: 100%;
+        align-items: flex-end;
+        flex-shrink: 0;
+        margin-left: auto;
+
+        .v-btn {
+          height: 30px !important;
+          min-width: 30px !important;
+          background: #071F41 !important;
+          padding: 0 17px !important;
+          border-radius: 5px !important;
+          font-weight: 700;
+          text-transform: none;
+          color: #ffffff !important;
+          font-size: 14px;
+
+          &:disabled {
+            background: #B8B8B8 !important;
+          }
+        }
+      }
+
+      &-left {
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        max-width: calc(100% - 90px);
+      }
+
+      &-title {
+        color: #ffffff;
+        font-weight: 700;
+        font-size: 14px;
+        margin-bottom: 10px;
+        height: 21px;
+        display: flex;
+        align-items: center;
+
+        span {
+          color: #f6c76f;
+          margin-left: 4px;
+        }
+      }
+
+      &-items {
+        display: flex;
+        overflow-x: auto;
+        width: 100%;
+      }
+
+      &-item {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        flex-shrink: 0;
+
+        &.active {
+
+          .card__weightsDialog-item {
+
+            &--weight {
+              background: #F6C76F;
+            }
+          }
+        }
+
+        &:not(:last-of-type) {
+          margin-right: 20px;
+        }
+
+        &--weight {
+          width: 30px;
+          height: 30px;
+          border-radius: 50%;
+          background: #fff;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          white-space: nowrap;
+          color: #333333;
+          font-weight: 700;
+          font-size: 12px;
+          margin-bottom: 5px;
+          transition: .3s;
+        }
+
+        &--price {
+          font-size: 10px;
+          font-weight: 700;
+          color: #ffffff;
         }
       }
     }
