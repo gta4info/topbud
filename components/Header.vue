@@ -84,12 +84,13 @@
             dense
             solo
             hide-details
+            @input="debounceSearch"
             @keydown.enter="submitSearch"
             @click:prepend-inner="submitSearch"
             @focus="showResults = true"
           />
 
-          <div class="results" :class="{active: showResults && searchQuery.length >= 3}">
+          <div class="results" :class="{active: showResults && searchQuery.length >= 2}">
             <div class="results__title">Matched results:</div>
             <template v-if="results.length">
               <nuxt-link
@@ -196,8 +197,6 @@ export default {
     showShop: false,
     searchQuery: '',
     results: [],
-    loadingResults: false,
-    awaitingSearch: false,
     showResults: false,
     windowWidth: null,
     settings: {
@@ -220,19 +219,13 @@ export default {
       return this.cartLength + (this.mixs.cart && this.mixs.cart.data ? this.mixs.cart.data.length : 0)
     },
   },
-  watch: {
-    searchQuery() {
-      if(this.searchQuery.length) {
-        if(!this.awaitingSearch) {
-          this.getSearch();
-        }
-        this.awaitingSearch = true;
-      } else {
-        this.results = [];
-      }
-    }
-  },
   methods: {
+    debounceSearch: function() {
+      if (this.debounceTimeout) clearTimeout(this.debounceTimeout);
+      this.debounceTimeout = setTimeout(() => {
+        this.getSearch();
+      }, 500);
+    },
     submitSearch() {
       if(this.searchQuery.length) {
         this.$router.push({name: 'shop-search', query: {q: this.searchQuery}})
@@ -245,8 +238,7 @@ export default {
       this.showResults = false
     },
     getSearch() {
-      if(this.loadingResults) return;
-      this.loadingResults = true;
+      if(this.searchQuery.length === 0) return false;
       this.$axios
         .get(`/search?q=${this.searchQuery}`)
         .then(res => {
@@ -265,10 +257,6 @@ export default {
           this.products = arr;
           this.results = arr;
           this.showResults = true;
-        })
-        .finally(() => {
-          this.loadingResults = false;
-          this.awaitingSearch = false;
         })
     },
   },
@@ -299,7 +287,7 @@ export default {
     &__wrapper {
       position: relative;
       top: 0;
-      z-index: 2;
+      z-index: 3;
 
       .bg {
         background: url("~/static/images/stars-bg.png"), #202536;
