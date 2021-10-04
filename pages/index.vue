@@ -14,6 +14,17 @@
             <div class="offers__item-title">{{banner.mobile_title}}</div>
             <div class="offers__item-link">{{banner.btn_title}}</div>
           </a>
+          <template v-if="$vuetify.breakpoint.smAndDown">
+            <nuxt-link to="/shop/mix" class="buttons__item mnm" v-ripple>
+              <div class="buttons__item-title">Mix And Match</div>
+              <div class="buttons__item-text">An excellent option for sampling at a low price</div>
+              <div class="buttons__item-link">Shop Now</div>
+            </nuxt-link>
+            <nuxt-link to="/shop/deals" class="buttons__item deals" v-ripple>
+              <div class="buttons__item-title">Oz Deals</div>
+              <div class="buttons__item-link">Shop Now</div>
+            </nuxt-link>
+          </template>
         </div>
       </v-container>
     </section>
@@ -420,113 +431,6 @@ export default {
   @media(max-width: 768px) {
     .page .title, .page h1 {
       display: flex !important;
-    }
-  }
-
-  .buttons {
-
-    &__content {
-      display: flex;
-      justify-content: space-between;
-    }
-
-    &__item {
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      height: 160px;
-      background-size: cover;
-      background-position: top left;
-      border-radius: 5px;
-      overflow-x: hidden;
-      position: relative;
-
-      &-title {
-        font-size: 48px;
-        font-family: "Courgette", serif;
-        line-height: 1;
-      }
-
-      &-text {
-        font-family: "Montserrat", sans-serif;
-        font-size: 15px;
-        font-weight: 500;
-
-        span {
-          font-weight: 700;
-          margin: 0 5px;
-        }
-      }
-
-      &.mnm {
-        background-image: url("~/static/images/mnm-button-bg.jpg");
-        color: #202536 !important;
-        text-decoration: none;
-        padding-left: 223px;
-
-        &:before {
-          content: '';
-          position: absolute;
-          background-image: url("~/static/images/mnm-button-img.png");
-          background-repeat: no-repeat;
-          background-position: top 28px left 29px;
-          top: 0;
-          left: 0;
-          right: 0;
-          bottom: 0;
-
-          @media(max-width: 768px) {
-            background-size: 110px;
-            background-position: top 0 left 0;
-          }
-        }
-
-        @media(max-width: 768px) {
-          padding-left: 0;
-          align-items: center;
-        }
-
-        &:hover {
-          color: #202536 !important;
-        }
-
-        .buttons__item-title {
-          margin-top: 20px;
-        }
-      }
-
-      &.deals {
-        background-image: url("~/static/images/deals-button-bg.jpg");
-        color: #fff !important;
-        text-decoration: none;
-        padding-left: 194px;
-
-        &:before {
-          content: '';
-          position: absolute;
-          background-image: url("~/static/images/deals-button-img.png");
-          background-repeat: no-repeat;
-          background-position: top 31px left 73px;
-          top: 0;
-          left: 0;
-          right: 0;
-          bottom: 0;
-
-          @media(max-width: 768px) {
-            background-size: contain;
-            background-position: top 50px left 0;
-          }
-        }
-
-        @media(max-width: 768px) {
-          padding-left: 0;
-          align-items: center;
-        }
-
-        &:hover {
-          color: #fff !important;
-        }
-      }
     }
   }
 
@@ -1274,4 +1178,81 @@ export default {
       }
     }
   }
+
+
+  .buttons {
+    flex-direction: column;
+    justify-content: space-between;
+    display: flex;
+
+    &__item {
+      display: flex;
+      flex-direction: column;
+      height: 110px;
+      width: 150px;
+      background-size: cover;
+      background-position: top left;
+      border-radius: 10px;
+      overflow-x: hidden;
+      position: relative;
+      padding: 10px;
+      flex-shrink: 0;
+
+      &-title {
+        font-size: 12px;
+        font-weight: 700;
+        font-family: "Montserrat", serif;
+        line-height: 1.2;
+        margin-bottom: 10px;
+      }
+
+      &-text {
+        font-size: 12px;
+        font-family: "Montserrat", serif;
+        line-height: 1.2;
+        color: #ffffff;
+
+        span {
+          font-weight: 700;
+          margin: 0 5px;
+        }
+      }
+
+      &-link {
+        font-weight: 700;
+        font-size: 12px;
+        text-transform: uppercase;
+        color: #202536;
+        font-family: "Roboto", sans-serif;
+        margin-top: auto;
+        line-height: 1;
+      }
+
+      &.mnm {
+        background-image: url("~/static/images/mnm-button-bg.jpg");
+        color: #202536 !important;
+        text-decoration: none;
+        margin-right: 10px;
+
+        &:hover {
+          color: #202536 !important;
+        }
+      }
+
+      &.deals {
+        background-image: url("~/static/images/deals-button-bg.jpg");
+        color: #fff !important;
+        text-decoration: none;
+
+        &:hover {
+          color: #fff !important;
+        }
+
+        .buttons__item-link {
+          color: #ffffff;
+        }
+      }
+    }
+  }
+
 </style>
