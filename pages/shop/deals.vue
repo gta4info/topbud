@@ -51,7 +51,7 @@
                   </v-col>
                 </template>
               </v-row>
-              <p class="text-center" v-else>No products with selected filters was found</p>
+              <p class="text-center mt-10" v-else>No products with selected filters was found</p>
             </v-container>
           </v-col>
         </v-row>
