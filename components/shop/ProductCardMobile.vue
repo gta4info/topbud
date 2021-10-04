@@ -32,7 +32,10 @@
         </div>
       </div>
       <div class="card__bottom">
-        <v-btn @click="handleClickCart" class="card__addToCart" depressed>Choose</v-btn>
+        <v-btn @click="handleClickCart" class="card__addToCart" depressed>
+          <v-icon color="#fff" size="20" v-if="product.prices.length === 1">mdi-cart-outline</v-icon>
+          <template v-else>Choose</template>
+        </v-btn>
         <div class="card__price" v-if="product.prices.length > 1">
           <span class="card__price-price">From ${{ product.prices[0].deal_price ? product.prices[0].deal_price : product.prices[0].price }}</span>
         </div>
@@ -60,8 +63,8 @@
     >
       <div class="card__weightsDialog-title">
         <div class="mr-auto">Choose weight</div>
-        <template v-if="product.prices[selectedWeight] && product.prices[selectedWeight].deal_price">
-          You Save <span>${{product.prices[selectedWeight].price - product.prices[selectedWeight].deal_price}}</span>
+        <template v-if="product.prices.find(item => item.weight_id === selectedWeight).deal_price">
+          You Save <span>${{product.prices.find(item => item.weight_id === selectedWeight).price - product.prices.find(item => item.weight_id === selectedWeight).deal_price}}</span>
         </template>
       </div>
       <div class="card__weightsDialog-content">
