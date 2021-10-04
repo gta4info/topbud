@@ -28,6 +28,7 @@
             label="Type something"
             class="filter__input"
             @keypress.enter="dialog = false"
+            ref="input"
           />
           <v-btn
             class="filter__slider-inputs--apply"
@@ -45,11 +46,11 @@
             <div class="filter__slider-inputs">
               <div>
                 <div>
-                  <v-text-field v-model="minData" prefix="$" placeholder="From" solo dense class="filter__input" hide-details type="number" @keypress.enter="updatePrices"/>
+                  <v-text-field v-model="minData" prefix="$" placeholder="From" solo dense class="filter__input" hide-details type="number" @keypress.enter="updatePrices" ref="input"/>
                 </div>
                 <div class="filter__slider-inputs--divider"></div>
                 <div>
-                  <v-text-field v-model="maxData" prefix="$" placeholder="To" solo dense class="filter__input" hide-details type="number" @keypress.enter="updatePrices"/>
+                  <v-text-field v-model="maxData" prefix="$" placeholder="To" solo dense class="filter__input" hide-details type="number" @keypress.enter="updatePrices" ref="input"/>
                 </div>
               </div>
               <v-btn
@@ -133,6 +134,7 @@ export default {
         min: parseInt(this.minData),
         max: parseInt(this.maxData),
       })
+      this.$refs['input'].blur();
       this.showUpdatePriceBtn = false;
       this.dialog = false;
     }

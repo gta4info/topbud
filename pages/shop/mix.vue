@@ -696,6 +696,7 @@ export default {
         right: 0;
         height: 60px;
         padding: 0 30px;
+        border-top: 1px solid #008DE3;
       }
 
       &-items {

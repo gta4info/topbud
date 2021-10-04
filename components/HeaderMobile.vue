@@ -388,6 +388,7 @@ export default {
           font-size: 20px;
           text-align: left;
           transition: .3s;
+          width: 100%;
         }
       }
     }

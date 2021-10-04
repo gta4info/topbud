@@ -53,14 +53,14 @@
                   </v-col>
                 </template>
               </v-row>
-              <p class="text-center" v-else>No products with selected filters was found</p>
+              <p class="text-center mt-10" v-else>No products with selected filters was found</p>
             </v-container>
           </v-col>
           <v-col cols="12">
             <HowToSmoke />
           </v-col>
         </v-row>
-        <p class="text-center" v-else>No products was found in this category</p>
+        <p class="text-center mt-10" v-else>No products was found in this category</p>
       </v-container>
     </div>
   </div>

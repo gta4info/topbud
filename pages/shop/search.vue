@@ -15,7 +15,7 @@
             </v-col>
           </template>
         </v-row>
-        <p class="text-center" v-else>No products found by the query</p>
+        <p class="text-center mt-10" v-else>No products found by the query</p>
       </v-container>
     </div>
   </div>

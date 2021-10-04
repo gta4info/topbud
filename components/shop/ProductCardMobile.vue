@@ -1,11 +1,16 @@
 <template>
-  <div class="card">
+  <div class="card" :class="{activeDialog: showWeightsDialog}">
     <div class="card__content">
       <div class="card__category" v-if="categories.find(c => c.id === product.category_id).subs.length">
         {{categories.find(c => c.id === product.category_id).subs.find(s => s.id === product.subcategory_id).name}}
       </div>
       <div class="card__category" v-else>{{categories.find(c => c.id === product.category_id).name}}</div>
-      <div class="card__title" @click="goToProduct">{{product.name}}</div>
+      <div
+        class="card__title"
+        @click="goToProduct"
+      >
+        {{product.name}}
+      </div>
       <div class="card__quality" v-if="product.cbd || product.thc">
         <div class="card__quality-item" v-if="product.thc">
           <div>
@@ -27,9 +32,7 @@
         </div>
       </div>
       <div class="card__bottom">
-        <v-btn @click="handleClickCart" class="card__addToCart" depressed>
-          <v-icon color="#fff" size="20">mdi-cart-outline</v-icon>
-        </v-btn>
+        <v-btn @click="handleClickCart" class="card__addToCart" depressed>Choose</v-btn>
         <div class="card__price" v-if="product.prices.length > 1">
           <span class="card__price-price">From ${{ product.prices[0].deal_price ? product.prices[0].deal_price : product.prices[0].price }}</span>
         </div>
@@ -73,6 +76,7 @@
             >
               <div class="card__weightsDialog-item--weight">{{weights[price.weight_id]}}</div>
               <div class="card__weightsDialog-item--price">${{price.deal_price ? price.deal_price : price.price}}</div>
+              <div class="card__weightsDialog-item--old" v-if="price.deal_price">${{price.price}}</div>
             </div>
           </div>
         </div>
@@ -213,6 +217,15 @@ export default {
     border-top: 1px solid #D2D2D2;
     position: relative;
     padding: 10px 0;
+
+    &.activeDialog {
+      height: 167px;
+
+      .card__content {
+        margin-top: auto;
+        height: auto;
+      }
+    }
 
     &__content {
       display: flex;
@@ -454,13 +467,16 @@ export default {
     }
 
     &__addToCart {
-      width: 40px !important;
       height: 26px !important;
       min-width: 26px !important;
       background: #21AA5B !important;
-      padding: 0 !important;
+      padding: 0 9px !important;
       border-radius: 5px !important;
       margin-right: 10px;
+      color: #ffffff !important;
+      font-size: 12px;
+      font-weight: 700;
+      text-transform: none !important;
     }
 
     &__weights {
@@ -570,6 +586,7 @@ export default {
       &-content {
         display: flex;
         width: 100%;
+        overflow: hidden;
       }
 
       &-addToCart {
@@ -623,6 +640,8 @@ export default {
         display: flex;
         overflow-x: auto;
         width: 100%;
+        padding-bottom: 10px;
+        margin-bottom: -10px;
       }
 
       &-item {
@@ -662,9 +681,25 @@ export default {
         }
 
         &--price {
-          font-size: 10px;
+          font-size: 12px;
           font-weight: 700;
           color: #ffffff;
+        }
+
+        &--old {
+          font-size: 10px;
+          color: #ffffff;
+          position: relative;
+          display: flex;
+          align-items: center;
+
+          &:before {
+            content: '';
+            position: absolute;
+            width: 100%;
+            height: 1px;
+            background: #FF4B55;
+          }
         }
       }
     }
