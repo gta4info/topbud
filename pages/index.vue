@@ -1123,11 +1123,14 @@ export default {
   }
 
   .offers {
+    overflow-x: hidden;
 
     &__items {
       display: flex;
       align-items: center;
       overflow-x: auto;
+      padding-bottom: 30px;
+      margin-bottom: -30px;
     }
 
     &__item {

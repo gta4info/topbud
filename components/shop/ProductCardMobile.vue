@@ -642,7 +642,7 @@ export default {
       &-items {
         display: flex;
         overflow-x: auto;
-        width: 100%;
+        width: 94%;
         padding-bottom: 10px;
         margin-bottom: -10px;
       }
@@ -701,7 +701,7 @@ export default {
             position: absolute;
             width: 100%;
             height: 1px;
-            background: #FF4B55;
+            background: #fff;
           }
         }
       }
