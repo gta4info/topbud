@@ -621,7 +621,7 @@ export default {
         display: flex;
         flex-direction: column;
         align-items: flex-start;
-        max-width: calc(100% - 90px);
+        width: calc(100% - 90px);
       }
 
       &-title {
