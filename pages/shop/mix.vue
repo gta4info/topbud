@@ -8,7 +8,7 @@
         </v-col>
         <v-col cols="9">
           <v-container class="py-0">
-            <v-row>
+            <v-row class="sticky">
               <v-col cols="12">
                 <div class="sorting">
                   <v-select
@@ -599,13 +599,22 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+
+  .sticky {
+    position: sticky;
+    top: 0;
+    background: #ffffff;
+    z-index: 2;
+  }
+
   .mnm {
     display: flex;
     align-items: center;
-    position: relative;
     height: 50px;
 
     @media(max-width: 768px) {
+      position: relative;
+      top: 0;
       height: 31px;
       margin-bottom: 18px;
     }

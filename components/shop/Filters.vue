@@ -142,7 +142,7 @@ export default {
     padding: 30px 20px;
     margin-left: auto;
     position: sticky;
-    top: 40px;
+    top: 0;
     box-shadow: 0 4px 40px rgba(0, 0, 0, 0.1);
     border-radius: 10px;
   }
