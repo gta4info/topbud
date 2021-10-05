@@ -1125,6 +1125,10 @@ export default {
   .offers {
     overflow-x: hidden;
 
+    @media(min-width: 769px) {
+      display: none;
+    }
+
     &__items {
       display: flex;
       align-items: center;
