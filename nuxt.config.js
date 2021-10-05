@@ -11,7 +11,10 @@ export default {
       { charset: 'utf-8' },
       { name: 'viewport', content: 'user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width, height=device-height, target-densitydpi=device-dpi' },
       { hid: 'description', name: 'description', content: 'Лендинг для цветочного салона или онлайн-магазина цветов' },
-      { name: 'format-detection', content: 'telephone=no' }
+      { name: 'format-detection', content: 'telephone=no' },
+      { name: 'theme-color', content: '#21AA5B' },
+      { name: 'msapplication-navbutton-color', content: '#21AA5B' },
+      { name: 'apple-mobile-web-app-status-bar-style', content: '#21AA5B' }
     ],
     link: [
       { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' },
