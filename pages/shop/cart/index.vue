@@ -123,11 +123,6 @@
                     <span style="color: #008DE3">${{calculateTotal}}</span>
                   </div>
                 </div>
-
-<!--                <div class="d-flex flex-column">-->
-<!--                  <div v-if="calculateCartTotal < 60" style="color: #de2b2b;font-size: 18px;font-weight: 900;margin-bottom: 6px;">Minimal cart total is 60$</div>-->
-<!--                  <v-btn color="#7FAD39" class="white&#45;&#45;text" block depressed :disabled="calculateCartTotal < 60" to="/shop/cart/checkout">Checkout</v-btn>-->
-<!--                </div>-->
               </div>
             </div>
 
@@ -179,7 +174,10 @@ export default {
         link: null,
         title: 'Shopping Cart'
       },
-    ]
+    ],
+    promocodeValue: 0,
+    promocodeIsPercent: true,
+    promocodeApplied: false
   }),
   computed: {
     ...mapGetters({
@@ -198,6 +196,15 @@ export default {
         })
       }
 
+      if(this.promocodeApplied) {
+        if(this.promocodeIsPercent) {
+          total = total - (total / 100 * this.promocodeValue);
+        } else {
+          total = total - this.promocodeValue;
+        }
+        total = Math.floor(total);
+      }
+
       return total;
     },
     calculateTotal() {
@@ -214,6 +221,12 @@ export default {
     await this.$store.dispatch('shop/setMixsCart');
     await this.$store.dispatch('shop/getMixProducts');
     await this.$store.dispatch('shop/getCartProducts');
+
+    this.$root.$on('set-promocode-cart-total', data => {
+      this.promocodeApplied = data.applied;
+      this.promocodeIsPercent = data.isPercent;
+      this.promocodeValue = data.value;
+    })
   }
 }
 </script>

@@ -17,7 +17,17 @@
             <v-container class="py-0">
               <v-row v-if="productsFiltered.length">
                 <v-col cols="12" :class="{'px-0': $vuetify.breakpoint.smAndDown}">
-                  <div class="sorting" style="margin: 18px 0;">
+                  <v-text-field
+                    v-model="search"
+                    solo
+                    dense
+                    hide-details
+                    clearable
+                    label="Type something to search"
+                    class="filter__input"
+                    @keypress.enter="$event.target.blur()"
+                  />
+                  <div class="sorting">
                     <v-select
                       v-model="selectedSorting"
                       :items="sorting"
@@ -373,5 +383,9 @@ export default {
       }
     }
   }
+}
+
+.filter__input {
+  margin: 10px 0;
 }
 </style>

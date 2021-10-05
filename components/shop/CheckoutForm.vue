@@ -185,6 +185,12 @@ export default {
             this.promocodeValue = res.data.value;
             this.promocodeApplied = true;
 
+            this.$root.$emit('set-promocode-cart-total', {
+              applied: this.promocodeApplied,
+              isPercent: this.promocodeIsPercent,
+              value: this.promocodeValue
+            })
+
             this.$toast.success('Promocode has been applied successfully!', {duration: 1500})
           } else {
             this.$toast.error(res.data.message, {duration: 5000})

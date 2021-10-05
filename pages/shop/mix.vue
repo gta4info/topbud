@@ -65,7 +65,7 @@
                       <div class="mnm__pack-totals--oldPrice">${{calculateMixPrice.old}}</div>
                       <div class="mnm__pack-totals--price">${{calculateMixPrice.sum}} <span class="mnm__pack-totals--weight"> / {{calculateMixPrice.weight}}g</span></div>
                     </div>
-                    <v-btn class="mnm__editBtn" depressed @click="mixModal = !mixModal">Edit Pack</v-btn>
+                    <v-btn class="mnm__editBtn" depressed @click="mixModal = !mixModal">Add to cart</v-btn>
                   </div>
                   <div class="mnm__modal" v-if="mixModal" v-click-outside="onClickOutsideModal">
                     <div class="mnm__modal-title">Products in pack:</div>
@@ -80,6 +80,11 @@
                         </div>
                         <div class="mnm__modal-product--info">
                           <div class="mnm__modal-product--name">{{product.name}}</div>
+                          <div class="mnm__modal-product--weight">
+                            <template v-if="selectedWeight === 1">(28g)</template>
+                            <template v-if="selectedWeight === 2">(14g)</template>
+                            <template v-if="selectedWeight === 4">(7g)</template>
+                          </div>
                         </div>
                         <div class="mnm__modal-product--quantity">
                           <v-btn
@@ -181,6 +186,16 @@
         <FiltersMobile :min="min[selectedWeight]" :max="max[selectedWeight]" :search="search" :key="selectedWeight"/>
       </div>
 
+      <v-text-field
+        v-model="search"
+        solo
+        dense
+        hide-details
+        clearable
+        label="Type something to search"
+        class="filter__input"
+        @keypress.enter="$event.target.blur()"
+      />
       <div class="sorting" style="margin-bottom: 18px">
         <v-select
           v-model="selectedSorting"
@@ -219,7 +234,7 @@
           <div class="mnm__pack-totals--oldPrice">${{calculateMixPrice.old}}</div>
           <div class="mnm__pack-totals--price">${{calculateMixPrice.sum}} <span class="mnm__pack-totals--weight"> / {{calculateMixPrice.weight}}g</span></div>
         </div>
-        <v-btn class="mnm__editBtn" depressed @click="mixModal = !mixModal">Edit Pack</v-btn>
+        <v-btn class="mnm__editBtn" depressed @click="mixModal = !mixModal">Add to cart</v-btn>
       </div>
       <div class="mnm__modal" :class="{active: mixModal}">
         <v-btn icon class="mnm__modal-close" @click="mixModal = false">
@@ -238,6 +253,11 @@
               </div>
               <div class="mnm__modal-product--info">
                 <div class="mnm__modal-product--name">{{product.name}}</div>
+                <div class="mnm__modal-product--weight">
+                  <template v-if="selectedWeight === 1">(28g)</template>
+                  <template v-if="selectedWeight === 2">(14g)</template>
+                  <template v-if="selectedWeight === 4">(7g)</template>
+                </div>
               </div>
             </div>
             <div>
@@ -411,7 +431,7 @@ export default {
         text: 'Price: High to Low',
         value: 2
       }
-    ]
+    ],
   }),
   watch: {
     mixs: {
@@ -1111,5 +1131,9 @@ export default {
         height: calc(100% - 66px);
       }
     }
+  }
+
+  .filter__input {
+    margin-bottom: 10px;
   }
 </style>

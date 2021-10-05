@@ -1147,7 +1147,7 @@ export default {
       justify-content: space-between;
       flex-shrink: 0;
       border-radius: 10px;
-      overflow-x: hidden;
+      overflow: hidden;
       position: relative;
 
       &:nth-of-type(even) {

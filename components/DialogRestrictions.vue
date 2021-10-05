@@ -59,10 +59,10 @@ export default {
       color: #fff;
       font-weight: 900;
       margin: 40px 0;
+      text-align: center;
 
       @media(max-width: 768px) {
         font-size: 26px;
-        text-align: center;
       }
 
       @media(max-width: 320px) {
