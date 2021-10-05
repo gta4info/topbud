@@ -1,10 +1,10 @@
 <template>
-  <div class="page mix">
+  <div class="page">
     <div class="goBack" @click="$router.back()">Go back</div>
     <v-container v-if="$vuetify.breakpoint.mdAndUp">
       <v-row>
         <v-col cols="3">
-          <Filters :min="min" :max="max" :search="search"/>
+          <Filters :min="min[selectedWeight]" :max="max[selectedWeight]" :search="search" :key="selectedWeight"/>
         </v-col>
         <v-col cols="9">
           <v-container class="py-0">
@@ -148,37 +148,40 @@
       </v-row>
     </v-container>
 
-    <v-container class="mix__mobileWrapper" :style="mixs.selected[selectedWeight].length >= 1 ? 'padding-bottom: 66px' : ''" v-else>
-      <div class="mnm">
-        <div class="mnm__title">Choose size</div>
-        <div class="mnm__options">
-          <div
-            class="mnm__option"
-            :class="{active: selectedWeight === 1}"
-            @click="selectedWeight = 1"
-          >
-            56g
-          </div>
-          <div
-            class="mnm__option"
-            :class="{active: selectedWeight === 2}"
-            @click="selectedWeight = 2"
-          >
-            28g
-          </div>
-          <div
-            class="mnm__option"
-            :class="{active: selectedWeight === 4}"
-            @click="selectedWeight = 4"
-          >
-            14g
+    <v-container class="pt-0" :style="mixs.selected[selectedWeight].length >= 1 ? 'padding-bottom: 73px' : ''" v-else>
+      <div class="sticky pt-3" style="padding-bottom: 10px;">
+
+        <div class="mnm">
+          <div class="mnm__title">Choose size</div>
+          <div class="mnm__options">
+            <div
+              class="mnm__option"
+              :class="{active: selectedWeight === 1}"
+              @click="selectedWeight = 1"
+            >
+              56g
+            </div>
+            <div
+              class="mnm__option"
+              :class="{active: selectedWeight === 2}"
+              @click="selectedWeight = 2"
+            >
+              28g
+            </div>
+            <div
+              class="mnm__option"
+              :class="{active: selectedWeight === 4}"
+              @click="selectedWeight = 4"
+            >
+              14g
+            </div>
           </div>
         </div>
+
+        <FiltersMobile :min="min[selectedWeight]" :max="max[selectedWeight]" :search="search" :key="selectedWeight"/>
       </div>
 
-      <FiltersMobile :min="min" :max="max" :search="search"/>
-
-      <div class="sorting" style="margin: 18px 0;">
+      <div class="sorting" style="margin-bottom: 18px">
         <v-select
           v-model="selectedSorting"
           :items="sorting"
@@ -218,7 +221,7 @@
         </div>
         <v-btn class="mnm__editBtn" depressed @click="mixModal = !mixModal">Edit Pack</v-btn>
       </div>
-      <div class="mnm__modal" v-if="mixModal" v-click-outside="onClickOutsideModal">
+      <div class="mnm__modal" :class="{active: mixModal}">
         <v-btn icon class="mnm__modal-close" @click="mixModal = false">
           <v-icon size="24">mdi-close</v-icon>
         </v-btn>
@@ -690,8 +693,8 @@ export default {
         background: #ffffff;
         z-index: 1;
         flex-shrink: 0;
-        position: absolute;
-        bottom: 0;
+        position: fixed;
+        bottom: 60px;
         left: 0;
         right: 0;
         height: 60px;
@@ -839,6 +842,13 @@ export default {
         right: 0;
         bottom: 60px;
         left: 0;
+        width: 100%;
+        margin-left: 100vw;
+        transition: .3s;
+
+        &.active {
+          margin-left: 0;
+        }
       }
 
       &-close {
