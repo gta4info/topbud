@@ -84,7 +84,7 @@ export default {
   scrollToTop: true,
   head() {
     return {
-      title: `Weed delivery 🚬 ${this.category.name} in Toronto, best prices — TOPBUD store`,
+      title: `Weed delivery 🚬 ${this.category.name} in Toronto, best prices`,
       meta: [
         {
           hid: 'description',

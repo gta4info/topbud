@@ -317,7 +317,7 @@ export default {
   scrollToTop: true,
   name: 'pack',
   head: {
-    title: "Weed delivery 🚬 in Toronto, Mix'N'Match, best prices — TOPBUD store",
+    title: "Weed delivery 🚬 in Toronto, Mix'N'Match, best prices",
     meta: [
       {
         hid: 'description',

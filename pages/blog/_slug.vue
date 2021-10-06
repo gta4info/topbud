@@ -22,7 +22,7 @@ export default {
   scrollToTop: true,
   head() {
     return {
-      title: `${this.blog.name} | TOPBUD store`,
+      title: this.blog.name,
       meta: [
         {
           hid: 'description',
