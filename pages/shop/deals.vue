@@ -8,26 +8,27 @@
             md="3"
             sm="12"
             :class="{'pb-0': $vuetify.breakpoint.smAndDown}"
-            :style="$vuetify.breakpoint.smAndDown ? 'position: sticky;top: 0;background: #fff;z-index: 2' : ''"
+            :style="$vuetify.breakpoint.smAndDown ? 'padding-top: 0;position: sticky;top: 0;background: #fff;z-index: 2' : ''"
           >
             <Filters :min="min" :max="max" :search="search" v-if="$vuetify.breakpoint.mdAndUp"/>
-            <FiltersMobile :min="min" :max="max" :search="search" v-else/>
+            <v-text-field
+              v-model="search"
+              solo
+              dense
+              hide-details
+              clearable
+              label="Type something to search"
+              class="filter__input"
+              @keypress.enter="$event.target.blur()"
+              v-else
+            />
           </v-col>
           <v-col md="9" sm="12" :class="{'pt-0': $vuetify.breakpoint.smAndDown}">
             <v-container class="py-0">
               <v-row v-if="productsFiltered.length">
                 <v-col cols="12" :class="{'px-0': $vuetify.breakpoint.smAndDown}">
-                  <v-text-field
-                    v-model="search"
-                    solo
-                    dense
-                    hide-details
-                    clearable
-                    label="Type something to search"
-                    class="filter__input"
-                    @keypress.enter="$event.target.blur()"
-                  />
-                  <div class="sorting">
+                  <FiltersMobile :min="min" :max="max" :search="search" v-if="$vuetify.breakpoint.smAndDown"/>
+                  <div class="sorting" :style="$vuetify.breakpoint.smAndDown ? 'margin-top: 10px;' : ''">
                     <v-select
                       v-model="selectedSorting"
                       :items="sorting"

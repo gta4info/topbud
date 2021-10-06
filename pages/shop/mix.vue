@@ -182,21 +182,19 @@
             </div>
           </div>
         </div>
-
-        <FiltersMobile :min="min[selectedWeight]" :max="max[selectedWeight]" :search="search" :key="selectedWeight"/>
+        <v-text-field
+          v-model="search"
+          solo
+          dense
+          hide-details
+          clearable
+          label="Type something to search"
+          class="filter__input"
+          @keypress.enter="$event.target.blur()"
+        />
       </div>
-
-      <v-text-field
-        v-model="search"
-        solo
-        dense
-        hide-details
-        clearable
-        label="Type something to search"
-        class="filter__input"
-        @keypress.enter="$event.target.blur()"
-      />
-      <div class="sorting" style="margin-bottom: 18px">
+      <FiltersMobile :min="min[selectedWeight]" :max="max[selectedWeight]" :search="search" :key="selectedWeight"/>
+      <div class="sorting" style="margin: 10px 0 18px">
         <v-select
           v-model="selectedSorting"
           :items="sorting"
@@ -1131,9 +1129,5 @@ export default {
         height: calc(100% - 66px);
       }
     }
-  }
-
-  .filter__input {
-    margin-bottom: 10px;
   }
 </style>
