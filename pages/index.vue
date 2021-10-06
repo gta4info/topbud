@@ -277,7 +277,7 @@ export default {
     return { blog };
   },
   head: {
-    title: 'Best weed in Vaughan | TOPBUD store',
+    title: 'Best weed in Vaughan',
     meta: [
       {
         hid: 'description',

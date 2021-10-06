@@ -16,7 +16,7 @@
 export default {
   scrollToTop: true,
   head: {
-    title: 'Delivery information | TOPBUD store',
+    title: 'Delivery information',
     meta: [
       {
         hid: 'description',

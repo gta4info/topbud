@@ -3,14 +3,14 @@ import fs from 'fs'
 export default {
   // Global page headers: https://go.nuxtjs.dev/config-head
   head: {
-    title: 'TOPBUD store',
+    title: '',
     htmlAttrs: {
       lang: 'en'
     },
     meta: [
       { charset: 'utf-8' },
       { name: 'viewport', content: 'user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width, height=device-height, target-densitydpi=device-dpi' },
-      { hid: 'description', name: 'description', content: 'Лендинг для цветочного салона или онлайн-магазина цветов' },
+      { hid: 'description', name: 'description', content: 'TOPBUD store offer to you weeds in Toronto ✔ Best prices ✔ Weed delivery' },
       { name: 'format-detection', content: 'telephone=no' },
       { name: 'theme-color', content: '#21AA5B' },
       { name: 'msapplication-navbutton-color', content: '#21AA5B' },

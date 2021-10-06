@@ -16,7 +16,7 @@
 export default {
   scrollToTop: true,
   head: {
-    title: 'Contact us | TOPBUD store',
+    title: 'Contact us',
     meta: [
       {
         hid: 'description',

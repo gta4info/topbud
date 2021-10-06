@@ -148,7 +148,7 @@ import { mapGetters } from 'vuex'
 export default {
   scrollToTop: true,
   head: {
-    title: 'Cart | TOPBUD store',
+    title: 'Shopping cart',
     meta: [
       {
         hid: 'description',

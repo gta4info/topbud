@@ -27,7 +27,7 @@ import { mapGetters } from 'vuex'
 export default {
   scrollToTop: true,
   head: {
-    title: 'Weed delivery 🚬 in Toronto, best prices — TOPBUD store',
+    title: 'Weed delivery 🚬 in Toronto, best prices',
     meta: [
       {
         hid: 'description',
